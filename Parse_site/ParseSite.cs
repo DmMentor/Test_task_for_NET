@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Net;
-using System.Net.Http;
 using System.Xml;
 
 namespace Parse_site
@@ -13,7 +12,6 @@ namespace Parse_site
     class ParseSite
     {
         Uri _urlParse;
-        WebClient webClient;
 
         List<(string url, double response)> listUrlsSitemap = null;
         List<(string url, double response)> listUrlsHtml = null;
@@ -27,7 +25,6 @@ namespace Parse_site
         public ParseSite(string url)
         {
             _urlParse = new Uri(url);
-            webClient = new WebClient();
         }
 
         public async Task Start()
@@ -44,37 +41,29 @@ namespace Parse_site
 
             await SitemapXml();
 
-            Console.WriteLine("\n\nUrls(html documents) found after crawling a website: {0}", listUrlsHtml.Count);
-            Console.WriteLine("Urls found in sitemap: {0}", listUrlsSitemap.Count);
+            int i = 1;
 
-            int i = 1, j = 0;
-            if (listUrlsSitemap != null)
+            ComparerListUrls comparerList = new ComparerListUrls();
+
+            if (listUrlsSitemap != null && listUrlsSitemap.Count != 0)
             {
-                listUrlsHtml.Sort(new ComparerListUrls());
-                listUrlsSitemap.Sort(new ComparerListUrls());
-
-                List<(string url, double response)> list_xml = new List<(string url, double response)>(listUrlsSitemap);
-
                 List<(string url, double response)> list_html = new List<(string url, double response)>(listUrlsHtml);
 
-                //Лишняя память для лсита починить
-                //Сортировку сделать
-                foreach (var tuplesXml in list_xml)
+                foreach (var tuplesHtml in listUrlsHtml)
                 {
-                    foreach (var tuplesHtml in list_html)
+                    foreach (var tuplesXml in listUrlsSitemap)
                     {
                         if (tuplesHtml.url == tuplesXml.url)
                         {
-                            j++;
-
                             listUrlsHtml.Remove(tuplesHtml);
                             listUrlsSitemap.Remove(tuplesXml);
                             break;
                         }
                     }
-
-                    list_xml = new List<(string url, double response)>(listUrlsSitemap);
                 }
+
+
+                listUrlsSitemap.Sort(comparerList);
 
                 Console.WriteLine("Sitemap xml:");
                 foreach (var tuple in listUrlsSitemap)
@@ -85,19 +74,29 @@ namespace Parse_site
                 Console.WriteLine("\n\n\n");
             }
 
-            i = 1;
-            Console.WriteLine("Html document:");
-            foreach (var tuple in listUrlsHtml)
+
+            if (listUrlsHtml != null && listUrlsHtml.Count != 0)
             {
-                Console.WriteLine("{0})Url:{1}\n {2}ms\n", i++, tuple.url, tuple.response);
+                Console.WriteLine("Html document:");
+
+                listUrlsHtml.Sort(comparerList);
+
+                i = 1;
+                foreach (var tuple in listUrlsHtml)
+                {
+                    Console.WriteLine("{0})Url:{1}\n {2}ms\n", i++, tuple.url, tuple.response);
+                }
+
+                Console.WriteLine("\n\nUrls(html documents) found after crawling a website: {0}", listUrlsHtml.Count);
             }
+            else
+                Console.WriteLine("\n\nUrls(html documents) found after crawling a website: 0");
 
 
-            Console.WriteLine("\n\nUrls(html documents) found after crawling a website: {0}", listUrlsHtml.Count);
-            Console.WriteLine("Urls found in sitemap: {0}", listUrlsSitemap.Count);
-            Console.WriteLine(j);
-            Console.WriteLine(j);
-            Console.WriteLine(j);
+            if (listUrlsSitemap != null)
+                Console.WriteLine("Urls found in sitemap: {0}", listUrlsSitemap.Count);
+            else
+                Console.WriteLine("Urls found in sitemap: 0");
         }
 
         #region MethodsParse
@@ -184,7 +183,7 @@ namespace Parse_site
 
                 try
                 {
-                    listUrlsSitemap.Add((xmlNode.InnerText, time.ElapsedMilliseconds));
+                    listUrlsSitemap.Add((xmlNode.InnerText, time.Elapsed.TotalMilliseconds));
                 }
                 catch (WebException)
                 {

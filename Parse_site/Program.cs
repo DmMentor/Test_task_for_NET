@@ -9,9 +9,9 @@ namespace Parse_site
         {
             try
             {
-                Console.WriteLine("");
+                //Console.WriteLine("");
                 //string url = Console.ReadLine();
-                string url = "http://basicweb.ru";
+                string url = "https://fooobar.com";
 
                 ParseSite parse = new ParseSite(url);
 

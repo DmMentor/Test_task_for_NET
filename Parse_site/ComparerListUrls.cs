@@ -12,7 +12,7 @@ namespace Parse_site
         {
             if (ob1.response > ob2.response)
                 return 1;
-            if (ob1.response > ob2.response)
+            if (ob1.response < ob2.response)
                 return -1;
             else
                 return 0;
