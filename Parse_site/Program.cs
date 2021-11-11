@@ -9,12 +9,12 @@ namespace Parse_site
         {
             try
             {
-                //Console.WriteLine("");
-                //string url = Console.ReadLine();
-                string url = "https://fooobar.com";
-
+                Console.Write("Input url website: ");
+                string url = Console.ReadLine();
+                
                 ParseSite parse = new ParseSite(url);
 
+                Console.WriteLine("Starting parsing website....\n\n\n");
                 await parse.Start();
             }
             catch (FormatException fex)

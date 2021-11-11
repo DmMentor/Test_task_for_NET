@@ -49,7 +49,7 @@ namespace Parse_site
             {
                 List<(string url, double response)> list_html = new List<(string url, double response)>(listUrlsHtml);
 
-                foreach (var tuplesHtml in listUrlsHtml)
+                foreach (var tuplesHtml in list_html)
                 {
                     foreach (var tuplesXml in listUrlsSitemap)
                     {
@@ -62,13 +62,12 @@ namespace Parse_site
                     }
                 }
 
-
                 listUrlsSitemap.Sort(comparerList);
 
                 Console.WriteLine("Sitemap xml:");
                 foreach (var tuple in listUrlsSitemap)
                 {
-                    Console.WriteLine("{0})Url:{1}\n {2}ms\n", i++, tuple.url, tuple.response);
+                    Console.WriteLine("{0})Url: {1}\n Time response: {2}ms\n", i++, tuple.url, tuple.response);
                 }
 
                 Console.WriteLine("\n\n\n");
@@ -84,7 +83,7 @@ namespace Parse_site
                 i = 1;
                 foreach (var tuple in listUrlsHtml)
                 {
-                    Console.WriteLine("{0})Url:{1}\n {2}ms\n", i++, tuple.url, tuple.response);
+                    Console.WriteLine("{0})Url: {1}\n Time response: {2}ms\n", i++, tuple.url, tuple.response);
                 }
 
                 Console.WriteLine("\n\nUrls(html documents) found after crawling a website: {0}", listUrlsHtml.Count);
