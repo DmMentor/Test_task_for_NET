@@ -12,7 +12,7 @@ namespace Parse_site
                 Console.Write("Input url website: ");
                 string url = Console.ReadLine();
                 
-                ParseSite parse = new ParseSite(url);
+                ParsingWebsite parse = new ParsingWebsite(url);
 
                 Console.WriteLine("Starting parsing website....\n\n\n");
                 await parse.Start();
