@@ -43,7 +43,14 @@ namespace Parse_site
             {
                 string url;
                 if (!matchUrl.Groups[1].Value.Contains("https://"))
-                    url = Uri.UriSchemeHttps + "://" + _uri.Host + matchUrl.Groups[1].Value;
+                {
+                    if (matchUrl.Groups[1].Value[0] == '/')
+                    {
+                        url = Uri.UriSchemeHttps + "://" + _uri.Host + matchUrl.Groups[1].Value;
+                    }
+                    else
+                        url = Uri.UriSchemeHttps + "://" + _uri.Host + "/" + matchUrl.Groups[1].Value;
+                }
                 else
                     url = matchUrl.Groups[1].Value;
 
@@ -60,9 +67,9 @@ namespace Parse_site
                     }
                     catch (WebException)
                     {
+                        listUrls.Add(url);
                         url += " --- not work";
                         listUrlsHtml.Add((url, -1));
-                        listUrls.Add(url);
                     }
                     finally
                     {

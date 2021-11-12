@@ -7,24 +7,14 @@ namespace Parse_site
 {
     class ParsingWebsite
     {
-        Uri _urlParse;
-
         List<(string url, double response)> listUrlsSitemap = null;
         List<(string url, double response)> listUrlsHtml = null;
 
         ParseHtmlDocument parserHtml;
         ParseSitemapXml parserSitemap;
 
-        public Uri urlParse
-        {
-            get => _urlParse;
-            set => _urlParse = value;
-        }
-
         public ParsingWebsite(string url)
         {
-            _urlParse = new Uri(url);
-
             parserHtml = new ParseHtmlDocument(new Uri(url));
             parserSitemap = new ParseSitemapXml(new Uri(url));
         }
