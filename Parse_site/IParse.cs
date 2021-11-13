@@ -5,6 +5,6 @@ namespace Parse_site
 {
     interface IParse
     {
-        Task<List<(string, double)>> Parse();
+        Task<List<(string, double)>> ParseAsync();
     }
 }

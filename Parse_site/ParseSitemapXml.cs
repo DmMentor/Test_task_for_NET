@@ -15,7 +15,7 @@ namespace Parse_site
             _uri = uri;
         }
 
-        public async Task<List<(string, double)>> Parse()
+        public async Task<List<(string, double)>> ParseAsync()
         {
             string sitemapXml;
 

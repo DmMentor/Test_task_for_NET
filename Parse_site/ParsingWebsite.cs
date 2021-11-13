@@ -19,11 +19,11 @@ namespace Parse_site
             parserSitemap = new ParseSitemapXml(new Uri(url));
         }
 
-        public async Task Start()
+        public async Task StartAsync()
         {
             try
             {
-                listUrlsHtml = await parserHtml.Parse();
+                listUrlsHtml = await parserHtml.ParseAsync();
             }
             catch (WebException)
             {
@@ -31,7 +31,7 @@ namespace Parse_site
                 return;
             }
 
-            listUrlsSitemap = await parserSitemap.Parse();
+            listUrlsSitemap = await parserSitemap.ParseAsync();
 
             ResultsProcessing();
             ShowResults();

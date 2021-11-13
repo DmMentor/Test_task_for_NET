@@ -15,7 +15,7 @@ namespace Parse_site
                 ParsingWebsite parse = new ParsingWebsite(url);
 
                 Console.WriteLine("Starting parsing website....\n\n\n");
-                await parse.Start();
+                await parse.StartAsync();
             }
             catch (FormatException fex)
             {
