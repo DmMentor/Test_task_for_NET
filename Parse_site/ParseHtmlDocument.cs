@@ -68,6 +68,7 @@ namespace Parse_site
                     catch (WebException)
                     {
                         listUrls.Add(url);
+
                         url += " --- not work";
                         listUrlsHtml.Add((url, -1));
                     }
