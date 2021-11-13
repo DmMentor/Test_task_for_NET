@@ -42,17 +42,27 @@ namespace Parse_site
             foreach (Match matchUrl in matchCollectionUrls)
             {
                 string url;
-                if (!matchUrl.Groups[1].Value.Contains("https://"))
+                if (!matchUrl.Groups[1].Value.Contains("https://") && !matchUrl.Groups[1].Value.Contains("http://"))
                 {
-                    if (matchUrl.Groups[1].Value[0] == '/')
+                    try
                     {
-                        url = Uri.UriSchemeHttps + "://" + _uri.Host + matchUrl.Groups[1].Value;
+                        ((HttpWebRequest)WebRequest.Create(Uri.UriSchemeHttps + ":" + matchUrl.Groups[1].Value)).GetResponse().Close();
+                        url = Uri.UriSchemeHttps + ":" + matchUrl.Groups[1].Value;
                     }
-                    else
-                        url = Uri.UriSchemeHttps + "://" + _uri.Host + "/" + matchUrl.Groups[1].Value;
+                    catch (Exception)
+                    {
+                        if (matchUrl.Groups[1].Value[0] == '/')
+                        {
+                            url = Uri.UriSchemeHttps + "://" + _uri.Host + matchUrl.Groups[1].Value;
+                        }
+                        else
+                            url = Uri.UriSchemeHttps + "://" + _uri.Host + "/" + matchUrl.Groups[1].Value;
+                    }
                 }
                 else
+                {
                     url = matchUrl.Groups[1].Value;
+                }
 
                 if (!listUrls.Contains(url))
                 {
@@ -68,9 +78,7 @@ namespace Parse_site
                     catch (WebException)
                     {
                         listUrls.Add(url);
-
-                        url += " --- not work";
-                        listUrlsHtml.Add((url, -1));
+                        listUrlsHtml.Add((url + " --- not work", -1));
                     }
                     finally
                     {
