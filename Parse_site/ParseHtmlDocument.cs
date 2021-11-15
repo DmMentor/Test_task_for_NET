@@ -46,7 +46,7 @@ namespace Parse_site
                 {
                     if (matchUrl.Groups[1].Value == "/" || matchUrl.Groups[1].Value == "#")
                     {
-                        url = Uri.UriSchemeHttps + "://" + _uri.Host;
+                        url = Uri.UriSchemeHttps + "://" + _uri.Host + '/';
                     }
                     else if (!matchUrl.Groups[1].Value.Contains("https://") && !matchUrl.Groups[1].Value.Contains("http://"))
                     {
