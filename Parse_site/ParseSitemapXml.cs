@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Net;
@@ -15,7 +14,7 @@ namespace Parse_site
             _uri = uri;
         }
 
-        public async Task<List<(string, double)>> ParseAsync()
+        public async Task<List<string>> ParseAsync()
         {
             string sitemapXml;
 
@@ -36,33 +35,16 @@ namespace Parse_site
 
             XmlNodeList xmlNodeList = xmlDocument.GetElementsByTagName("loc");
 
-            var listUrlsSitemap = new List<(string url, double response)>(xmlNodeList.Count);
-            var listUrls = new List<string>(xmlNodeList.Count);
+            if (xmlNodeList.Count == 0)
+                return null;
 
-            Stopwatch time = new Stopwatch();
+            var listUrlsSitemap = new List<string>(xmlNodeList.Count);
 
             foreach (XmlNode xmlNode in xmlNodeList)
             {
-                if (!listUrls.Contains(xmlNode.InnerText))
+                if (!listUrlsSitemap.Contains(xmlNode.InnerText))
                 {
-                    try
-                    {
-                        time.Start();
-                        ((HttpWebRequest)WebRequest.Create(xmlNode.InnerText)).GetResponse().Close();
-                        time.Stop();
-
-                        listUrlsSitemap.Add((xmlNode.InnerText, time.Elapsed.TotalMilliseconds));
-                        listUrls.Add(xmlNode.InnerText);
-                    }
-                    catch (WebException)
-                    {
-                        listUrlsSitemap.Add((xmlNode.InnerText + " --- not work", -1));
-                        listUrls.Add(xmlNode.InnerText);
-                    }
-                    finally
-                    {
-                        time.Reset();
-                    }
+                    listUrlsSitemap.Add(xmlNode.InnerText);
                 }
             }
 
