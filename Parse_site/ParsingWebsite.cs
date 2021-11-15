@@ -37,7 +37,7 @@ namespace Parse_site
             listUrls = new List<(string url, double response)>(listUrlsSitemap?.Count ?? 0 + listUrlsHtml?.Count ?? 0);
 
             ResultsProcessing();
-            G();
+            ConcatLists();
             ShowResults();
         }
 
@@ -62,7 +62,7 @@ namespace Parse_site
             }
         }
 
-        private void G()
+        private void ConcatLists()
         {
             System.Diagnostics.Stopwatch time = new System.Diagnostics.Stopwatch();
 
