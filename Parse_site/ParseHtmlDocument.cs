@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.IO;
@@ -17,7 +16,7 @@ namespace Parse_site
             _uri = uri;
         }
 
-        public async Task<List<(string, double)>> ParseAsync()
+        public async Task<List<string>> ParseAsync()
         {
             string htmlDocument;
 
@@ -34,55 +33,46 @@ namespace Parse_site
             Regex reg = new Regex("<a href=\"(.*?)\"", RegexOptions.Singleline);
             MatchCollection matchCollectionUrls = reg.Matches(htmlDocument);
 
-            var listUrlsHtml = new List<(string url, double response)>(matchCollectionUrls.Count);
-            var listUrls = new List<string>(matchCollectionUrls.Count);
+            if (matchCollectionUrls.Count == 0)
+                return null;
 
-            Stopwatch time = new Stopwatch();
+            var listUrlsHtml = new List<string>(matchCollectionUrls.Count);
 
             foreach (Match matchUrl in matchCollectionUrls)
             {
                 string url;
-                if (!matchUrl.Groups[1].Value.Contains("https://") && !matchUrl.Groups[1].Value.Contains("http://"))
+
+                if (!matchUrl.Groups[1].Value.Contains("mailto:") && !matchUrl.Groups[1].Value.Contains("skype:"))
                 {
-                    try
+                    if (matchUrl.Groups[1].Value == "/" || matchUrl.Groups[1].Value == "#")
                     {
-                        ((HttpWebRequest)WebRequest.Create(Uri.UriSchemeHttps + ":" + matchUrl.Groups[1].Value)).GetResponse().Close();
-                        url = Uri.UriSchemeHttps + ":" + matchUrl.Groups[1].Value;
+                        url = Uri.UriSchemeHttps + "://" + _uri.Host;
                     }
-                    catch (Exception)
+                    else if (!matchUrl.Groups[1].Value.Contains("https://") && !matchUrl.Groups[1].Value.Contains("http://"))
                     {
-                        if (matchUrl.Groups[1].Value[0] == '/')
+                        try
                         {
-                            url = Uri.UriSchemeHttps + "://" + _uri.Host + matchUrl.Groups[1].Value;
+                            ((HttpWebRequest)WebRequest.Create(Uri.UriSchemeHttps + ":" + matchUrl.Groups[1].Value)).GetResponse().Close();
+                            url = Uri.UriSchemeHttps + ":" + matchUrl.Groups[1].Value;
                         }
-                        else
-                            url = Uri.UriSchemeHttps + "://" + _uri.Host + "/" + matchUrl.Groups[1].Value;
+                        catch (Exception)
+                        {
+                            if (matchUrl.Groups[1].Value[0] == '/')
+                            {
+                                url = Uri.UriSchemeHttps + "://" + _uri.Host + matchUrl.Groups[1].Value;
+                            }
+                            else
+                                url = Uri.UriSchemeHttps + "://" + _uri.Host + "/" + matchUrl.Groups[1].Value;
+                        }
                     }
-                }
-                else
-                {
-                    url = matchUrl.Groups[1].Value;
-                }
+                    else
+                    {
+                        url = matchUrl.Groups[1].Value;
+                    }
 
-                if (!listUrls.Contains(url))
-                {
-                    try
+                    if (!listUrlsHtml.Contains(url))
                     {
-                        time.Start();
-                        ((HttpWebRequest)WebRequest.Create(url)).GetResponse().Close();
-                        time.Stop();
-
-                        listUrlsHtml.Add((url, time.Elapsed.TotalMilliseconds));
-                        listUrls.Add(url);
-                    }
-                    catch (WebException)
-                    {
-                        listUrls.Add(url);
-                        listUrlsHtml.Add((url + " --- not work", -1));
-                    }
-                    finally
-                    {
-                        time.Reset();
+                        listUrlsHtml.Add(url);
                     }
                 }
             }
