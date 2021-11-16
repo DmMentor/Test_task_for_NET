@@ -18,17 +18,7 @@ namespace Parse_site
 
         public async Task<List<string>> ParseAsync()
         {
-            string htmlDocument;
-
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(_uri);
-
-            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
-            {
-                using (StreamReader streamReader = new StreamReader(response.GetResponseStream()))
-                {
-                    htmlDocument = await streamReader.ReadToEndAsync();
-                }
-            }
+            string htmlDocument = await DownloadFile(_uri.AbsoluteUri);
 
             Regex reg = new Regex("<a href=\"(.*?)\"", RegexOptions.Singleline);
             Regex reg1 = new Regex("<a class=\".*?\" href=\"(.*?)\"", RegexOptions.Singleline);
@@ -50,6 +40,16 @@ namespace Parse_site
                     {
                         continue;
                     }
+                    else if (url.Length == 1 || url.Length == 0)
+                    {
+                        url = _uri.Scheme + "://" + _uri.Host;
+                        inAddlist = true;
+                    }
+                    else if (url.IndexOf('#', 0, 2) != -1 || url.IndexOf('?', 0, 2) != -1 || url.Contains(_uri.Scheme + "://" + _uri.Host + "/?"))
+                    {
+                        url = _uri.Scheme + "://" + _uri.Host;
+                        inAddlist = true;
+                    }
                     else if (url.Contains("http://") || url.Contains("https://"))
                     {
                         if (!(_uri.Host == new Uri(url).Host))
@@ -59,26 +59,16 @@ namespace Parse_site
 
                         inAddlist = true;
                     }
-                    else if (url.Length == 1)
-                    {
-                        url = Uri.UriSchemeHttps + "://" + _uri.Host;
-                        inAddlist = true;
-                    }
-                    else if (url.IndexOf('#', 0, 2) != -1 || url.IndexOf('#', 0, 2) != -1)
-                    {
-                        url = Uri.UriSchemeHttps + "://" + _uri.Host;
-                        inAddlist = true;
-                    }
                     else
                     {
                         if (url[0] == '/')
                         {
-                            url = Uri.UriSchemeHttps + "://" + _uri.Host + url;
+                            url = _uri.Scheme + "://" + _uri.Host + url;
                             inAddlist = true;
                         }
                         else
                         {
-                            url = Uri.UriSchemeHttps + "://" + _uri.Host + '/' + url;
+                            url = _uri.Scheme + "://" + _uri.Host + '/' + url;
                             inAddlist = true;
                         }
                     }
@@ -102,24 +92,24 @@ namespace Parse_site
             foreach (string url in listUrlsHtml)
             {
                 if (url != _uri.AbsoluteUri)
-                    await Par(listUrls, url);
+                    await RecursiveParse(listUrls, url);
             }
 
             return listUrls;
         }
 
-        private async Task Par(List<string> list, string _url)
+        private async Task RecursiveParse(List<string> list, string _url)
         {
             string htmlDocument;
 
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(_url);
-
-            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+            try
             {
-                using (StreamReader streamReader = new StreamReader(response.GetResponseStream()))
-                {
-                    htmlDocument = await streamReader.ReadToEndAsync();
-                }
+                htmlDocument = await DownloadFile(_url);
+            }
+            catch (WebException)
+            {
+                list.Remove(_url);
+                return;
             }
 
             Regex reg = new Regex("<a href=\"(.*?)\"", RegexOptions.Singleline);
@@ -135,39 +125,46 @@ namespace Parse_site
                 {
                     string url = matchUrl.Groups[1].Value;
 
-                    if (url.Contains("mailto:") || url.Contains("skype:"))
+                    if (url.Contains("mailto:") || url.Contains("skype:") || url.Contains("tel:"))
                     {
                         continue;
                     }
-                     else if (url.Contains("http://") || url.Contains("https://"))
+                    else if (url.Length == 1 || url.Length == 0)
                     {
-                        if (!(_uri.Host == new Uri(url).Host))
+                        url = _uri.Scheme + "://" + _uri.Host;
+                        inAddlist = true;
+                    }
+                    else if (url.IndexOf('#', 0, 2) != -1 || url.IndexOf('?', 0, 2) != -1 || url.Contains(_uri.Scheme + "://" + _uri.Host + "/?"))
+                    {
+                        url = _uri.Scheme + "://" + _uri.Host;
+                        inAddlist = true;
+                    }
+                    else if (url.Contains("http://") || url.Contains("https://"))
+                    {
+                        try
+                        {
+                            if (!(_uri.Host == new Uri(url).Host))
+                            {
+                                continue;
+                            }
+                        }
+                        catch (Exception)
                         {
                             continue;
                         }
 
                         inAddlist = true;
                     }
-                    else if (url.Length == 1)
-                    {
-                        url = Uri.UriSchemeHttps + "://" + _uri.Host;
-                        inAddlist = true;
-                    }
-                    else if (url.IndexOf('#', 0, 2) != -1 || url.IndexOf('#', 0, 2) != -1)
-                    {
-                        url = Uri.UriSchemeHttps + "://" + _uri.Host;
-                        inAddlist = true;
-                    }
                     else
                     {
                         if (url[0] == '/')
                         {
-                            url = Uri.UriSchemeHttps + "://" + _uri.Host + url;
+                            url = _uri.Scheme + "://" + _uri.Host + url;
                             inAddlist = true;
                         }
                         else
                         {
-                            url = Uri.UriSchemeHttps + "://" + _uri.Host + '/' + url;
+                            url = _uri.Scheme + "://" + _uri.Host + '/' + url;
                             inAddlist = true;
                         }
                     }
@@ -189,23 +186,26 @@ namespace Parse_site
 
             foreach (string url in listUrlsHtml)
             {
-                await Par(list, url);
+                if (url != _url)
+                    await RecursiveParse(list, url);
             }
         }
 
-        private List<string> ConcatListUrls(List<string> list1, List<string> list2)
+        public async Task<string> DownloadFile(string url)
         {
-            if (list2 != null)
-                foreach (var url in list2)
+            string htmlDocument;
+
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+
+            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+            {
+                using (StreamReader streamReader = new StreamReader(response.GetResponseStream()))
                 {
-                    if (!list1.Contains(url))
-                    {
-                        list1.Add(url);
-                    }
+                    htmlDocument = await streamReader.ReadToEndAsync();
                 }
+            }
 
-            return list1;
+            return htmlDocument;
         }
-
     }
 }

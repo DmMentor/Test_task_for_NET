@@ -18,12 +18,9 @@ namespace Parse_site
         {
             string sitemapXml;
 
-            WebClient client = new WebClient();
-            client.Encoding = System.Text.Encoding.UTF8;
-
             try
             {
-                sitemapXml = await client.DownloadStringTaskAsync(Uri.UriSchemeHttps + "://" + _uri.Host + "/sitemap.xml");
+                sitemapXml = await DownloadFile(null);
             }
             catch (WebException)
             {
@@ -49,6 +46,14 @@ namespace Parse_site
             }
 
             return listUrlsSitemap;
+        }
+
+        public async Task<string> DownloadFile(string url)
+        {
+            WebClient client = new WebClient();
+            client.Encoding = System.Text.Encoding.UTF8;
+            string sitemapXml = await client.DownloadStringTaskAsync(Uri.UriSchemeHttps + "://" + _uri.Host + "/sitemap.xml");
+            return sitemapXml;
         }
     }
 }
