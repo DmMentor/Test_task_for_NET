@@ -14,8 +14,6 @@ namespace Parse_site
         ParseHtmlDocument parserHtml;
         ParseSitemapXml parserSitemap;
 
-        int urlHtml;
-        int urlXml;
         public ParsingWebsite(string url)
         {
             parserHtml = new ParseHtmlDocument(new Uri(url));
@@ -38,12 +36,15 @@ namespace Parse_site
 
             listUrls = new List<(string url, double response)>(listUrlsSitemap?.Count ?? 0 + listUrlsHtml?.Count ?? 0);
 
-            urlHtml = listUrlsHtml?.Count ?? 0;
-            urlXml = listUrlsSitemap?.Count ?? 0;
+            int urlHtml = listUrlsHtml?.Count ?? 0;
+            int urlXml = listUrlsSitemap?.Count ?? 0;
 
             ResultsProcessing();
             ConcatLists();
             ShowResults();
+
+            Console.WriteLine("\n\nUrls(html documents) found after crawling a website: {0}", urlHtml);
+            Console.WriteLine("Urls found in sitemap: {0}", urlXml);
         }
 
         private void ResultsProcessing()
@@ -125,7 +126,7 @@ namespace Parse_site
             int i = 1;
             if (listUrlsSitemap != null)
             {
-                Console.WriteLine("Sitemap xml:");
+                Console.WriteLine("Urls FOUNDED IN SITEMAP.XML but not founded after crawling a web site:");
                 foreach (var url in listUrlsSitemap)
                 {
                     Console.WriteLine("{0})Url: {1}\n", i++, url);
@@ -137,8 +138,7 @@ namespace Parse_site
 
             if (listUrlsHtml != null)
             {
-                Console.WriteLine("Html document:");
-
+                Console.WriteLine("Urls FOUNDED BY CRAWLING THE WEBSITE but not in sitemap.xml:");
                 foreach (var url in listUrlsHtml)
                 {
                     Console.WriteLine("{0})Url: {1}\n", i++, url);
@@ -153,9 +153,6 @@ namespace Parse_site
             {
                 Console.WriteLine("{0})Url: {1}\n Time response: {2}ms\n", i++, tuple.url, tuple.response);
             }
-
-            Console.WriteLine("\n\nUrls(html documents) found after crawling a website: {0}", urlHtml);
-            Console.WriteLine("Urls found in sitemap: {0}", urlXml);
         }
     }
 }
