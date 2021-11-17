@@ -14,6 +14,8 @@ namespace Parse_site
         ParseHtmlDocument parserHtml;
         ParseSitemapXml parserSitemap;
 
+        int urlHtml;
+        int urlXml;
         public ParsingWebsite(string url)
         {
             parserHtml = new ParseHtmlDocument(new Uri(url));
@@ -35,6 +37,9 @@ namespace Parse_site
             listUrlsSitemap = await parserSitemap.ParseAsync();
 
             listUrls = new List<(string url, double response)>(listUrlsSitemap?.Count ?? 0 + listUrlsHtml?.Count ?? 0);
+
+            urlHtml = listUrlsHtml?.Count ?? 0;
+            urlXml = listUrlsSitemap?.Count ?? 0;
 
             ResultsProcessing();
             ConcatLists();
@@ -149,8 +154,8 @@ namespace Parse_site
                 Console.WriteLine("{0})Url: {1}\n Time response: {2}ms\n", i++, tuple.url, tuple.response);
             }
 
-            Console.WriteLine("\n\nUrls(html documents) found after crawling a website: {0}", listUrlsHtml?.Count ?? 0);
-            Console.WriteLine("Urls found in sitemap: {0}", listUrlsSitemap?.Count ?? 0);
+            Console.WriteLine("\n\nUrls(html documents) found after crawling a website: {0}", urlHtml);
+            Console.WriteLine("Urls found in sitemap: {0}", urlXml);
         }
     }
 }
