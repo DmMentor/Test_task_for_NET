@@ -10,19 +10,20 @@ namespace Parse_site
     class ParseHtmlDocument : IParse
     {
         private Uri _uri;
-
+        private Regex reg1;
+        private Regex reg2;
         public ParseHtmlDocument(Uri uri)
         {
             _uri = uri;
+            reg1 = new Regex("<a href=\"(.*?)\"", RegexOptions.Singleline);
+            reg2 = new Regex("<a class=\".*?\" href=\"(.*?)\"", RegexOptions.Singleline);
         }
 
         public async Task<List<string>> ParseAsync()
         {
             string htmlDocument = await DownloadFile(_uri.AbsoluteUri);
 
-            Regex reg = new Regex("<a href=\"(.*?)\"", RegexOptions.Singleline);
-            Regex reg1 = new Regex("<a class=\".*?\" href=\"(.*?)\"", RegexOptions.Singleline);
-            MatchCollection matchCollectionUrls = reg.Matches(htmlDocument);
+            MatchCollection matchCollectionUrls = reg1.Matches(htmlDocument);
 
             if (matchCollectionUrls.Count == 0)
                 return null;
@@ -59,6 +60,10 @@ namespace Parse_site
 
                         inAddlist = true;
                     }
+                    else if(url.Substring(0,2) == "//")
+                    {
+                        url = _uri.Scheme + ":" + url;
+                    }
                     else
                     {
                         if (url[0] == '/')
@@ -84,7 +89,7 @@ namespace Parse_site
                     inAddlist = false;
                 }
 
-                matchCollectionUrls = reg1.Matches(htmlDocument);
+                matchCollectionUrls = reg2.Matches(htmlDocument);
             }
 
             var listUrls = new List<string>(listUrlsHtml);
@@ -112,9 +117,7 @@ namespace Parse_site
                 return;
             }
 
-            Regex reg = new Regex("<a href=\"(.*?)\"", RegexOptions.Singleline);
-            Regex reg1 = new Regex("<a class=\".*?\" href=\"(.*?)\"", RegexOptions.Singleline);
-            MatchCollection matchCollectionUrls = reg.Matches(htmlDocument);
+            MatchCollection matchCollectionUrls = reg1.Matches(htmlDocument);
 
             var listUrlsHtml = new List<string>(matchCollectionUrls.Count);
             bool inAddlist = false;
@@ -148,12 +151,16 @@ namespace Parse_site
                                 continue;
                             }
                         }
-                        catch (Exception)
+                        catch (UriFormatException)
                         {
                             continue;
                         }
 
                         inAddlist = true;
+                    }
+                    else if(url.Substring(0,2) == "//")
+                    {
+                        url = _uri.Scheme + ":" + url;
                     }
                     else
                     {
@@ -181,7 +188,7 @@ namespace Parse_site
                     inAddlist = false;
                 }
 
-                matchCollectionUrls = reg1.Matches(htmlDocument);
+                matchCollectionUrls = reg2.Matches(htmlDocument);
             }
 
             foreach (string url in listUrlsHtml)
