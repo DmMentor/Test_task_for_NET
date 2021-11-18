@@ -11,6 +11,7 @@ namespace Parse_site
     {
         private Uri _uri;
         private Regex reg;
+
         public ParseHtmlDocument(Uri uri)
         {
             _uri = uri;

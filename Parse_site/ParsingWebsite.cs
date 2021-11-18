@@ -39,8 +39,8 @@ namespace Parse_site
             int urlHtml = listUrlsHtml?.Count ?? 0;
             int urlXml = listUrlsSitemap?.Count ?? 0;
 
-            ResultsProcessing();
             ConcatLists();
+            ResultsProcessing();
             ShowResults();
 
             Console.WriteLine("\n\nUrls(html documents) found after crawling a website: {0}", urlHtml);
@@ -72,49 +72,47 @@ namespace Parse_site
         {
             System.Diagnostics.Stopwatch time = new System.Diagnostics.Stopwatch();
 
+            List<string> list = new List<string>();
+
             if (listUrlsSitemap != null)
             {
                 foreach (var urlSitemap in listUrlsSitemap)
                 {
-                    try
+                    if (!list.Contains(urlSitemap))
                     {
-                        time.Start();
-                        ((HttpWebRequest)WebRequest.Create(urlSitemap)).GetResponse().Close();
-                        time.Stop();
-
-                        listUrls.Add((urlSitemap, time.Elapsed.TotalMilliseconds));
-                    }
-                    catch (WebException)
-                    {
-                        listUrls.Add((urlSitemap + " --- not work", -1));
-                    }
-                    finally
-                    {
-                        time.Reset();
+                        list.Add(urlSitemap);
                     }
                 }
             }
 
             if (listUrlsHtml != null)
             {
-                foreach (var urlSitemap in listUrlsHtml)
+                foreach (var urlHtml in listUrlsHtml)
                 {
-                    try
+                    if (!list.Contains(urlHtml))
                     {
-                        time.Start();
-                        ((HttpWebRequest)WebRequest.Create(urlSitemap)).GetResponse().Close();
-                        time.Stop();
+                        list.Add(urlHtml);
+                    }
+                }
+            }
 
-                        listUrls.Add((urlSitemap, time.Elapsed.TotalMilliseconds));
-                    }
-                    catch (WebException)
-                    {
-                        listUrls.Add((urlSitemap + " --- not work", -1));
-                    }
-                    finally
-                    {
-                        time.Reset();
-                    }
+            foreach (var url in list)
+            {
+                try
+                {
+                    time.Start();
+                    ((HttpWebRequest)WebRequest.Create(url)).GetResponse().Close();
+                    time.Stop();
+
+                    listUrls.Add((url, time.Elapsed.TotalMilliseconds));
+                }
+                catch (WebException)
+                {
+                    listUrls.Add((url + " --- not work", -1));
+                }
+                finally
+                {
+                    time.Reset();
                 }
             }
 
