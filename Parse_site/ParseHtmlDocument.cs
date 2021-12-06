@@ -2,37 +2,110 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.IO;
-using System.Text.RegularExpressions;
 using System.Net;
+using System.Net.Http;
 
 namespace Parse_site
 {
     class ParseHtmlDocument : IParse
     {
         private Uri _uri;
-        private Regex reg;
+
+        List<string> DownloadFile(Uri uri)
+        {
+            List<string> htmlDocument = new List<string>();
+
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
+
+            HttpClient client = new HttpClient();
+
+            HttpResponseMessage http = client.GetAsync(uri).GetAwaiter().GetResult();
+
+
+            //string s = http.Content.ReadAsStringAsync().Result;
+
+            var stream = new StreamReader(http.Content.ReadAsStreamAsync().Result);
+
+            while (true)
+            {
+                string s1 = stream.ReadLine();
+
+                if (s1 != null)
+                {
+                    htmlDocument.Add(s1);
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            //Console.WriteLine(htmlDocument);
+
+            return htmlDocument;
+        }
+
+        List<string> CustomParse(Uri uri)
+        {
+            List<string> urls = DownloadFile(uri);
+
+            List<string> res1 = new List<string>();
+
+            List<string> res2 = new List<string>();
+
+            List<string> res3 = new List<string>();
+
+
+            foreach (var item in urls)
+            {
+                if (item.Contains("<a"))
+                {
+                    res1.Add(item);
+                }
+            }
+
+            foreach (var item in res1)
+            {
+                int startIndex = item.IndexOf("href=\"");
+
+                if (startIndex > -1)
+                {
+                    startIndex += 6;
+                    res2.Add(item.Substring(startIndex));
+                }
+            }
+
+
+
+            foreach (var item in res2)
+            {
+                int length = item.IndexOf("\"");
+
+                res3.Add(item.Substring(0, length));
+            }
+
+
+            return res3;
+        }
 
         public ParseHtmlDocument(Uri uri)
         {
             _uri = uri;
-            reg = new Regex("<a(.*?) href=\"(.*?)\"", RegexOptions.Singleline);
         }
 
         public async Task<List<string>> ParseAsync()
         {
             string htmlDocument = await DownloadFile(_uri.AbsoluteUri);
 
-            MatchCollection matchCollectionUrls = reg.Matches(htmlDocument);
+            var list = CustomParse(_uri);
 
-            if (matchCollectionUrls.Count == 0)
-                return null;
-
-            var listUrlsHtml = new List<string>(matchCollectionUrls.Count);
+            var listUrlsHtml = new List<string>();
             bool inAddlist = false;
 
-            foreach (Match matchUrl in matchCollectionUrls)
+
+            foreach (var matchUrl in list)
             {
-                string url = matchUrl.Groups[2].Value;
+                string url = matchUrl;
 
                 if (url.Contains("mailto:") || url.Contains("skype:"))
                 {
@@ -97,7 +170,7 @@ namespace Parse_site
             return listUrls;
         }
 
-        private async Task RecursiveParse(List<string> list, string _url)
+        private async Task RecursiveParse(List<string> list1, string _url)
         {
             string htmlDocument;
 
@@ -107,18 +180,18 @@ namespace Parse_site
             }
             catch (WebException)
             {
-                list.Remove(_url);
+                list1.Remove(_url);
                 return;
             }
 
-            MatchCollection matchCollectionUrls = reg.Matches(htmlDocument);
+            var list = CustomParse(new Uri(_url));
 
-            var listUrlsHtml = new List<string>(matchCollectionUrls.Count);
+            var listUrlsHtml = new List<string>();
             bool inAddlist = false;
 
-            foreach (Match matchUrl in matchCollectionUrls)
+            foreach (var matchUrl in list)
             {
-                string url = matchUrl.Groups[2].Value;
+                string url = matchUrl;
 
                 if (url.Contains("mailto:") || url.Contains("skype:") || url.Contains("tel:"))
                 {
@@ -171,10 +244,10 @@ namespace Parse_site
                 if (!(url[url.Length - 1] == '/'))
                     url += '/';
 
-                if (!list.Contains(url) && inAddlist)
+                if (!list1.Contains(url) && inAddlist)
                 {
                     listUrlsHtml.Add(url);
-                    list.Add(url);
+                    list1.Add(url);
                 }
 
                 inAddlist = false;
@@ -183,7 +256,7 @@ namespace Parse_site
             foreach (string url in listUrlsHtml)
             {
                 if (url != _url)
-                    await RecursiveParse(list, url);
+                    await RecursiveParse(list1, url);
             }
         }
 
