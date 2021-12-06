@@ -64,13 +64,16 @@ namespace Parse_site
                 }
             }
 
+            string conditionalLink = "href=\"";
             foreach (var item in res1)
             {
-                int startIndex = item.IndexOf("href=\"");
+                int startIndex = item.IndexOf(conditionalLink);
 
                 if (startIndex > -1)
                 {
-                    startIndex += 6;
+                    startIndex += conditionalLink.Length;
+                    int length = item.IndexOf("\"");
+
                     res2.Add(item.Substring(startIndex));
                 }
             }
@@ -100,63 +103,15 @@ namespace Parse_site
             var list = CustomParse(_uri);
 
             var listUrlsHtml = new List<string>();
-            bool inAddlist = false;
-
 
             foreach (var matchUrl in list)
             {
-                string url = matchUrl;
+                string url = LinkFormatting(matchUrl);
 
-                if (url.Contains("mailto:") || url.Contains("skype:"))
-                {
-                    continue;
-                }
-                else if (url.Length == 1 || url.Length == 0)
-                {
-                    url = _uri.Scheme + "://" + _uri.Host;
-                    inAddlist = true;
-                }
-                else if (url.IndexOf('#', 0, 2) != -1 || url.IndexOf('?', 0, 2) != -1 || url.Contains(_uri.Scheme + "://" + _uri.Host + "/?"))
-                {
-                    url = _uri.Scheme + "://" + _uri.Host;
-                    inAddlist = true;
-                }
-                else if (url.Contains("http://") || url.Contains("https://"))
-                {
-                    if (!(_uri.Host == new Uri(url).Host))
-                    {
-                        continue;
-                    }
-
-                    inAddlist = true;
-                }
-                else if (url.Substring(0, 2) == "//")
-                {
-                    url = _uri.Scheme + ":" + url;
-                }
-                else
-                {
-                    if (url[0] == '/')
-                    {
-                        url = _uri.Scheme + "://" + _uri.Host + url;
-                        inAddlist = true;
-                    }
-                    else
-                    {
-                        url = _uri.Scheme + "://" + _uri.Host + '/' + url;
-                        inAddlist = true;
-                    }
-                }
-
-                if (!(url[url.Length - 1] == '/'))
-                    url += '/';
-
-                if (!listUrlsHtml.Contains(url) && inAddlist)
+                if (url != null && !listUrlsHtml.Contains(url))
                 {
                     listUrlsHtml.Add(url);
                 }
-
-                inAddlist = false;
             }
 
             var listUrls = new List<string>(listUrlsHtml);
@@ -187,70 +142,16 @@ namespace Parse_site
             var list = CustomParse(new Uri(_url));
 
             var listUrlsHtml = new List<string>();
-            bool inAddlist = false;
 
             foreach (var matchUrl in list)
             {
-                string url = matchUrl;
+                string url = LinkFormatting(matchUrl);
 
-                if (url.Contains("mailto:") || url.Contains("skype:") || url.Contains("tel:"))
-                {
-                    continue;
-                }
-                else if (url.Length == 1 || url.Length == 0)
-                {
-                    url = _uri.Scheme + "://" + _uri.Host;
-                    inAddlist = true;
-                }
-                else if (url.IndexOf('#', 0, 2) != -1 || url.IndexOf('?', 0, 2) != -1 || url.Contains(_uri.Scheme + "://" + _uri.Host + "/?"))
-                {
-                    url = _uri.Scheme + "://" + _uri.Host;
-                    inAddlist = true;
-                }
-                else if (url.Contains("http://") || url.Contains("https://"))
-                {
-                    try
-                    {
-                        if (!(_uri.Host == new Uri(url).Host))
-                        {
-                            continue;
-                        }
-                    }
-                    catch (UriFormatException)
-                    {
-                        continue;
-                    }
-
-                    inAddlist = true;
-                }
-                else if (url.Substring(0, 2) == "//")
-                {
-                    url = _uri.Scheme + ":" + url;
-                }
-                else
-                {
-                    if (url[0] == '/')
-                    {
-                        url = _uri.Scheme + "://" + _uri.Host + url;
-                        inAddlist = true;
-                    }
-                    else
-                    {
-                        url = _uri.Scheme + "://" + _uri.Host + '/' + url;
-                        inAddlist = true;
-                    }
-                }
-
-                if (!(url[url.Length - 1] == '/'))
-                    url += '/';
-
-                if (!list1.Contains(url) && inAddlist)
+                if (url != null && !list1.Contains(url))
                 {
                     listUrlsHtml.Add(url);
                     list1.Add(url);
                 }
-
-                inAddlist = false;
             }
 
             foreach (string url in listUrlsHtml)
@@ -258,6 +159,48 @@ namespace Parse_site
                 if (url != _url)
                     await RecursiveParse(list1, url);
             }
+        }
+
+        private string LinkFormatting(string url)
+        {
+
+            if (url.Contains("mailto:") || url.Contains("skype:"))
+            {
+                return null;
+            }
+            else if (url.Length <= 1)
+            {
+                return _uri.Scheme + "://" + _uri.Host + '/';
+            }
+            else if (url.IndexOfAny(new char[] { '#', '?' }, 0, 2) > 0 || url.Contains(_uri.Scheme + "://" + _uri.Host + "/?"))
+            {
+                return _uri.Scheme + "://" + _uri.Host;
+            }
+            else if (url.Contains("http"))
+            {
+                var uri = new Uri(url);
+
+                return uri.Host == _uri.Host ? url : null;
+            }
+            else
+            {
+
+                if (url.StartsWith('/'))
+                {
+                    return _uri.Scheme + "://" + _uri.Host + url;
+                }
+                else
+                {
+                    return _uri.Scheme + "://" + _uri.Host + '/' + url;
+                }
+            }
+
+            if (!url.EndsWith('/'))
+            {
+                return url + '/';
+            }
+
+            return url;
         }
 
         public async Task<string> DownloadFile(string url)
