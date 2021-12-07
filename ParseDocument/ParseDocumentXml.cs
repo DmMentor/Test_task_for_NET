@@ -2,9 +2,9 @@
 using System.Xml;
 using System;
 
-namespace Parse_site.ParseDocument
+namespace ParseDocument
 {
-    class ParseDocumentXml : IParseDocument
+    public class ParseDocumentXml : IParseDocument
     {
         public List<Uri> ParseDocument(string document)
         {

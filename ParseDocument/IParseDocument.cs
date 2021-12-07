@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Parse_site.ParseDocument
+namespace ParseDocument
 {
-    interface IParseDocument
+    public interface IParseDocument
     {
         List<Uri> ParseDocument(string document);
     }

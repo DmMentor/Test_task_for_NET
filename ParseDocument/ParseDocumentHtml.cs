@@ -2,20 +2,43 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Parse_site.ParseDocument
+namespace ParseDocument
 {
-    class ParseDocumentHtml : IParseDocument
+    public class ParseDocumentHtml : IParseDocument
     {
+        private readonly LinkConversion linkConversion;
+
+        public ParseDocumentHtml(Uri link)
+        {
+            linkConversion = new LinkConversion(link);
+        }
+
         public List<Uri> ParseDocument(string document)
         {
             string conditionalLink = "href=\"";
 
-            List<string> listLinesDocument = document.Split('\n', '\r')
+            List<Uri> listLinks = document.Split('\n', '\r')
                 .Where(d => d.Contains("<a") && d.Contains(conditionalLink))
                 .Select(d => CutLinkString(d, conditionalLink))
+                .Select(d => ConvertStringToUri(d))
                 .ToList();
 
-            return listLinesDocument;
+            return listLinks;
+        }
+
+        private Uri ConvertStringToUri(string inputLink)
+        {
+            Uri link = null;
+            try
+            {
+                link = linkConversion.Converting(inputLink);
+            }
+            catch
+            {
+                Console.WriteLine();
+            }
+
+            return link;
         }
 
         private string CutLinkString(string link, string conditionalLink)
