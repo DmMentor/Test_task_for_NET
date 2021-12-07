@@ -4,22 +4,24 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Net;
 using System.Net.Http;
+using System.Text;
+using System.Linq;
 
 namespace Parse_site
 {
     class ParseHtmlDocument : IParse
     {
-        private Uri _uri;
+        private readonly Uri baseLink;
 
-        List<string> DownloadFile(Uri uri)
+        List<string> DownloadFile(string inputLink)
         {
             List<string> htmlDocument = new List<string>();
 
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(inputLink);
 
             HttpClient client = new HttpClient();
 
-            HttpResponseMessage http = client.GetAsync(uri).GetAwaiter().GetResult();
+            HttpResponseMessage http = client.GetAsync(inputLink).GetAwaiter().GetResult();
 
 
             //string s = http.Content.ReadAsStringAsync().Result;
@@ -45,9 +47,9 @@ namespace Parse_site
             return htmlDocument;
         }
 
-        List<string> CustomParse(Uri uri)
+        List<string> CustomParse(string inputLink)
         {
-            List<string> urls = DownloadFile(uri);
+            List<string> urls = DownloadFile(inputLink);
 
             List<string> res1 = new List<string>();
 
@@ -91,16 +93,14 @@ namespace Parse_site
             return res3;
         }
 
-        public ParseHtmlDocument(Uri uri)
+        public ParseHtmlDocument(Uri link)
         {
-            _uri = uri;
+            baseLink = link;
         }
 
-        public async Task<List<string>> ParseAsync()
+        public List<string> ParseAsync()
         {
-            string htmlDocument = await DownloadFile(_uri.AbsoluteUri);
-
-            var list = CustomParse(_uri);
+            var list = CustomParse(baseLink.AbsoluteUri);
 
             var listUrlsHtml = new List<string>();
 
@@ -118,92 +118,85 @@ namespace Parse_site
 
             foreach (string url in listUrlsHtml)
             {
-                if (url != _uri.AbsoluteUri)
-                    await RecursiveParse(listUrls, url);
+                if (url != baseLink.AbsoluteUri)
+                    RecursiveParse(listUrls, url);
             }
 
             return listUrls;
         }
 
-        private async Task RecursiveParse(List<string> list1, string _url)
+        private void RecursiveParse(List<string> listOldLinks, string inputLink)
         {
-            string htmlDocument;
+            var listLinksFromHtml = CustomParse(inputLink);
 
-            try
+            var listNewLinks = new List<string>();
+
+            foreach (var link in listLinksFromHtml)
             {
-                htmlDocument = await DownloadFile(_url);
-            }
-            catch (WebException)
-            {
-                list1.Remove(_url);
-                return;
-            }
+                string formattedLink = LinkFormatting(link);
 
-            var list = CustomParse(new Uri(_url));
-
-            var listUrlsHtml = new List<string>();
-
-            foreach (var matchUrl in list)
-            {
-                string url = LinkFormatting(matchUrl);
-
-                if (url != null && !list1.Contains(url))
+                if (formattedLink != null && !listOldLinks.Contains(formattedLink))
                 {
-                    listUrlsHtml.Add(url);
-                    list1.Add(url);
+                    listNewLinks.Add(formattedLink);
+                    listOldLinks.Add(formattedLink);
                 }
             }
 
-            foreach (string url in listUrlsHtml)
+            if (listNewLinks.Count > 0)
             {
-                if (url != _url)
-                    await RecursiveParse(list1, url);
+                foreach (string newLink in listNewLinks)
+                {
+                    if (newLink != inputLink)
+                    {
+                        Console.WriteLine(newLink);
+                        RecursiveParse(listOldLinks, newLink);
+                    }
+                }
             }
         }
 
-        private string LinkFormatting(string url)
+        private string LinkFormatting(string inputLink)
         {
+            string formattedLink = string.Empty;
+            string baseStartLink = baseLink.Scheme + "://" + baseLink.Host;
 
-            if (url.Contains("mailto:") || url.Contains("skype:"))
+            if (inputLink.Length <= 1)
             {
-                return null;
+                formattedLink = baseLink.Scheme + "://" + baseLink.Host + '/';
             }
-            else if (url.Length <= 1)
+            else if (inputLink.Contains("/?") || inputLink.Contains("#"))
             {
-                return _uri.Scheme + "://" + _uri.Host + '/';
+                formattedLink = baseStartLink;
             }
-            else if (url.IndexOfAny(new char[] { '#', '?' }, 0, 2) > 0 || url.Contains(_uri.Scheme + "://" + _uri.Host + "/?"))
+            else if (inputLink.Contains("http"))
             {
-                return _uri.Scheme + "://" + _uri.Host;
-            }
-            else if (url.Contains("http"))
-            {
-                var uri = new Uri(url);
+                var uri = new Uri(inputLink);
 
-                return uri.Host == _uri.Host ? url : null;
-            }
-            else
-            {
-
-                if (url.StartsWith('/'))
+                if (uri.Host == baseLink.Host)
                 {
-                    return _uri.Scheme + "://" + _uri.Host + url;
+                    formattedLink = inputLink;
                 }
                 else
                 {
-                    return _uri.Scheme + "://" + _uri.Host + '/' + url;
+                    return null;
                 }
             }
-
-            if (!url.EndsWith('/'))
+            else
             {
-                return url + '/';
+                if (inputLink.Where(s => s == ':').Count() > 0)
+                {
+                    return null;
+                }
+
+                string s = inputLink.StartsWith('/') ? inputLink : '/' + inputLink;
+
+                formattedLink = baseStartLink + s;
             }
 
-            return url;
+            return formattedLink.EndsWith('/') ? formattedLink : formattedLink + '/';
         }
 
-        public async Task<string> DownloadFile(string url)
+        public async Task<string> DownloadFileAsync(string url)
         {
             string htmlDocument;
 
