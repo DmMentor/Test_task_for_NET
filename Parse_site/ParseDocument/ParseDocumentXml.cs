@@ -1,29 +1,36 @@
 ﻿using System.Collections.Generic;
 using System.Xml;
-using Parse_site.Download;
+using System;
 
 namespace Parse_site.ParseDocument
 {
     class ParseDocumentXml : IParseDocument
     {
-        public List<string> ParseDocument<T>(string inputLink, IDownloadDocument<T> download) where T : class
+        public List<Uri> ParseDocument(string document)
         {
-            XmlNodeList xmlNodeList = ((DownloadDocumentXml)download).DownloadDocument(inputLink);
+            var xmlDocument = new XmlDocument();
+            xmlDocument.LoadXml(document);
 
-            if (xmlNodeList == null)
+            string tagForClipping = "loc";
+
+            var xmlListLinks = xmlDocument.GetElementsByTagName(tagForClipping);
+
+            if (xmlListLinks == null)
                 return null;
 
-            var listUrlsSitemap = new List<string>(xmlNodeList.Count);
+            var listLinksSitemap = new List<Uri>(xmlListLinks.Count);
 
-            foreach (XmlNode xmlNode in xmlNodeList)
+            foreach (XmlNode xmlLink in xmlListLinks)
             {
-                if (!listUrlsSitemap.Contains(xmlNode.InnerText))
+                var link = new Uri(xmlLink.InnerText);
+
+                if (!listLinksSitemap.Contains(link))
                 {
-                    listUrlsSitemap.Add(xmlNode.InnerText);
+                    listLinksSitemap.Add(link);
                 }
             }
 
-            return listUrlsSitemap;
+            return listLinksSitemap;
         }
     }
 }

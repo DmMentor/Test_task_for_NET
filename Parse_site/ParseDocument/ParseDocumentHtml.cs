@@ -1,36 +1,32 @@
-﻿using System.Collections.Generic;
-using Parse_site.Download;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Parse_site.ParseDocument
 {
     class ParseDocumentHtml : IParseDocument
     {
-        public List<string> ParseDocument<T>(string inputLink, IDownloadDocument<T> download) where T : class
+        public List<Uri> ParseDocument(string document)
         {
-            List<string> listLinesDocument = ((DownloadDocumentHtml)download).DownloadDocument(inputLink);
-
-            List<string> res3 = new List<string>();
-
             string conditionalLink = "href=\"";
 
-            foreach (var lineInDocument in listLinesDocument)
-            {
-                if (lineInDocument.Contains("<a"))
-                {
-                    int startIndex = lineInDocument.IndexOf(conditionalLink);
+            List<string> listLinesDocument = document.Split('\n', '\r')
+                .Where(d => d.Contains("<a") && d.Contains(conditionalLink))
+                .Select(d => CutLinkString(d, conditionalLink))
+                .ToList();
 
-                    if (startIndex > -1)
-                    {
-                        string linkWithCroppedStart = lineInDocument.Substring(startIndex + conditionalLink.Length);
-                        int lengthMainLink = linkWithCroppedStart.IndexOf("\"");
-                        string linkResult = linkWithCroppedStart.Substring(0, lengthMainLink);
+            return listLinesDocument;
+        }
 
-                        res3.Add(linkResult);
-                    }
-                }
-            }
+        private string CutLinkString(string link, string conditionalLink)
+        {
+            int startIndex = link.IndexOf(conditionalLink);
 
-            return res3;
+            string linkWithCroppedStart = link.Substring(startIndex + conditionalLink.Length);
+            int lengthMainLink = linkWithCroppedStart.IndexOf("\"");
+            string linkResult = linkWithCroppedStart.Substring(0, lengthMainLink);
+
+            return linkResult;
         }
     }
 }
