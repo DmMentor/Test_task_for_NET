@@ -1,25 +1,27 @@
 ﻿using System;
-using System.Threading.Tasks;
 
 namespace Parse_site
 {
     class Program
     {
-        static async Task Main(string[] args)
+        static void Main(string[] args)
         {
+            CrawlerBuild crawlerBuild = new CrawlerBuild();
+
             try
             {
                 Console.Write("Input url website: ");
                 string url = Console.ReadLine();
-                
-                ParsingWebsite parse = new ParsingWebsite(url);
+                //string url = "https://ukad-group.com";
+
+                Crawler crawler = crawlerBuild.Build(url);
 
                 Console.WriteLine("Starting parsing website....\n\n\n");
-                await parse.StartAsync();
+                crawler.Start();
             }
-            catch (FormatException fex)
+            catch (FormatException fEx)
             {
-                Console.WriteLine(fex.Message);
+                Console.WriteLine(fEx.Message);
             }
             catch (Exception ex)
             {
