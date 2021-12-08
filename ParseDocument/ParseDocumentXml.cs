@@ -16,7 +16,9 @@ namespace ParseDocument
             var xmlListLinks = xmlDocument.GetElementsByTagName(tagForClipping);
 
             if (xmlListLinks == null)
+            {
                 return null;
+            }
 
             var listLinksSitemap = new List<Uri>(xmlListLinks.Count);
 

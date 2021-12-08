@@ -13,10 +13,9 @@ namespace ParseDocument
 
         public Uri Converting(string inputLink)
         {
-            string formattedLink = string.Empty;
             string baseStartLink = _baseLink.Scheme + "://" + _baseLink.Host;
             
-            Uri link;
+            Uri link = null;
 
             if (inputLink.Length <= 1 || inputLink.Contains("/?") || inputLink.Contains("#"))
             {

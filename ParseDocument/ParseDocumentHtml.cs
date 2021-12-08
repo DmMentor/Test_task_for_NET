@@ -28,15 +28,7 @@ namespace ParseDocument
 
         private Uri ConvertStringToUri(string inputLink)
         {
-            Uri link = null;
-            try
-            {
-                link = linkConversion.Converting(inputLink);
-            }
-            catch
-            {
-                Console.WriteLine();
-            }
+            Uri link = linkConversion.Converting(inputLink);
 
             return link;
         }
