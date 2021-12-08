@@ -20,39 +20,30 @@ namespace Parse_site
         {
             var listLinksHtml = new List<Uri>();
 
-            RecursiveParse(listLinksHtml, _baseLink);
+            RecursiveWebsiteParse(listLinksHtml, _baseLink);
 
             return listLinksHtml;
         }
 
-        private void RecursiveParse(List<Uri> listOldLinks, Uri startLink)
+        private void RecursiveWebsiteParse(List<Uri> listLinksHtml, Uri startLink)
         {
-            string document;
-            List<Uri> listLinksFromHtml = null;
+            string documentHtml = _downloadDocument.Download(startLink);
 
-            try
-            {
-                document = _downloadDocument.Download(startLink) ?? throw new Exception($"Document html empty for url: {startLink}");
-                listLinksFromHtml = _parseDocument.ParseDocument(document);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-
-            if (listLinksFromHtml == null)
+            if (documentHtml == null)
             {
                 return;
             }
+
+            List<Uri> listLinksFromHtml = _parseDocument.ParseDocument(documentHtml);
 
             var listNewLinks = new List<Uri>();
 
             foreach (var link in listLinksFromHtml)
             {
-                if (link != null && !listOldLinks.Contains(link))
+                if (link != null && !listLinksHtml.Contains(link))
                 {
                     listNewLinks.Add(link);
-                    listOldLinks.Add(link);
+                    listLinksHtml.Add(link);
                 }
             }
 
@@ -60,8 +51,7 @@ namespace Parse_site
             {
                 if (newLink != startLink)
                 {
-                    Console.WriteLine(newLink);
-                    RecursiveParse(listOldLinks, newLink);
+                    RecursiveWebsiteParse(listLinksHtml, newLink);
                 }
             }
         }
