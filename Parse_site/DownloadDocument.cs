@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Net;
-using System.Text;
+using System.Net.Http;
+using System.Threading;
 
 namespace Parse_site
 {
@@ -8,19 +8,18 @@ namespace Parse_site
     {
         public string Download(Uri inputLink)
         {
-            var webClient = new WebClient();
-            webClient.Encoding = Encoding.UTF8;
+            string document = string.Empty;
 
-            string document;
-            
-            try
+            Thread.Sleep(100);
+
+            HttpClient client = new HttpClient();
+
+            using (HttpResponseMessage response = client.GetAsync(inputLink).Result)
             {
-                document = webClient.DownloadString(inputLink);
-            }
-            catch (WebException webEx)
-            {
-                Console.WriteLine(webEx.Message);
-                return null;
+                using (HttpContent content = response.Content)
+                {
+                    document = content.ReadAsStringAsync().Result;
+                }
             }
 
             return document;
