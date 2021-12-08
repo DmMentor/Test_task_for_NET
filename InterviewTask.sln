@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31729.503
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Parse_site", "Parse_site\Parse_site.csproj", "{9848B988-D38E-46F5-B07F-26BB0B6A62CD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InterviewTask.ConsoleApp", "Parse_site\InterviewTask.ConsoleApp.csproj", "{9848B988-D38E-46F5-B07F-26BB0B6A62CD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParseDocument", "ParseDocument\ParseDocument.csproj", "{C9AAE682-F7FD-4E80-84C0-8351D161370A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InterviewTask.Logic", "ParseDocument\InterviewTask.Logic.csproj", "{C9AAE682-F7FD-4E80-84C0-8351D161370A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
