@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Net;
 using System.Linq;
-using ParseDocument;
 
 namespace Parse_site
 {
@@ -11,33 +8,25 @@ namespace Parse_site
     {
         private readonly ParseHtml _parserHtml;
         private readonly ParseSitemap _parserSitemap;
+        private readonly LinkRequest _linkRequest;
 
-        public Crawler(string link)
+        public Crawler(ParseHtml parseHtml, ParseSitemap parseSitemap, LinkRequest linkRequest)
         {
-            var linkToParse = new Uri(link);
-
-            _parserHtml = new ParseHtml(linkToParse, new ParseDocumentHtml(linkToParse));
-            _parserSitemap = new ParseSitemap(linkToParse, new ParseDocumentXml());
+            _parserHtml = parseHtml;
+            _parserSitemap = parseSitemap;
+            _linkRequest = linkRequest;
         }
 
-        public void StartAsync()
+        public void Start()
         {
             List<Uri> listLinksSitemap;
             List<Uri> listLinksHtml;
 
-            try
-            {
-                listLinksHtml = _parserHtml.StartParse();
-            }
-            catch (WebException)
-            {
-                Console.WriteLine("Unable to retrieve html document");
-                return;
-            }
+            listLinksHtml = _parserHtml.StartParse();
 
             listLinksSitemap = _parserSitemap.StartParse();
 
-            var listAllLinks = ConcatLists(listLinksHtml, listLinksSitemap);
+            var listAllLinks = ListCombiningLinksAndResponses(listLinksHtml, listLinksSitemap);
 
             int countLinksHtml = listLinksHtml?.Count ?? 0;
             int countLinksXml = listLinksSitemap?.Count ?? 0;
@@ -48,76 +37,68 @@ namespace Parse_site
             Console.WriteLine("Urls found in sitemap: {0}", countLinksXml);
         }
 
-        private List<Info> ConcatLists(List<Uri> listLinksHtml, List<Uri> listLinksSitemap)
+        private List<Info> ListCombiningLinksAndResponses(List<Uri> listLinksHtml, List<Uri> listLinksSitemap)
         {
-            var time = new Stopwatch();
-
             var combinedLists = new List<Uri>(listLinksHtml);
-            combinedLists.AddRange(listLinksSitemap);
+
+            if (listLinksSitemap != null)
+            {
+                combinedLists.AddRange(listLinksSitemap);
+            }
 
             var listAllLinks = new List<Info>();
 
             foreach (var link in combinedLists.Distinct())
             {
-                Info info;
-                try
-                {
-                    time.Start();
-                    ((HttpWebRequest)WebRequest.Create(link)).GetResponse().Close();
-                    time.Stop();
+                int response = _linkRequest.SendRequest(link);
 
-                    info = new Info(link, time.Elapsed.Milliseconds);
+                Info info = new Info(link, response);
 
-                    listAllLinks.Add(info);
-                }
-                catch (WebException)
-                {
-                    listAllLinks.Add(null);
-                }
-                finally
-                {
-                    time.Reset();
-                }
+                listAllLinks.Add(info);
             }
 
             return listAllLinks;
         }
 
-        private void DisplayResults(List<Info> listUrls, List<Uri> listLinksHtml, List<Uri> listLinksSitemap)
+
+        private void DisplayList(IEnumerable<Uri> list)
         {
-            int i = 1;
-            var intersectLinks = listLinksHtml?.Intersect(listLinksSitemap);
+            int count = 1;
+
+            foreach (var link in list)
+            {
+                Console.WriteLine("{0})Url: {1}\n", count++, link);
+            }
+
+            Console.WriteLine("\n\n\n");
+        }
+
+        private void DisplayResults(List<Info> listAllLinks, List<Uri> listLinksHtml, List<Uri> listLinksSitemap)
+        {
+            int count = 1;
+            var intersectLinks = listLinksHtml.Intersect(listLinksSitemap);
 
             if (listLinksSitemap != null)
             {
                 Console.WriteLine("Urls FOUNDED IN SITEMAP.XML but not founded after crawling a web site:");
-                foreach (var url in listLinksSitemap.Except(intersectLinks))
-                {
-                    Console.WriteLine("{0})Url: {1}\n", i++, url);
-                }
-
-                i = 1;
-                Console.WriteLine("\n\n\n");
+                DisplayList(listLinksSitemap.Except(intersectLinks));
             }
 
             if (listLinksHtml != null)
             {
                 Console.WriteLine("Urls FOUNDED BY CRAWLING THE WEBSITE but not in sitemap.xml:");
-                foreach (var url in listLinksHtml.Except(intersectLinks))
-                {
-                    Console.WriteLine("{0})Url: {1}\n", i++, url);
-                }
-
-                i = 1;
-                Console.WriteLine("\n\n\n");
+                DisplayList(listLinksHtml.Except(intersectLinks));
             }
 
-            listUrls.Sort();
+            listAllLinks.Sort();
 
             Console.WriteLine("Timing website(ms):");
-            foreach (var item in listUrls)
+            foreach (var info in listAllLinks)
             {
-                Console.WriteLine("{0})Url: {1}\n Time response: {2}ms\n", i++, item?._uri.AbsoluteUri ?? "error", item._response);
+                if (info != null)
+                {
+                    Console.WriteLine("{0})Url: {1}\n Time response: {2}ms\n", count++, info.uri.AbsoluteUri, info.response);
+                }
             }
         }
     }
