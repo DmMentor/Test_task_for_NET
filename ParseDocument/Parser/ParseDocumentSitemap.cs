@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Xml;
-using System;
 
-namespace ParseDocument
+namespace InterviewTask.Logic.Parser
 {
-    public class ParseDocumentXml : IParseDocument
+    public class ParseDocumentSitemap
     {
-        public List<Uri> ParseDocument(string document)
+        public IEnumerable<Uri> ParseDocument(string document)
         {
             var xmlDocument = new XmlDocument();
             xmlDocument.LoadXml(document);
@@ -20,7 +20,7 @@ namespace ParseDocument
                 return null;
             }
 
-            var listLinksSitemap = new List<Uri>(xmlListLinks.Count);
+            ICollection<Uri> listLinksSitemap = new List<Uri>(xmlListLinks.Count);
 
             foreach (XmlNode xmlLink in xmlListLinks)
             {
