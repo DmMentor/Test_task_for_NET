@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Net.Http;
-using System.Threading;
 
-namespace Parse_site
+namespace InterviewTask.Logic.Parser
 {
-    class DownloadDocument
+    public class DownloadDocument
     {
-        public string Download(Uri inputLink)
-        {
-            string document = string.Empty;
 
-            Thread.Sleep(100);
+        public string Download(Uri inputLink, int timeout = 10000)
+        {
+            string document;
 
             HttpClient client = new HttpClient();
+
+            client.Timeout = TimeSpan.FromMilliseconds(timeout);
 
             using (HttpResponseMessage response = client.GetAsync(inputLink).Result)
             {
@@ -22,7 +22,7 @@ namespace Parse_site
                 }
             }
 
-            return document;
+            return document ?? "";
         }
     }
 }
