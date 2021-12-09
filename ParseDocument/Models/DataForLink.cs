@@ -2,7 +2,7 @@
 
 namespace InterviewTask.Logic.Models
 {
-    public class Info
+    public class DataForLink
     {
         public Uri Link { get; set; }
         public int ResponseTime { get; set; }
