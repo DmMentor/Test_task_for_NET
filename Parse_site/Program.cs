@@ -1,30 +1,12 @@
-﻿using System;
-using System.Threading.Tasks;
-
-namespace Parse_site
+﻿namespace InterviewTask.ConsoleApp
 {
     class Program
     {
-        static async Task Main(string[] args)
+        static void Main(string[] args)
         {
-            try
-            {
-                Console.Write("Input url website: ");
-                string url = Console.ReadLine();
-                
-                ParsingWebsite parse = new ParsingWebsite(url);
-
-                Console.WriteLine("Starting parsing website....\n\n\n");
-                await parse.StartAsync();
-            }
-            catch (FormatException fex)
-            {
-                Console.WriteLine(fex.Message);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
+            LinksDisplay linksDisplay = new LinksDisplay();
+            ConsoleApp consoleApp = new ConsoleApp(linksDisplay);
+            consoleApp.Run();
         }
     }
 }
