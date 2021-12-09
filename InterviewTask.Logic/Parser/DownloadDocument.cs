@@ -1,28 +1,33 @@
 ﻿using System;
+using System.Net;
 using System.Net.Http;
 
 namespace InterviewTask.Logic.Parser
 {
     public class DownloadDocument
     {
-
-        public string Download(Uri inputLink, int timeout = 10000)
+        public virtual string Download(Uri inputLink, int timeout = 10000)
         {
-            string document;
+            if (!inputLink.IsAbsoluteUri)
+            {
+                throw new ArgumentException("Link must absolute");
+            }
 
             HttpClient client = new HttpClient();
 
             client.Timeout = TimeSpan.FromMilliseconds(timeout);
 
-            using (HttpResponseMessage response = client.GetAsync(inputLink).Result)
+            try
             {
-                using (HttpContent content = response.Content)
-                {
-                    document = content.ReadAsStringAsync().Result;
-                }
-            }
+                using HttpResponseMessage response = client.GetAsync(inputLink).Result;
+                using HttpContent content = response.Content;
 
-            return document ?? "";
+                return content.ReadAsStringAsync().Result;
+            }
+            catch (WebException)
+            {
+                return string.Empty;
+            }
         }
     }
 }
