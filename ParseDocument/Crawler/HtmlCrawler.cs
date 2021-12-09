@@ -29,7 +29,7 @@ namespace InterviewTask.Logic.Crawler
 
                 string documentHtml = _downloadDocument.Download(linkToParse);
 
-                if (documentHtml.Length > 0)
+                if (documentHtml.Length < 1)
                 {
                     continue;
                 }

@@ -1,32 +1,12 @@
-﻿using System;
-
-namespace Parse_site
+﻿namespace InterviewTask.ConsoleApp
 {
     class Program
     {
         static void Main(string[] args)
         {
-            CrawlerBuild crawlerBuild = new CrawlerBuild();
-
-            try
-            {
-                Console.Write("Input url website: ");
-                string url = Console.ReadLine();
-                //string url = "https://ukad-group.com";
-
-                Crawler crawler = crawlerBuild.Build(url);
-
-                Console.WriteLine("Starting parsing website....\n\n\n");
-                crawler.Start();
-            }
-            catch (FormatException fEx)
-            {
-                Console.WriteLine(fEx.Message);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
+            LinksDisplay linksDisplay = new LinksDisplay();
+            ConsoleApp consoleApp = new ConsoleApp(linksDisplay);
+            consoleApp.Run();
         }
     }
 }

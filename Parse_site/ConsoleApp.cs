@@ -1,4 +1,5 @@
 ﻿using InterviewTask.Logic.Crawler;
+using InterviewTask.Logic.Services;
 using System;
 
 namespace InterviewTask.ConsoleApp
@@ -19,8 +20,8 @@ namespace InterviewTask.ConsoleApp
             try
             {
                 Console.Write("Input url website: ");
-                // string url = Console.ReadLine();
-                string link = "https://www.ukad-group.com";
+                string link = Console.ReadLine();
+                //string link = "https://www.ukad-group.com";
 
                 if (!Uri.TryCreate(link, UriKind.Absolute, out Uri linkUri))
                 {
