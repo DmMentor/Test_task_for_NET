@@ -9,11 +9,13 @@ namespace InterviewTask.Logic.Crawler
     {
         private readonly ParseDocumentHtml _parseDocument;
         private readonly DownloadDocument _downloadDocument;
+        private readonly ConvertLink _convertLink;
 
-        public HtmlCrawler(ParseDocumentHtml parseDocument, DownloadDocument downloadDocument)
+        public HtmlCrawler(ParseDocumentHtml parseDocument, DownloadDocument downloadDocument, ConvertLink convertLink)
         {
             _parseDocument = parseDocument;
             _downloadDocument = downloadDocument;
+            _convertLink = convertLink;
         }
 
         public IEnumerable<Uri> StartParse(Uri baseLink)
@@ -29,14 +31,21 @@ namespace InterviewTask.Logic.Crawler
 
                 string documentHtml = _downloadDocument.Download(linkToParse);
 
-                if (documentHtml.Length < 1)
+                if (string.IsNullOrEmpty(documentHtml))
                 {
                     continue;
                 }
 
-                var listLinksFromHtml = _parseDocument.ParseDocument(documentHtml, baseLink).Except(listLinksHtml).Where(l => l != null);
+                var lisitStringLinks = _parseDocument.ParseDocument(documentHtml);
 
-                foreach (var link in listLinksFromHtml)
+                if(lisitStringLinks == null)
+                {
+                    continue;
+                }
+
+                var listUriLinks = lisitStringLinks.Select(l => _convertLink.ConvertStringToUri(l, baseLink)).Except(listLinksHtml).Where(l => l != null);
+
+                foreach (var link in listUriLinks)
                 {
                     listLinksHtml.Add(link);
                     parseLinksQueue.Enqueue(link);
