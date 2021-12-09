@@ -8,6 +8,11 @@ namespace InterviewTask.Logic.Parser
     {
         public IEnumerable<Uri> ParseDocument(string document)
         {
+            if (document == null)
+            {
+                return null;
+            }
+
             var xmlDocument = new XmlDocument();
             xmlDocument.LoadXml(document);
 
