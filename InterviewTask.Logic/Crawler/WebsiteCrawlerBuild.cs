@@ -10,8 +10,9 @@ namespace InterviewTask.Logic.Crawler
             var parseDocumentHtml = new ParseDocumentHtml();
             var parseDocumentXml = new ParseDocumentSitemap();
             var downloadDocument = new DownloadDocument();
+            var convertLink = new ConvertLink();
 
-            var parseHtml = new HtmlCrawler(parseDocumentHtml, downloadDocument);
+            var parseHtml = new HtmlCrawler(parseDocumentHtml, downloadDocument, convertLink);
             var parseSitemap = new SitemapCrawler(parseDocumentXml, downloadDocument);
 
             var crawler = new WebsiteCrawler(parseHtml, parseSitemap, downloadDocument);
