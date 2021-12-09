@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ParseDocument\InterviewTask.Logic.csproj" />
+    <ProjectReference Include="..\InterviewTask.Logic\InterviewTask.Logic.csproj" />
   </ItemGroup>
 
 </Project>
