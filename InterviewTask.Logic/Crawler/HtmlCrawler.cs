@@ -20,6 +20,11 @@ namespace InterviewTask.Logic.Crawler
 
         public IEnumerable<Uri> StartParse(Uri baseLink)
         {
+            if (!baseLink.IsAbsoluteUri)
+            {
+                throw new ArgumentException("Link must absolute");
+            }
+
             var listLinksHtml = new List<Uri>();
 
             var parseLinksQueue = new Queue<Uri>();
@@ -38,7 +43,7 @@ namespace InterviewTask.Logic.Crawler
 
                 var lisitStringLinks = _parseDocument.ParseDocument(documentHtml);
 
-                if(lisitStringLinks == null)
+                if (!lisitStringLinks.Any())
                 {
                     continue;
                 }

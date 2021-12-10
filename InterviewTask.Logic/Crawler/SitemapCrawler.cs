@@ -15,8 +15,13 @@ namespace InterviewTask.Logic.Crawler
             _downloadDocument = downloadDocument;
         }
 
-        public IEnumerable<Uri> StartParse(Uri baseLink)
+        public IEnumerable<Uri> Parse(Uri baseLink)
         {
+            if (!baseLink.IsAbsoluteUri)
+            {
+                throw new ArgumentException("Link must absolute");
+            }
+
             var linkBuilderSitemap = new UriBuilder(baseLink.Scheme, baseLink.Host, baseLink.Port, "/sitemap.xml");
             Uri linkToDownloadDocument = linkBuilderSitemap.Uri;
 
