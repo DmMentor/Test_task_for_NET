@@ -1,9 +1,7 @@
 ﻿using InterviewTask.Logic.Crawler;
 using InterviewTask.Logic.Models;
-using InterviewTask.Logic.Parser;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 
