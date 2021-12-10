@@ -72,6 +72,7 @@ namespace InterviewTask.Logic.Tests
             //Arrange
             var expected = new List<Uri>()
             {
+                 new Uri("https://test1.com"),
                 new Uri("https://test1.com/chill"),
                 new Uri("https://test.com/coffe")
             };
@@ -89,6 +90,7 @@ namespace InterviewTask.Logic.Tests
             //Assert
             Assert.AreEqual(expected[0], actual[0].Link);
             Assert.AreEqual(expected[1], actual[1].Link);
+            Assert.AreEqual(expected[2], actual[2].Link);
         }
 
         [Test]
@@ -97,6 +99,7 @@ namespace InterviewTask.Logic.Tests
             //Arrange
             var expected = new List<Uri>()
             {
+                new Uri("https://test1.com"),
                 new Uri("https://test1.com/chill/arg/buysell"),
                 new Uri("https://test1.com/chill")
             };
@@ -114,6 +117,7 @@ namespace InterviewTask.Logic.Tests
             //Assert
             Assert.AreEqual(expected[0], actual[0].Link);
             Assert.AreEqual(expected[1], actual[1].Link);
+            Assert.AreEqual(expected[2], actual[2].Link);
         }
 
         [Test]
@@ -128,10 +132,11 @@ namespace InterviewTask.Logic.Tests
             mockLinkRequest.Setup(l => l.LinkResponseTime(It.IsAny<Uri>(), It.IsAny<int>())).Returns(0);
 
             //Act
-            var actual = websiteCrawler.Start(baseLink).ToList();
+            var actual = websiteCrawler.Start(baseLink);
 
             //Assert
-            Assert.IsEmpty(actual);
+            Assert.IsTrue(actual.Count() == 1);
+            Assert.AreEqual(baseLink, actual.First().Link);
         }
 
         [Test]

@@ -31,7 +31,7 @@ namespace InterviewTask.Logic.Tests
             //Arrange
             IEnumerable<Uri> expectedQuery = new List<Uri>() { new Uri("https://test1.com/"), new Uri("https://test1.com/chill/arg/buysell"), new Uri("https://test1.com/chill"), new Uri("https://test1.com/trainee.work/") };
             var documentFirst = "<a href=\"https://test1.com/\" ></a> \n <a class=\"info\" href=\"https://test1.com/chill/arg/buysell\" >\n</a> \n\r <a href=\"https://test1.com/chill\" ></a> ";
-            var documentSecond = "<a href=\"/trainee.work/\" ></a> \r <a href=\"skype:gg.com@group\" class=\"offens.cs\"></a>";
+            var documentSecond = "<a href=\"/trainee.work/\" ></a> \n <a href=\"skype:gg.com@group\" class=\"offens.cs\"></a>";
             mockDownloadDocument.SetupSequence(d => d.Download(It.IsAny<Uri>(), It.IsAny<int>())).Returns(documentFirst).Returns(documentSecond);
             mockParseDocumentHtml.CallBase = true;
             mockConvertLink.CallBase = true;
@@ -53,10 +53,11 @@ namespace InterviewTask.Logic.Tests
             mockDownloadDocument.SetupSequence(d => d.Download(It.IsAny<Uri>(), It.IsAny<int>())).Returns(document);
 
             //Act
-            var actualQuery = htmlCrawler.StartParse(baseLink);
+            var actualQuery = htmlCrawler.StartParse(baseLink).ToList();
 
             //Assert
-            Assert.IsEmpty(actualQuery);
+            Assert.IsTrue(actualQuery.Count() == 1);
+            Assert.AreEqual(baseLink, actualQuery.First().AbsoluteUri);
         }
 
         [Test]
