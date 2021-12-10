@@ -19,7 +19,7 @@ namespace InterviewTask.Logic.Crawler
         {
             if (!baseLink.IsAbsoluteUri)
             {
-                throw new ArgumentException("Link must absolute");
+                throw new ArgumentException("Link must be absolute");
             }
 
             var linkBuilderSitemap = new UriBuilder(baseLink.Scheme, baseLink.Host, baseLink.Port, "/sitemap.xml");

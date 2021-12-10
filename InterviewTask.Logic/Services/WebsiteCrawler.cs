@@ -27,7 +27,7 @@ namespace InterviewTask.Logic.Services
         {
             if (!inputLink.IsAbsoluteUri)
             {
-                throw new ArgumentException("Link must absolute");
+                throw new ArgumentException("Link must be absolute");
             }
 
             var listLinksHtml = _parserHtml.StartParse(inputLink);

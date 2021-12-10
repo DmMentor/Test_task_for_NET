@@ -11,7 +11,7 @@ namespace InterviewTask.Logic.Services
         {
             if (!link.IsAbsoluteUri)
             {
-                throw new ArgumentException("Link must absolute");
+                throw new ArgumentException("Link must be absolute");
             }
 
             HttpClient client = new HttpClient();

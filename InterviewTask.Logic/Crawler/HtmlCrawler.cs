@@ -22,7 +22,7 @@ namespace InterviewTask.Logic.Crawler
         {
             if (!baseLink.IsAbsoluteUri)
             {
-                throw new ArgumentException("Link must absolute");
+                throw new ArgumentException("Link must be absolute");
             }
 
             var listLinksHtml = new List<Uri>();

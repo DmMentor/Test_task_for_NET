@@ -10,7 +10,7 @@ namespace InterviewTask.Logic.Parser
         {
             if (!inputLink.IsAbsoluteUri)
             {
-                throw new ArgumentException("Link must absolute");
+                throw new ArgumentException("Link must be absolute");
             }
 
             HttpClient client = new HttpClient();
