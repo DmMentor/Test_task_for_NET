@@ -17,52 +17,60 @@ namespace InterviewTask.Logic.Tests
         [Test]
         public void ConvertStringToUri_RelativeLink_Return()
         {
+            //Arrange
+            var expectedLink = new Uri("https://example.com/coffebreak");
             var baseLink = new Uri("https://example.com");
-
             string testLink = "/coffebreak";
+
+            //Act
             Uri actualLink = convertLink.ConvertStringToUri(testLink, baseLink);
 
-            var expectedLink = new Uri("https://example.com/coffebreak");
-
+            //Assert
             Assert.AreEqual(expectedLink, actualLink);
         }
 
         [Test]
         public void ConvertStringToUri_OtherHost_ReturnsNull()
         {
+            //Arrange
+            Uri expectedLink = null;
             var baseLink = new Uri("https://example.com");
-
             string testLink = "https://new-example.com/coffebreak";
+
+            //Act
             Uri actualLink = convertLink.ConvertStringToUri(testLink, baseLink);
 
-            Uri expectedLink = null;
-
+            //Assert
             Assert.AreEqual(expectedLink, actualLink);
         }
 
         [Test]
         public void ConvertStringToUri_NoLink_ReturnNull()
         {
+            //Arrange
+            Uri expectedLink = null;
+            string testLink = "skype:myskype234";
             var baseLink = new Uri("https://example.com");
 
-            string testLink = "skype:myskype234";
+            //Act
             Uri actualLink = convertLink.ConvertStringToUri(testLink, baseLink);
 
-            Uri expectedLink = null;
-
+            //Assert
             Assert.AreEqual(expectedLink, actualLink);
         }
 
         [Test]
         public void ConvertStringToUri_AbsoluteLink_Return()
         {
+            //Arrange
             var baseLink = new Uri("https://example.com");
-
             string testLink = "https://example.com/mytea/see";
-            Uri actualLink = convertLink.ConvertStringToUri(testLink, baseLink);
-
             var expectedLink = new Uri("https://example.com/mytea/see");
 
+            //Act
+            Uri actualLink = convertLink.ConvertStringToUri(testLink, baseLink);
+
+            //Assert
             Assert.AreEqual(expectedLink, actualLink);
         }
     }
