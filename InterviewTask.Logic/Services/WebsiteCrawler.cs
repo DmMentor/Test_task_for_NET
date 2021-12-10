@@ -13,23 +13,28 @@ namespace InterviewTask.Logic.Services
     {
         private readonly HtmlCrawler _parserHtml;
         private readonly SitemapCrawler _parserSitemap;
-        private readonly DownloadDocument _downloadDocument;
+        private readonly LinkRequest _linkRequest;
         private readonly int _timeSleep;
 
-        public WebsiteCrawler(HtmlCrawler parseHtml, SitemapCrawler parseSitemap, DownloadDocument downloadDocument, int timeSleep = 150)
+        public WebsiteCrawler(HtmlCrawler parseHtml, SitemapCrawler parseSitemap, LinkRequest linkRequest, int timeSleep = 150)
         {
             _parserHtml = parseHtml;
             _parserSitemap = parseSitemap;
-            _downloadDocument = downloadDocument;
+            _linkRequest = linkRequest;
 
             _timeSleep = timeSleep;
         }
 
         public IEnumerable<DataForLink> Start(Uri inputLink)
         {
+            if (!inputLink.IsAbsoluteUri)
+            {
+                throw new ArgumentException("Link must absolute");
+            }
+
             var listLinksHtml = _parserHtml.StartParse(inputLink);
 
-            var listLinksSitemap = _parserSitemap.StartParse(inputLink);
+            var listLinksSitemap = _parserSitemap.Parse(inputLink);
 
             var listAllLinks = ConcatLists(listLinksHtml, listLinksSitemap);
 
@@ -74,17 +79,10 @@ namespace InterviewTask.Logic.Services
 
         private void TakeTimeResponseLink(IEnumerable<DataForLink> list)
         {
-            foreach (var info in list)
+            foreach (var dataForLink in list)
             {
                 Thread.Sleep(_timeSleep);
-
-                var time = Stopwatch.StartNew();
-
-                _downloadDocument.Download(info.Link);
-
-                time.Stop();
-
-                info.ResponseTime = time.Elapsed.Milliseconds;
+                dataForLink.ResponseTime = _linkRequest.LinkResponseTime(dataForLink.Link);
             }
         }
     }
