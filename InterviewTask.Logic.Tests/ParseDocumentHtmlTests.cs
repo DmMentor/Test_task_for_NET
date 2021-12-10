@@ -49,7 +49,7 @@ namespace InterviewTask.Logic.Tests
             //Arrange
             var expectedLinks = new List<string>(2) { "/test.com/#test-one/", "https://test.com/#test-two/" };
             string document = "<a class=\"test.cs\" href=\"/test.com/#test-one/\"> </p></div></article><article class=\"blog - card blog - card--small blog-card--short\"> \n <a class=\"test.cs\" href=\"https://test.com/#test-two/\"> ";
-           
+
             //Act
             var actualLinks = parseDocumenthtml.ParseDocument(document).ToList();
 

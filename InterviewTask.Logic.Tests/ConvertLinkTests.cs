@@ -1,6 +1,6 @@
+using InterviewTask.Logic.Parser;
 using NUnit.Framework;
 using System;
-using InterviewTask.Logic.Parser;
 
 namespace InterviewTask.Logic.Tests
 {

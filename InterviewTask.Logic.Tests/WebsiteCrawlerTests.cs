@@ -1,11 +1,10 @@
 ﻿using InterviewTask.Logic.Crawler;
 using InterviewTask.Logic.Parser;
-using NUnit.Framework;
+using InterviewTask.Logic.Services;
 using Moq;
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
-using InterviewTask.Logic.Services;
-using InterviewTask.Logic.Models;
 using System.Linq;
 
 namespace InterviewTask.Logic.Tests

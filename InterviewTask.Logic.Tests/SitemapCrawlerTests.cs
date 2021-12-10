@@ -1,7 +1,7 @@
 ﻿using InterviewTask.Logic.Crawler;
 using InterviewTask.Logic.Parser;
-using NUnit.Framework;
 using Moq;
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 

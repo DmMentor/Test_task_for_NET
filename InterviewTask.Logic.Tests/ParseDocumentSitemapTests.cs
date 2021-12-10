@@ -3,7 +3,6 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Xml;
 
 namespace InterviewTask.Logic.Tests
 {
@@ -59,7 +58,7 @@ namespace InterviewTask.Logic.Tests
         public void ParseDocument_ParsingSeveralLink_ReturnList()
         {
             //Arrange
-            var expectedLinks = new List<Uri>(3) {  new Uri("https://test1.com/tea/"), new Uri("https://test2.com/coffe/"), new Uri("https://test3.com/") };
+            var expectedLinks = new List<Uri>(3) { new Uri("https://test1.com/tea/"), new Uri("https://test2.com/coffe/"), new Uri("https://test3.com/") };
             string document = "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\" xmlns:xhtml=\"https://www.w3.org/1999/xhtml/\"> <url> <loc>https://test1.com/tea/</loc> </url> <url> <loc>https://test2.com/coffe/</loc> </url> <url> <loc>https://test3.com/</loc> </url> </urlset>";
 
             //Act
