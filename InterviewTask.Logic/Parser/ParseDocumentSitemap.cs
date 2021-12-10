@@ -6,9 +6,9 @@ namespace InterviewTask.Logic.Parser
 {
     public class ParseDocumentSitemap
     {
-        public IEnumerable<Uri> ParseDocument(string document)
+        public virtual IEnumerable<Uri> ParseDocument(string document)
         {
-            if (document == null)
+            if (string.IsNullOrEmpty(document))
             {
                 return null;
             }

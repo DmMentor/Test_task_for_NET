@@ -5,7 +5,7 @@ namespace InterviewTask.Logic.Parser
 {
     public class ConvertLink
     {
-        public Uri ConvertStringToUri(string inputLink, Uri baseLink)
+        public virtual Uri ConvertStringToUri(string inputLink, Uri baseLink)
         {
             string baseStartLink = baseLink.Scheme + "://" + baseLink.Host;
 

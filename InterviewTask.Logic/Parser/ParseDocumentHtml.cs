@@ -5,7 +5,7 @@ namespace InterviewTask.Logic.Parser
 {
     public class ParseDocumentHtml
     {
-        public IEnumerable<string> ParseDocument(string document)
+        public virtual IEnumerable<string> ParseDocument(string document)
         {
             string conditionalLink = "href=\"";
 
