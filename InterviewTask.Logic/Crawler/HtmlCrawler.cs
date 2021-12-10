@@ -26,6 +26,7 @@ namespace InterviewTask.Logic.Crawler
             }
 
             var listLinksHtml = new List<Uri>();
+            listLinksHtml.Add(baseLink);
 
             var parseLinksQueue = new Queue<Uri>();
             parseLinksQueue.Enqueue(baseLink);
@@ -52,8 +53,11 @@ namespace InterviewTask.Logic.Crawler
 
                 foreach (var link in listUriLinks)
                 {
-                    listLinksHtml.Add(link);
-                    parseLinksQueue.Enqueue(link);
+                    if (!listLinksHtml.Contains(link))
+                    {
+                        listLinksHtml.Add(link);
+                        parseLinksQueue.Enqueue(link);
+                    }
                 }
             }
 
