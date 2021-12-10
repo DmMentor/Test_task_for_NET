@@ -10,6 +10,7 @@ namespace InterviewTask.Logic.Parser
             string conditionalLink = "href=\"";
 
             IEnumerable<string> listLinks = document?.Split('\n', '\r')
+                .Where(d => d.Contains("<a"))
                 .Where(d => d.Contains(conditionalLink))
                 .Select(d => CutLinkString(d, conditionalLink));
 
