@@ -23,80 +23,86 @@ namespace InterviewTask.Logic.Tests
         }
 
         [Test]
-        public void Parse_DocumentHaveLinks_ReturnsLinksInQuery()
+        public void Parse_DocumentHaveLinks_ReturnsLinks()
         {
             //Arrange
-            IEnumerable<Uri> expectedQuery = new List<Uri>() { new Uri("http://test.com"), new Uri("http://test.com/coffe") };
+            IEnumerable<Uri> expected = new List<Uri>() { new Uri("http://test.com"), new Uri("http://test.com/coffe") };
             var baseLink = new Uri("http://test.com");
-            string document = "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\" xmlns:xhtml=\"http://www.w3.org/1999/xhtml/\"> <url> <loc>http://test.com</loc> </url> <url> <loc>http://test.com/coffe</loc> </url> </urlset>";
-            mockDownloadDocument.Setup(d => d.Download(It.IsAny<Uri>(), It.IsAny<int>())).Returns(document);
+            string document = "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\" xmlns:xhtml=\"http://www.w3.org/1999/xhtml/\"> " +
+                "<url> <loc>http://test.com</loc> </url> <url> <loc>http://test.com/coffe</loc> </url> </urlset>";
+            mockDownloadDocument.Setup(d => d.Download(It.IsAny<Uri>(), It.IsAny<int>()))
+                .Returns(document);
             mockParseDocumentSitemap.CallBase = true;
 
             //Act
-            var actualQuery = sitemapCrawler.Parse(baseLink);
+            var actual = sitemapCrawler.Parse(baseLink);
 
             //Assert
-            Assert.AreEqual(expectedQuery, actualQuery);
+            Assert.AreEqual(expected, actual);
         }
 
         [Test]
-        public void Parse_DocumentDontHaveLinks_ReturnEmptyQuery()
+        public void Parse_DocumentDontHaveLinks_ReturnEmpty()
         {
             //Arrange
             var baseLink = new Uri("http://test.com");
             string document = "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\" xmlns:xhtml=\"http://www.w3.org/1999/xhtml/\"> </urlset>";
-            mockDownloadDocument.Setup(d => d.Download(It.IsAny<Uri>(), It.IsAny<int>())).Returns(document);
+            mockDownloadDocument.Setup(d => d.Download(It.IsAny<Uri>(), It.IsAny<int>()))
+                .Returns(document);
             mockParseDocumentSitemap.CallBase = true;
 
             //Act
-            var actualQuery = sitemapCrawler.Parse(baseLink);
+            var actualResult = sitemapCrawler.Parse(baseLink);
 
             //Assert
-            Assert.IsEmpty(actualQuery);
+            Assert.IsEmpty(actualResult);
         }
 
         [Test]
-        public void Parse_CallMethodDocumentOnce_ReturnsLinksInQuery()
+        public void Parse_CallMethodDocumentOnce_ReturnsLinks()
         {
             //Arrange
             var baseLink = new Uri("http://test.com");
             string document = "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\" xmlns:xhtml=\"http://www.w3.org/1999/xhtml/\"> <url> <loc>http://test.com</loc> </url> <url> <loc>http://test.com/coffe</loc> </url> </urlset>";
-            mockDownloadDocument.Setup(d => d.Download(It.IsAny<Uri>(), It.IsAny<int>())).Returns(document);
+            mockDownloadDocument.Setup(d => d.Download(It.IsAny<Uri>(), It.IsAny<int>()))
+                .Returns(document);
             mockParseDocumentSitemap.CallBase = true;
 
             //Act
-            var actualQuery = sitemapCrawler.Parse(baseLink);
+            sitemapCrawler.Parse(baseLink);
 
             //Assert
             mockDownloadDocument.Verify(d => d.Download(It.IsAny<Uri>(), It.IsAny<int>()), Times.Once());
         }
 
         [Test]
-        public void Parse_CallMethodParceDocumentOnce_ReturnsLinksInQuery()
+        public void Parse_CallMethodParceDocumentOnce_ReturnsLinks()
         {
             //Arrange
             var baseLink = new Uri("http://test.com");
-            string document = "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\" xmlns:xhtml=\"http://www.w3.org/1999/xhtml/\"> <url> <loc>http://test.com</loc> </url> <url> <loc>http://test.com/coffe</loc> </url> </urlset>";
-            mockDownloadDocument.Setup(d => d.Download(It.IsAny<Uri>(), It.IsAny<int>())).Returns(document);
+            string document = "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\" xmlns:xhtml=\"http://www.w3.org/1999/xhtml/\"> " +
+                "<url> <loc>http://test.com</loc> </url> " +
+                "<url> <loc>http://test.com/coffe</loc> </url> </urlset>";
+            mockDownloadDocument.Setup(d => d.Download(It.IsAny<Uri>(), It.IsAny<int>()))
+                .Returns(document);
             mockParseDocumentSitemap.CallBase = true;
 
             //Act
-            var actualQuery = sitemapCrawler.Parse(baseLink);
+            sitemapCrawler.Parse(baseLink);
 
             //Assert
             mockParseDocumentSitemap.Verify(p => p.ParseDocument(It.IsAny<string>()), Times.Once());
         }
 
         [Test]
-        public void Parse_UseDontAbsoluteLink_ThrowException()
+        public void Parse_LinkIsNotAbsolute_ThrowException()
         {
             //Arrange
-            string expectedString = "Link must absolute";
+            string expectedString = "Link must be absolute";
             var link = new Uri("ukad-group.com", UriKind.Relative);
-            TestDelegate actual = () => sitemapCrawler.Parse(link);
 
             //Act
-            var exception = Assert.Throws<ArgumentException>(actual);
+            var exception = Assert.Throws<ArgumentException>(() => sitemapCrawler.Parse(link));
 
             //Assert
             Assert.AreEqual(expectedString, exception.Message);

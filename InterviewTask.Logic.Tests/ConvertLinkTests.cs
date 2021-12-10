@@ -15,7 +15,7 @@ namespace InterviewTask.Logic.Tests
         }
 
         [Test]
-        public void ConvertStringToUri_RelativeLink_Return()
+        public void ConvertStringToUri_RelativeLink_ReturnAbsoluteLinks()
         {
             //Arrange
             var expectedLink = new Uri("https://example.com/coffebreak");
@@ -60,7 +60,7 @@ namespace InterviewTask.Logic.Tests
         }
 
         [Test]
-        public void ConvertStringToUri_AbsoluteLink_Return()
+        public void ConvertStringToUri_AbsoluteLink_ReturnAbsoluteLink()
         {
             //Arrange
             var baseLink = new Uri("https://example.com");

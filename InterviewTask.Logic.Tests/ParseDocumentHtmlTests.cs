@@ -20,14 +20,14 @@ namespace InterviewTask.Logic.Tests
         public void ParseDocument_ParsingSingleLink_ReturnListWithOnceLink()
         {
             //Arrange
-            string expectedLink = "https://test.com/#test-one/";
+            string[] expectedLinks = new[] { "https://test.com/#test-one/" };
             string document = "<a href=\"https://test.com/#test-one/\">";
 
             //Act
-            var actualLink = parseDocumenthtml.ParseDocument(document).ToList();
+            var actualLinks = parseDocumenthtml.ParseDocument(document);
 
             //Assert
-            Assert.AreEqual(expectedLink, actualLink[0]);
+            Assert.AreEqual(expectedLinks, actualLinks);
         }
 
         [Test]
@@ -37,10 +37,10 @@ namespace InterviewTask.Logic.Tests
             string document = "<a class=\"test.cs\">";
 
             //Act
-            var actualLink = parseDocumenthtml.ParseDocument(document).ToList();
+            var actualLinks = parseDocumenthtml.ParseDocument(document);
 
             //Assert
-            Assert.Zero(actualLink.Count);
+            Assert.IsEmpty(actualLinks);
         }
 
         [Test]
@@ -48,23 +48,25 @@ namespace InterviewTask.Logic.Tests
         {
             //Arrange
             var expectedLinks = new List<string>(2) { "/test.com/#test-one/", "https://test.com/#test-two/" };
-            string document = "<a class=\"test.cs\" href=\"/test.com/#test-one/\"> </p></div></article><article class=\"blog - card blog - card--small blog-card--short\"> \n <a class=\"test.cs\" href=\"https://test.com/#test-two/\"> ";
+            string document = "<a class=\"test.cs\" href=\"/test.com/#test-one/\"> </p><" +
+                "/div></article><article class=\"blog - card blog - card--small blog-card--short\"> \n " +
+                "<a class=\"test.cs\" href=\"https://test.com/#test-two/\"> ";
 
             //Act
-            var actualLinks = parseDocumenthtml.ParseDocument(document).ToList();
+            var actualLinks = parseDocumenthtml.ParseDocument(document);
 
             //Assert
             Assert.AreEqual(expectedLinks, actualLinks);
         }
 
         [Test]
-        public void ParseDocument_DocumentNotExist_ReturnNull()
+        public void ParseDocument_DocumentEmpty_ReturnEmpty()
         {
             //Act
-            IEnumerable<string> actualList = parseDocumenthtml.ParseDocument(null);
+            IEnumerable<string> actualList = parseDocumenthtml.ParseDocument(string.Empty);
 
             //Assert
-            Assert.IsNull(actualList);
+            Assert.IsEmpty(actualList);
         }
     }
 }

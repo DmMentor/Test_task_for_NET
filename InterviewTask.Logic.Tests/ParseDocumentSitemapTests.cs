@@ -21,24 +21,25 @@ namespace InterviewTask.Logic.Tests
         public void ParseDocument_ParsingSingleLink_ReturnListWithOnceLink()
         {
             //Arrange
-            string document = "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\" xmlns:xhtml=\"http://www.w3.org/1999/xhtml/\"> <url> <loc>http://test.com</loc> </url> </urlset>";
-            var expectedLink = new Uri("http://test.com/");
+            string document = "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\" xmlns:xhtml=\"http://www.w3.org/1999/xhtml/\"> " +
+                "<url> <loc>http://test.com</loc> </url> </urlset>";
+            Uri[] expectedLink = new[]{ new Uri("http://test.com/") };
 
             //Act
-            var actualList = parserDocumentSitemap.ParseDocument(document).ToList();
+            var actualList = parserDocumentSitemap.ParseDocument(document);
 
             //Assert
-            Assert.AreEqual(expectedLink, actualList[0]);
+            Assert.AreEqual(expectedLink, actualList);
         }
 
         [Test]
-        public void ParseDocument_DocumentNotExist_ReturnNull()
+        public void ParseDocument_DocumentEmpty_ReturnsEmpty()
         {
             //Act
-            IEnumerable<Uri> actualList = parserDocumentSitemap.ParseDocument(null);
+            IEnumerable<Uri> actual = parserDocumentSitemap.ParseDocument(string.Empty);
 
             //Assert
-            Assert.IsNull(actualList);
+            Assert.IsNull(actual);
         }
 
         [Test]
@@ -48,10 +49,10 @@ namespace InterviewTask.Logic.Tests
             string document = "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\" xmlns:xhtml=\"http://www.w3.org/1999/xhtml/\"></urlset>";
 
             //Act
-            var actualLink = parserDocumentSitemap.ParseDocument(document).ToList();
+            var actualLink = parserDocumentSitemap.ParseDocument(document);
 
             //Assert
-            Assert.Zero(actualLink.Count);
+            Assert.IsEmpty(actualLink);
         }
 
         [Test]
@@ -59,10 +60,12 @@ namespace InterviewTask.Logic.Tests
         {
             //Arrange
             var expectedLinks = new List<Uri>(3) { new Uri("https://test1.com/tea/"), new Uri("https://test2.com/coffe/"), new Uri("https://test3.com/") };
-            string document = "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\" xmlns:xhtml=\"https://www.w3.org/1999/xhtml/\"> <url> <loc>https://test1.com/tea/</loc> </url> <url> <loc>https://test2.com/coffe/</loc> </url> <url> <loc>https://test3.com/</loc> </url> </urlset>";
+            string document = "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\" xmlns:xhtml=\"https://www.w3.org/1999/xhtml/\"> " +
+                "<url> <loc>https://test1.com/tea/</loc> </url> <url> <loc>https://test2.com/coffe/</loc> </url> " +
+                "<url> <loc>https://test3.com/</loc> </url> </urlset>";
 
             //Act
-            var actualLinks = parserDocumentSitemap.ParseDocument(document).ToList();
+            var actualLinks = parserDocumentSitemap.ParseDocument(document);
 
             //Assert
             Assert.AreEqual(expectedLinks, actualLinks);

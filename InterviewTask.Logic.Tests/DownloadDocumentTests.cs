@@ -8,10 +8,10 @@ namespace InterviewTask.Logic.Tests
     class DownloadDocumentTests
     {
         [Test]
-        public void Download_UseDontAbsoluteLink_ThrowException()
+        public void Download_LinkIsNotAbsolute_ThrowException()
         {
             //Arrange
-            string expectedString = "Link must absolute";
+            string expectedString = "Link must be absolute";
             var link = new Uri("ukad-group.com", UriKind.Relative);
             var downloadDocument = new DownloadDocument();
             TestDelegate actual = () => downloadDocument.Download(link);
