@@ -2,10 +2,9 @@
 
 namespace InterviewTask.Logic.Models
 {
-    public class DataForLink
+    public class Link
     {
-        public Uri Link { get; set; }
-        public int ResponseTime { get; set; }
+        public Uri Url { get; set; }
         public bool IsLinkFromHtml { get; set; }
         public bool IsLinkFromSitemap { get; set; }
     }
