@@ -1,11 +1,16 @@
-﻿namespace InterviewTask.ConsoleApp
+﻿using InterviewTask.Logic.Services;
+
+namespace InterviewTask.ConsoleApp
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        static private void Main(string[] args)
         {
             LinksDisplay linksDisplay = new LinksDisplay();
-            ConsoleApp consoleApp = new ConsoleApp(linksDisplay);
+            LinkHandling linkHandling = new LinkHandling();
+            Converter converter = new Converter();
+            ConsoleApp consoleApp = new ConsoleApp(linksDisplay, converter, linkHandling);
+
             consoleApp.Run();
         }
     }
