@@ -144,7 +144,7 @@ namespace InterviewTask.Logic.Tests
             string expectedString = "Link must be absolute";
             var link = new Uri("ukad-group.com", UriKind.Relative);
             var downloadDocument = new LinkHandling();
-            
+
             //Act
             var actualException = Assert.Throws<ArgumentException>(() => websiteCrawler.Start(link));
 
