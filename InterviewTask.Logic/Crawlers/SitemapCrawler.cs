@@ -1,18 +1,19 @@
-﻿using InterviewTask.Logic.Parser;
+﻿using InterviewTask.Logic.Parsers;
+using InterviewTask.Logic.Services;
 using System;
 using System.Collections.Generic;
 
-namespace InterviewTask.Logic.Crawler
+namespace InterviewTask.Logic.Crawlers
 {
     public class SitemapCrawler
     {
         private readonly ParseDocumentSitemap _parseDocument;
-        private readonly DownloadDocument _downloadDocument;
+        private readonly LinkHandling _linkHandling;
 
-        public SitemapCrawler(ParseDocumentSitemap parseDocument, DownloadDocument downloadDocument)
+        public SitemapCrawler(ParseDocumentSitemap parseDocument, LinkHandling downloadDocument)
         {
             _parseDocument = parseDocument;
-            _downloadDocument = downloadDocument;
+            _linkHandling = downloadDocument;
         }
 
         public IEnumerable<Uri> Parse(Uri baseLink)
@@ -25,7 +26,7 @@ namespace InterviewTask.Logic.Crawler
             var linkBuilderSitemap = new UriBuilder(baseLink.Scheme, baseLink.Host, baseLink.Port, "/sitemap.xml");
             Uri linkToDownloadDocument = linkBuilderSitemap.Uri;
 
-            string requestedDocument = _downloadDocument.Download(linkToDownloadDocument);
+            string requestedDocument = _linkHandling.DownloadDocument(linkToDownloadDocument);
 
             IEnumerable<Uri> listLinkSitemap = _parseDocument.ParseDocument(requestedDocument);
 
