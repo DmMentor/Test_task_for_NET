@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace InterviewTask.ConsoleApp
 {
-    internal class LinksDisplay
+    public class LinksDisplay
     {
         public void DisplayHtmlLinks(IEnumerable<Link> listAllLinks)
         {
@@ -13,12 +13,9 @@ namespace InterviewTask.ConsoleApp
 
             Console.WriteLine("Urls FOUNDED IN SITEMAP.XML but not founded after crawling a web site:");
 
-            foreach (var info in listAllLinks)
+            foreach (var info in listAllLinks.Where(i => !i.IsLinkFromHtml && i.IsLinkFromSitemap))
             {
-                if (!info.IsLinkFromHtml && info.IsLinkFromSitemap)
-                {
-                    Console.WriteLine($"{count++})Url: {info.Url}");
-                }
+                Console.WriteLine($"{count++})Url: {info.Url}");
             }
         }
 
@@ -27,12 +24,9 @@ namespace InterviewTask.ConsoleApp
             int count = 1;
 
             Console.WriteLine("\nUrls FOUNDED BY CRAWLING THE WEBSITE but not in sitemap.xml:");
-            foreach (var info in listAllLinks)
+            foreach (var info in listAllLinks.Where(i => i.IsLinkFromHtml && !i.IsLinkFromSitemap))
             {
-                if (info.IsLinkFromHtml && !info.IsLinkFromSitemap)
-                {
-                    Console.WriteLine($"{count++})Url: {info.Url}");
-                }
+                Console.WriteLine($"{count++})Url: {info.Url}");
             }
         }
 
