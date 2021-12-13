@@ -13,7 +13,7 @@ namespace InterviewTask.Logic.Services
             _timeout = timeout;
         }
 
-        public HttpResponseMessage GetLinkResponse(Uri inputLink)
+        public virtual HttpResponseMessage GetLinkResponse(Uri inputLink)
         {
             if (!inputLink.IsAbsoluteUri)
             {
