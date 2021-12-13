@@ -12,25 +12,13 @@ namespace InterviewTask.ConsoleApp
     {
         private readonly LinksDisplay _linksDisplay;
         private readonly Converter _converter;
-        private readonly LinkHandling _linkHandling;
+        private readonly LinkRequest _linkRequest;
 
-        public ConsoleApp(LinksDisplay linksDisplay, Converter converter, LinkHandling linkHandling)
+        public ConsoleApp(LinksDisplay linksDisplay, Converter converter, LinkRequest linkRequest)
         {
             _linksDisplay = linksDisplay;
             _converter = converter;
-            _linkHandling = linkHandling;
-        }
-
-        private WebsiteCrawler SetupCrawler()
-        {
-            var parseDocumentHtml = new ParseDocumentHtml();
-            var parseDocumentXml = new ParseDocumentSitemap();
-            var downloadDocument = new LinkHandling();
-
-            var parseHtml = new HtmlCrawler(parseDocumentHtml, downloadDocument, _converter);
-            var parseSitemap = new SitemapCrawler(parseDocumentXml, downloadDocument);
-
-            return new WebsiteCrawler(parseHtml, parseSitemap);
+            _linkRequest = linkRequest;
         }
 
         public void Run()
@@ -52,8 +40,7 @@ namespace InterviewTask.ConsoleApp
                 _linksDisplay.DisplayHtmlLinks(listAllLinks);
                 _linksDisplay.DisplaySitemapLinks(listAllLinks);
 
-                var listAllLinksWithResponse = _converter.ToLinkWithResponse(listAllLinks);
-                GetResponseLinks(listAllLinksWithResponse);
+                var listAllLinksWithResponse = _linkRequest.GetListWithLinksResponseTime(listAllLinks);
 
                 _linksDisplay.DisplayAllLinks(listAllLinksWithResponse);
 
@@ -63,6 +50,18 @@ namespace InterviewTask.ConsoleApp
             {
                 Console.WriteLine(ex.Message);
             }
+        }
+
+        private WebsiteCrawler SetupCrawler()
+        {
+            var parseDocumentHtml = new ParseDocumentHtml();
+            var parseDocumentXml = new ParseDocumentSitemap();
+            var downloadDocument = new LinkHandling();
+
+            var parseHtml = new HtmlCrawler(parseDocumentHtml, downloadDocument, _converter);
+            var parseSitemap = new SitemapCrawler(parseDocumentXml, downloadDocument);
+
+            return new WebsiteCrawler(parseHtml, parseSitemap);
         }
 
         private Uri InputLink()
@@ -76,19 +75,8 @@ namespace InterviewTask.ConsoleApp
             }
 
             Console.WriteLine("Link is invalid");
+
             return null;
-        }
-
-        private void GetResponseLinks(IEnumerable<LinkWithResponse> inputListLinks)
-        {
-            foreach (var link in inputListLinks)
-            {
-                var timer = Stopwatch.StartNew();
-                _linkHandling.GetLinkResponse(link.Url);
-                timer.Stop();
-
-                link.ResponseTime = timer.Elapsed.Milliseconds;
-            }
         }
     }
 }
