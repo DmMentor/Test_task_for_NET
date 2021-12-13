@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace InterviewTask.Logic.Parser
+namespace InterviewTask.Logic.Parsers
 {
     public class ParseDocumentHtml
     {
@@ -14,7 +14,7 @@ namespace InterviewTask.Logic.Parser
                 .Where(d => d.Contains(conditionalLink))
                 .Select(d => CutLinkString(d, conditionalLink));
 
-            return listLinks;
+            return listLinks ?? Enumerable.Empty<string>();
         }
 
         private string CutLinkString(string link, string conditionalLink)

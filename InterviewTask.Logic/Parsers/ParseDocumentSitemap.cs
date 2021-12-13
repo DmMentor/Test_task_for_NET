@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Xml;
 
-namespace InterviewTask.Logic.Parser
+namespace InterviewTask.Logic.Parsers
 {
     public class ParseDocumentSitemap
     {
