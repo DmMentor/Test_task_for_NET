@@ -14,18 +14,18 @@ namespace InterviewTask.Logic.Services
                 throw new ArgumentException("Link must be absolute");
             }
 
-            HttpClient client = new HttpClient();
-            client.Timeout = TimeSpan.FromMilliseconds(timeout);
+            HttpClient httpClient = new HttpClient();
+            httpClient.Timeout = TimeSpan.FromMilliseconds(timeout);
 
             try
             {
-                var time = Stopwatch.StartNew();
+                var timer = Stopwatch.StartNew();
 
-                using HttpResponseMessage response = client.GetAsync(link).Result;
+                using HttpResponseMessage response = httpClient.GetAsync(link).Result;
 
-                time.Stop();
+                timer.Stop();
 
-                return time.Elapsed.Milliseconds;
+                return timer.Elapsed.Milliseconds;
             }
             catch (WebException)
             {
