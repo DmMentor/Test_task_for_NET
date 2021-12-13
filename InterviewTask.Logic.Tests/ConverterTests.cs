@@ -1,9 +1,6 @@
-using InterviewTask.Logic.Models;
 using InterviewTask.Logic.Services;
 using NUnit.Framework;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace InterviewTask.Logic.Tests
 {

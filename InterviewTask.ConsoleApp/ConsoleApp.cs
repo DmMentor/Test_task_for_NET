@@ -1,10 +1,7 @@
 ﻿using InterviewTask.Logic.Crawlers;
-using InterviewTask.Logic.Models;
 using InterviewTask.Logic.Parsers;
 using InterviewTask.Logic.Services;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 
 namespace InterviewTask.ConsoleApp
 {
