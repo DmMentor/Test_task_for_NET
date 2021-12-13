@@ -5,9 +5,9 @@ using System.Linq;
 
 namespace InterviewTask.ConsoleApp
 {
-    class LinksDisplay
+    internal class LinksDisplay
     {
-        public void DisplayResults(IEnumerable<DataForLink> listAllLinks)
+        public void DisplayHtmlLinks(IEnumerable<Link> listAllLinks)
         {
             int count = 1;
 
@@ -15,31 +15,42 @@ namespace InterviewTask.ConsoleApp
 
             foreach (var info in listAllLinks)
             {
-                if (info.IsLinkFromHtml == false && info.IsLinkFromSitemap == true)
+                if (!info.IsLinkFromHtml && info.IsLinkFromSitemap)
                 {
-                    Console.WriteLine($"{count++})Url: {info.Link}");
+                    Console.WriteLine($"{count++})Url: {info.Url}");
                 }
             }
-            count = 1;
+        }
+
+        public void DisplaySitemapLinks(IEnumerable<Link> listAllLinks)
+        {
+            int count = 1;
 
             Console.WriteLine("\nUrls FOUNDED BY CRAWLING THE WEBSITE but not in sitemap.xml:");
             foreach (var info in listAllLinks)
             {
-                if (info.IsLinkFromHtml == true && info.IsLinkFromSitemap == false)
+                if (info.IsLinkFromHtml && !info.IsLinkFromSitemap)
                 {
-                    Console.WriteLine($"{count++})Url: {info.Link}");
+                    Console.WriteLine($"{count++})Url: {info.Url}");
                 }
             }
-            count = 1;
+        }
+
+        public void DisplayAllLinks(IEnumerable<LinkWithResponse> listAllLinks)
+        {
+            int count = 1;
 
             Console.WriteLine("\nTiming website(ms):");
             foreach (var info in listAllLinks.OrderBy(l => l.ResponseTime))
             {
-                Console.WriteLine($"{count++})Url: {info.Link}\n Time response: {info.ResponseTime}ms");
+                Console.WriteLine($"{count++})Url: {info.Url}\n Time response: {info.ResponseTime}ms");
             }
+        }
 
-            int urlHtml = listAllLinks?.Where(l => (l.IsLinkFromSitemap && l.IsLinkFromHtml == true) || (l.IsLinkFromSitemap == false && l.IsLinkFromHtml == true)).Count() ?? 0;
-            int urlSitemap = listAllLinks?.Where(l => (l.IsLinkFromSitemap && l.IsLinkFromHtml == true) || (l.IsLinkFromSitemap == true && l.IsLinkFromHtml == false)).Count() ?? 0;
+        public void DisplayAmountLinks(IEnumerable<Link> listAllLinks)
+        {
+            int urlHtml = listAllLinks?.Where(l => (!l.IsLinkFromSitemap || l.IsLinkFromHtml)).Count() ?? 0;
+            int urlSitemap = listAllLinks?.Where(l => (l.IsLinkFromSitemap || !l.IsLinkFromHtml)).Count() ?? 0;
 
             Console.WriteLine($"\nUrls(html documents) found after crawling a website: {urlHtml}");
             Console.WriteLine($"Urls found in sitemap: {urlSitemap}");
