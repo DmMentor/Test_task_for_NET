@@ -74,44 +74,5 @@ namespace InterviewTask.Logic.Tests
             //Assert
             Assert.AreEqual(expectedLink, actualLink);
         }
-
-        [Test]
-        public void ToLinkWithResponse_ConvertListOtherType_ReturnsLinkWithResponse()
-        {
-            //Arrange
-            var expected = new List<LinkWithResponse>()
-            {
-               new LinkWithResponse() { Url = new Uri("https://test1.com/coffe"), IsLinkFromHtml = true, IsLinkFromSitemap = false, ResponseTime = 0 },
-               new LinkWithResponse() { Url = new Uri("https://test5.com/tea"), IsLinkFromHtml = false, IsLinkFromSitemap = true, ResponseTime = 0 },
-               new LinkWithResponse() { Url = new Uri("https://test2-beta.com/account/12345"), IsLinkFromHtml = true, IsLinkFromSitemap = true, ResponseTime = 0 }
-            };
-            var inputList = new List<Link>()
-            {
-               new Link() { Url = new Uri("https://test1.com/coffe"), IsLinkFromHtml = true, IsLinkFromSitemap = false },
-               new Link() { Url = new Uri("https://test5.com/tea"), IsLinkFromHtml = false, IsLinkFromSitemap = true },
-               new Link() { Url = new Uri("https://test2-beta.com/account/12345"), IsLinkFromHtml = true, IsLinkFromSitemap = true }
-            };
-
-            //Act
-            var actual = convertLink.ToLinkWithResponse(inputList);
-
-            //Assert
-            Assert.AreEqual(expected.Select(_ => _.Url), actual.Select(_ => _.Url));
-            Assert.AreEqual(expected.Select(_ => _.IsLinkFromHtml), actual.Select(_ => _.IsLinkFromHtml));
-            Assert.AreEqual(expected.Select(_ => _.IsLinkFromSitemap), actual.Select(_ => _.IsLinkFromSitemap));
-        }
-
-        [Test]
-        public void ToLinkWithResponse_PassingNullIsParameters_ThrowException()
-        {
-            //Arrange
-            string expectedMessage = "List is null (Parameter 'inputList')";
-
-            //Act
-            var actualException = Assert.Throws<ArgumentNullException>(() => convertLink.ToLinkWithResponse(null));
-
-            //Assert
-            Assert.AreEqual(expectedMessage, actualException.Message);
-        }
     }
 }
