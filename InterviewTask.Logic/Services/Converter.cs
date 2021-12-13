@@ -1,23 +1,12 @@
 ﻿using InterviewTask.Logic.Models;
-using InterviewTask.Logic.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 
-namespace InterviewTask.Logic.Parser
+namespace InterviewTask.Logic.Services
 {
     public class Converter
     {
-        private readonly LinkRequest _linkRequest;
-        private readonly int _timeSleep;
-
-        public Converter(LinkRequest linkRequest, int timeSleep = 150)
-        {
-            _linkRequest = linkRequest;
-            _timeSleep = timeSleep;
-        }
-
         public virtual Uri ToUri(string inputLink, Uri baseLink)
         {
             string baseStartLink = baseLink.Scheme + "://" + baseLink.Host;
@@ -64,9 +53,6 @@ namespace InterviewTask.Logic.Parser
                 linkResponse.Url = link.Url;
                 linkResponse.IsLinkFromHtml = link.IsLinkFromHtml;
                 linkResponse.IsLinkFromSitemap = link.IsLinkFromSitemap;
-
-                Thread.Sleep(_timeSleep);
-                linkResponse.ResponseTime = _linkRequest.LinkResponseTime(linkResponse.Url);
 
                 newList.Add(linkResponse);
             }
