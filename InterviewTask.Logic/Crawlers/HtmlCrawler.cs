@@ -67,14 +67,14 @@ namespace InterviewTask.Logic.Crawlers
                 return Enumerable.Empty<Uri>();
             }
 
-            var lisitStringLinks = _parseDocument.ParseDocument(documentHtml);
+            var listStringLinks = _parseDocument.ParseDocument(documentHtml);
 
-            if (!lisitStringLinks.Any())
+            if (!listStringLinks.Any())
             {
                 return Enumerable.Empty<Uri>();
             }
 
-            return lisitStringLinks.Select(link => _converter.ToUri(link, baseLink)).Where(link => link != null);
+            return listStringLinks.Select(link => _converter.ToUri(link, baseLink)).Where(link => link != null);
         }
     }
 }
