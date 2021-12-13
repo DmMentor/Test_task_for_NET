@@ -1,13 +1,12 @@
-﻿using InterviewTask.Logic.Parser;
+﻿using InterviewTask.Logic.Parsers;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace InterviewTask.Logic.Tests
 {
     [TestFixture]
-    class ParseDocumentSitemapTests
+    internal class ParseDocumentSitemapTests
     {
         private ParseDocumentSitemap parserDocumentSitemap;
 
@@ -18,12 +17,12 @@ namespace InterviewTask.Logic.Tests
         }
 
         [Test]
-        public void ParseDocument_ParsingSingleLink_ReturnListWithOnceLink()
+        public void ParseDocument_DocumentHaveSingleLink_ReturnsLinks()
         {
             //Arrange
             string document = "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\" xmlns:xhtml=\"http://www.w3.org/1999/xhtml/\"> " +
                 "<url> <loc>http://test.com</loc> </url> </urlset>";
-            Uri[] expectedLink = new[]{ new Uri("http://test.com/") };
+            Uri[] expectedLink = new[] { new Uri("http://test.com/") };
 
             //Act
             var actualList = parserDocumentSitemap.ParseDocument(document);
@@ -33,17 +32,20 @@ namespace InterviewTask.Logic.Tests
         }
 
         [Test]
-        public void ParseDocument_DocumentEmpty_ReturnsEmpty()
+        public void ParseDocument_BlankDocument_ReturnEmpty()
         {
+            //Arrange
+            string document = string.Empty;
+
             //Act
-            IEnumerable<Uri> actual = parserDocumentSitemap.ParseDocument(string.Empty);
+            IEnumerable<Uri> actual = parserDocumentSitemap.ParseDocument(document);
 
             //Assert
             Assert.IsNull(actual);
         }
 
         [Test]
-        public void ParseDocument_ParsingDocumentWithoutLinks_ReturnEmptyList()
+        public void ParseDocument_DocumentNotHaveLinks_ReturnEmptyList()
         {
             //Arrange
             string document = "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\" xmlns:xhtml=\"http://www.w3.org/1999/xhtml/\"></urlset>";
@@ -56,7 +58,7 @@ namespace InterviewTask.Logic.Tests
         }
 
         [Test]
-        public void ParseDocument_ParsingSeveralLink_ReturnList()
+        public void ParseDocument_DocumentHaveSeveralLink_ReturnList()
         {
             //Arrange
             var expectedLinks = new List<Uri>(3) { new Uri("https://test1.com/tea/"), new Uri("https://test2.com/coffe/"), new Uri("https://test3.com/") };
@@ -69,6 +71,19 @@ namespace InterviewTask.Logic.Tests
 
             //Assert
             Assert.AreEqual(expectedLinks, actualLinks);
+        }
+
+        [Test]
+        public void ParseDocument_PassingNullIsParameters_ReturnList()
+        {
+            //Arrange
+            string document = null;
+
+            //Act
+            var actualLinks = parserDocumentSitemap.ParseDocument(document);
+
+            //Assert
+            Assert.IsNull(actualLinks);
         }
     }
 }

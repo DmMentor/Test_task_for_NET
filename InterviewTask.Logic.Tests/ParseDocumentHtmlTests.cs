@@ -1,12 +1,11 @@
-﻿using InterviewTask.Logic.Parser;
+﻿using InterviewTask.Logic.Parsers;
 using NUnit.Framework;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace InterviewTask.Logic.Tests
 {
     [TestFixture]
-    class ParseDocumentHtmlTests
+    internal class ParseDocumentHtmlTests
     {
         private ParseDocumentHtml parseDocumenthtml;
 
@@ -20,7 +19,7 @@ namespace InterviewTask.Logic.Tests
         public void ParseDocument_ParsingSingleLink_ReturnListWithOnceLink()
         {
             //Arrange
-            string[] expectedLinks = new[] { "https://test.com/#test-one/" };
+            var expectedLinks = new string[] { "https://test.com/#test-one/" };
             string document = "<a href=\"https://test.com/#test-one/\">";
 
             //Act
@@ -31,7 +30,7 @@ namespace InterviewTask.Logic.Tests
         }
 
         [Test]
-        public void ParseDocument_ParsingDocumentWithoutLinks_ReturnEmptyList()
+        public void ParseDocument_gDocumentNotHaveLinks_ReturnEmptyList()
         {
             //Arrange
             string document = "<a class=\"test.cs\">";
@@ -44,7 +43,7 @@ namespace InterviewTask.Logic.Tests
         }
 
         [Test]
-        public void ParseDocument_ParsingSeveralLink_ReturnList()
+        public void ParseDocument_DocumentHaveSeveralLink_ReturnList()
         {
             //Arrange
             var expectedLinks = new List<string>(2) { "/test.com/#test-one/", "https://test.com/#test-two/" };
@@ -60,10 +59,26 @@ namespace InterviewTask.Logic.Tests
         }
 
         [Test]
-        public void ParseDocument_DocumentEmpty_ReturnEmpty()
+        public void ParseDocument_BlankDocument_ReturnEmpty()
         {
+            //Arrange
+            string document = string.Empty;
+
             //Act
-            IEnumerable<string> actualList = parseDocumenthtml.ParseDocument(string.Empty);
+            IEnumerable<string> actualList = parseDocumenthtml.ParseDocument(document);
+
+            //Assert
+            Assert.IsEmpty(actualList);
+        }
+
+        [Test]
+        public void ParseDocument_PassingNullIsParameters_ReturnEmpty()
+        {
+            //Arrange
+            string document = null;
+
+            //Act
+            IEnumerable<string> actualList = parseDocumenthtml.ParseDocument(document);
 
             //Assert
             Assert.IsEmpty(actualList);

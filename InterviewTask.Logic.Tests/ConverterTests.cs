@@ -18,7 +18,7 @@ namespace InterviewTask.Logic.Tests
         }
 
         [Test]
-        public void ConvertStringToUri_RelativeLink_ReturnAbsoluteLinks()
+        public void ToUri_RelativeLink_ReturnAbsoluteLinks()
         {
             //Arrange
             var expectedLink = new Uri("https://example.com/coffebreak");
@@ -33,7 +33,7 @@ namespace InterviewTask.Logic.Tests
         }
 
         [Test]
-        public void ConvertStringToUri_OtherHost_ReturnsNull()
+        public void ToUri_OtherHost_ReturnsNull()
         {
             //Arrange
             var baseLink = new Uri("https://example.com");
@@ -47,7 +47,7 @@ namespace InterviewTask.Logic.Tests
         }
 
         [Test]
-        public void ConvertStringToUri_NoLink_ReturnNull()
+        public void ToUri_NoLink_ReturnNull()
         {
             //Arrange
             string testLink = "skype:myskype234";
@@ -61,7 +61,7 @@ namespace InterviewTask.Logic.Tests
         }
 
         [Test]
-        public void ConvertStringToUri_AbsoluteLink_ReturnAbsoluteLink()
+        public void ToUri_AbsoluteLink_ReturnAbsoluteLink()
         {
             //Arrange
             var baseLink = new Uri("https://example.com");
