@@ -37,27 +37,5 @@ namespace InterviewTask.Logic.Services
 
             return link;
         }
-
-        public IEnumerable<LinkWithResponse> ToLinkWithResponse(IEnumerable<Link> inputList)
-        {
-            if (inputList == null)
-            {
-                throw new ArgumentNullException("inputList", "List is null");
-            }
-
-            var newList = new List<LinkWithResponse>();
-
-            foreach (Link link in inputList)
-            {
-                LinkWithResponse linkResponse = new LinkWithResponse();
-                linkResponse.Url = link.Url;
-                linkResponse.IsLinkFromHtml = link.IsLinkFromHtml;
-                linkResponse.IsLinkFromSitemap = link.IsLinkFromSitemap;
-
-                newList.Add(linkResponse);
-            }
-
-            return newList;
-        }
     }
 }
