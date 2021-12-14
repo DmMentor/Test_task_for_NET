@@ -10,7 +10,7 @@ namespace InterviewTask.Logic.Parsers
         {
             if (string.IsNullOrEmpty(document))
             {
-                return null;
+                return Array.Empty<Uri>();
             }
 
             var xmlDocument = new XmlDocument();
@@ -22,7 +22,7 @@ namespace InterviewTask.Logic.Parsers
 
             if (xmlListLinks == null)
             {
-                return null;
+                return Array.Empty<Uri>();
             }
 
             ICollection<Uri> listLinksSitemap = new List<Uri>(xmlListLinks.Count);
