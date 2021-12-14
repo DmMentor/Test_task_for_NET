@@ -7,7 +7,9 @@ namespace InterviewTask.ConsoleApp
         private static void Main(string[] args)
         {
             LinksDisplay linksDisplay = new LinksDisplay();
-            LinkHandling linkHandling = new LinkHandling();
+            HttpService httpService = new HttpService();
+            LinkHandling linkHandling = new LinkHandling(httpService);
+
             LinkRequest linkRequest = new LinkRequest(linkHandling);
             Converter converter = new Converter();
             ConsoleApp consoleApp = new ConsoleApp(linksDisplay, converter, linkRequest);
