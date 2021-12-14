@@ -9,15 +9,15 @@ namespace InterviewTask.Logic.Tests
     [TestFixture]
     internal class LinkHandlingTests
     {
-        private Mock<HttpService> _mockClass1;
+        private readonly int timeout = 1;
+        private Mock<HttpService> _mockHttpService;
         private LinkHandling _linkHandling;
 
         [SetUp]
         public void SetUp()
         {
-            const int timeout = 1;
-            _mockClass1 = new Mock<HttpService>(timeout);
-            _linkHandling = new LinkHandling(_mockClass1.Object);
+            _mockHttpService = new Mock<HttpService>(timeout);
+            _linkHandling = new LinkHandling(_mockHttpService.Object);
         }
 
         [Test]
@@ -54,7 +54,8 @@ namespace InterviewTask.Logic.Tests
             //Arrange
             var baseLink = new Uri("https://test1.com");
             var returnsResponseMessage = new HttpResponseMessage() { StatusCode = System.Net.HttpStatusCode.OK };
-            _mockClass1.Setup(m => m.GetResponseMessage(It.IsAny<Uri>())).Returns(returnsResponseMessage);
+            _mockHttpService.Setup(m => m.GetResponseMessage(It.IsAny<Uri>()))
+                .Returns(returnsResponseMessage);
 
             //Act
             var actual = _linkHandling.GetLinkResponse(baseLink);
@@ -69,13 +70,14 @@ namespace InterviewTask.Logic.Tests
             //Arrange
             var baseLink = new Uri("https://test1.com");
             var returnsResponseMessage = new HttpResponseMessage() { StatusCode = System.Net.HttpStatusCode.RequestTimeout };
-            _mockClass1.Setup(m => m.GetResponseMessage(It.IsAny<Uri>())).Returns(returnsResponseMessage);
+            _mockHttpService.Setup(m => m.GetResponseMessage(It.IsAny<Uri>()))
+                .Returns(returnsResponseMessage);
 
             //Act
             var actual = _linkHandling.GetLinkResponse(baseLink);
 
             //Assert
-            Assert.IsTrue(actual == -1);
+            Assert.IsTrue(actual == int.MaxValue);
         }
     }
 }

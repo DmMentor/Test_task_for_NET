@@ -27,7 +27,7 @@ namespace InterviewTask.Logic.Tests
         public void Parse_DocumentHaveLinks_ReturnListLinks()
         {
             //Arrange
-            IEnumerable<Uri> expected = new List<Uri>() { new Uri("http://test.com"), new Uri("http://test.com/coffe") };
+            var expected = new List<Uri>() { new Uri("http://test.com"), new Uri("http://test.com/coffe") };
             var baseLink = new Uri("http://test.com");
             string document = "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\" xmlns:xhtml=\"http://www.w3.org/1999/xhtml/\"> " +
                 "<url> <loc>http://test.com</loc> </url> <url> <loc>http://test.com/coffe</loc> </url> </urlset>";

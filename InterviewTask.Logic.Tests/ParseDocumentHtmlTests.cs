@@ -29,6 +29,32 @@ namespace InterviewTask.Logic.Tests
         }
 
         [Test]
+        public void ParseDocument_BlankDocument_ReturnEmpty()
+        {
+            //Arrange
+            string document = string.Empty;
+
+            //Act
+            var actualList = _parseDocumenthtml.ParseDocument(document);
+
+            //Assert
+            Assert.IsEmpty(actualList);
+        }
+
+        [Test]
+        public void ParseDocument_PassingNullIsParameters_ReturnEmpty()
+        {
+            //Arrange
+            string document = null;
+
+            //Act
+            var actualList = _parseDocumenthtml.ParseDocument(document);
+
+            //Assert
+            Assert.IsEmpty(actualList);
+        }
+
+        [Test]
         public void ParseDocument_DocumentHaveSeveralLink_ReturnList()
         {
             //Arrange
@@ -42,32 +68,6 @@ namespace InterviewTask.Logic.Tests
 
             //Assert
             Assert.AreEqual(expectedLinks, actualLinks);
-        }
-
-        [Test]
-        public void ParseDocument_BlankDocument_ReturnEmpty()
-        {
-            //Arrange
-            string document = string.Empty;
-
-            //Act
-            IEnumerable<string> actualList = _parseDocumenthtml.ParseDocument(document);
-
-            //Assert
-            Assert.IsEmpty(actualList);
-        }
-
-        [Test]
-        public void ParseDocument_PassingNullIsParameters_ReturnEmpty()
-        {
-            //Arrange
-            string document = null;
-
-            //Act
-            IEnumerable<string> actualList = _parseDocumenthtml.ParseDocument(document);
-
-            //Assert
-            Assert.IsEmpty(actualList);
         }
     }
 }

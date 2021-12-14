@@ -23,7 +23,7 @@ namespace InterviewTask.Logic.Tests
             string document = string.Empty;
 
             //Act
-            IEnumerable<Uri> actual = _parserDocumentSitemap.ParseDocument(document);
+            var actual = _parserDocumentSitemap.ParseDocument(document);
 
             //Assert
             Assert.IsEmpty(actual);
