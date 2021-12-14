@@ -65,7 +65,7 @@ namespace InterviewTask.Logic.Crawlers
             }
 
             return listStringLinks.Select(link => _converter.ToUri(link, baseLink))
-                                  .Where(link => link != null);
+                .Where(link => link != null);
         }
     }
 }
