@@ -9,15 +9,13 @@ namespace InterviewTask.Logic.Services
         {
             string baseStartLink = baseLink.Scheme + "://" + baseLink.Host;
 
-            Uri link = null;
-
             if (inputLink.Length <= 1 || inputLink.Contains("/?") || inputLink.Contains("#"))
             {
-                link = new Uri(baseStartLink);
+                return new Uri(baseStartLink);
             }
             else if (inputLink.StartsWith("http"))
             {
-                link = new Uri(inputLink);
+                Uri link = new Uri(inputLink);
 
                 return link.Host == baseLink.Host ? link : null;
             }
@@ -30,10 +28,8 @@ namespace InterviewTask.Logic.Services
 
                 string absolutePath = inputLink.StartsWith('/') ? inputLink : '/' + inputLink;
 
-                link = new Uri(baseStartLink + absolutePath);
+                return new Uri(baseStartLink + absolutePath);
             }
-
-            return link;
         }
     }
 }
