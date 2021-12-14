@@ -28,7 +28,7 @@ namespace InterviewTask.Logic.Services
                 return timer.Elapsed.Milliseconds;
             }
 
-            return -1;
+            return int.MaxValue;
         }
 
         public virtual string DownloadDocument(Uri inputLink)

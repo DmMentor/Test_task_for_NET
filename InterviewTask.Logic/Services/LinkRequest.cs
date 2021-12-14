@@ -24,11 +24,12 @@ namespace InterviewTask.Logic.Services
 
             foreach (var link in inputListLinks)
             {
-                LinkWithResponse linkResponse = new LinkWithResponse();
+                var linkResponse = new LinkWithResponse
+                {
+                    Url = link.Url,
+                    ResponseTime = _linkHandling.GetLinkResponse(link.Url)
+                };
 
-                linkResponse.Url = link.Url;
-                linkResponse.ResponseTime = _linkHandling.GetLinkResponse(link.Url);
-                
                 listLinksWithResponse.Add(linkResponse);
             }
 

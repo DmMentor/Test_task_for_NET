@@ -38,7 +38,7 @@ namespace InterviewTask.Logic.Crawlers
 
                 string documentHtml = _linkHandling.DownloadDocument(linkToParse);
 
-                if (string.IsNullOrEmpty(documentHtml))
+                if (string.IsNullOrWhiteSpace(documentHtml))
                 {
                     continue;
                 }

@@ -26,9 +26,9 @@ namespace InterviewTask.Logic.Crawlers
             var linkBuilderSitemap = new UriBuilder(baseLink.Scheme, baseLink.Host, baseLink.Port, "/sitemap.xml");
             Uri linkToDownloadDocument = linkBuilderSitemap.Uri;
 
-            string requestedDocument = _linkHandling.DownloadDocument(linkToDownloadDocument);
+            var requestedDocument = _linkHandling.DownloadDocument(linkToDownloadDocument);
 
-            IEnumerable<Uri> listLinkSitemap = _parseDocument.ParseDocument(requestedDocument);
+            var listLinkSitemap = _parseDocument.ParseDocument(requestedDocument);
 
             return listLinkSitemap;
         }

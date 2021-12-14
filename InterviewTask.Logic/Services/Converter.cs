@@ -16,7 +16,7 @@ namespace InterviewTask.Logic.Services
 
             if (inputLink.StartsWith("http"))
             {
-                Uri link = new Uri(inputLink);
+                var link = new Uri(inputLink);
 
                 return link.Host == baseLink.Host ? link : null;
             }

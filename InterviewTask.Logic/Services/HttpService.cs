@@ -8,7 +8,7 @@ namespace InterviewTask.Logic.Services
     {
         private readonly HttpClient _client;
 
-        public HttpService(int timeout = 10000)
+        public HttpService(int timeout = 15000)
         {
             _client = new HttpClient
             {

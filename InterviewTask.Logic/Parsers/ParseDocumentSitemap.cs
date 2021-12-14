@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml;
 
 namespace InterviewTask.Logic.Parsers
@@ -10,7 +11,7 @@ namespace InterviewTask.Logic.Parsers
         {
             if (string.IsNullOrEmpty(document))
             {
-                return Array.Empty<Uri>();
+                return Enumerable.Empty<Uri>();
             }
 
             var xmlDocument = new XmlDocument();
@@ -22,7 +23,7 @@ namespace InterviewTask.Logic.Parsers
 
             if (xmlListLinks == null)
             {
-                return Array.Empty<Uri>();
+                return Enumerable.Empty<Uri>();
             }
 
             ICollection<Uri> listLinksSitemap = new List<Uri>(xmlListLinks.Count);

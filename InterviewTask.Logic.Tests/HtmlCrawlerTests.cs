@@ -86,7 +86,7 @@ namespace InterviewTask.Logic.Tests
         }
 
         [Test]
-        public void StartParse_CallMethodDownloadOnce_ReturnsForrmattedLinks()
+        public void StartParse_CallMethodDownloadOnce_ReturnsForrmatedLinks()
         {
             //Arrange
             var baseLink = new Uri("https://test1.com");

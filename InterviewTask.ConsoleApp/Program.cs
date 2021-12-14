@@ -6,13 +6,13 @@ namespace InterviewTask.ConsoleApp
     {
         private static void Main(string[] args)
         {
-            LinksDisplay linksDisplay = new LinksDisplay();
-            HttpService httpService = new HttpService();
-            LinkHandling linkHandling = new LinkHandling(httpService);
+            var linksDisplay = new LinksDisplay();
+            var httpService = new HttpService();
+            var linkHandling = new LinkHandling(httpService);
 
-            LinkRequest linkRequest = new LinkRequest(linkHandling);
-            Converter converter = new Converter();
-            ConsoleApp consoleApp = new ConsoleApp(linksDisplay, converter, linkRequest);
+            var linkRequest = new LinkRequest(linkHandling);
+            var converter = new Converter();
+            var consoleApp = new ConsoleApp(linksDisplay, converter, linkRequest);
 
             consoleApp.Run();
         }
