@@ -9,17 +9,17 @@ namespace InterviewTask.Logic.Crawlers
     public class HtmlCrawler
     {
         private readonly ParseDocumentHtml _parseDocument;
-        private readonly LinkHandling _downloadDocument;
+        private readonly LinkHandling _linkHandling;
         private readonly Converter _converter;
 
-        public HtmlCrawler(ParseDocumentHtml parseDocument, LinkHandling downloadDocument, Converter converter)
+        public HtmlCrawler(ParseDocumentHtml parseDocument, LinkHandling linkHandling, Converter converter)
         {
             _parseDocument = parseDocument;
-            _downloadDocument = downloadDocument;
+            _linkHandling = linkHandling;
             _converter = converter;
         }
 
-        public IEnumerable<Uri> StartParse(Uri baseLink)
+        public virtual IEnumerable<Uri> StartParse(Uri baseLink)
         {
             if (!baseLink.IsAbsoluteUri)
             {
@@ -36,7 +36,7 @@ namespace InterviewTask.Logic.Crawlers
             {
                 var linkToParse = parseLinksQueue.Dequeue();
 
-                string documentHtml = _downloadDocument.DownloadDocument(linkToParse);
+                string documentHtml = _linkHandling.DownloadDocument(linkToParse);
 
                 if (string.IsNullOrEmpty(documentHtml))
                 {
@@ -55,18 +55,8 @@ namespace InterviewTask.Logic.Crawlers
             return listLinksHtml;
         }
 
-        public IEnumerable<Uri> ParseDocumentToLinks(string documentHtml, Uri baseLink)
+        private IEnumerable<Uri> ParseDocumentToLinks(string documentHtml, Uri baseLink)
         {
-            if (!baseLink.IsAbsoluteUri)
-            {
-                throw new ArgumentException("Link must be absolute");
-            }
-
-            if (string.IsNullOrEmpty(documentHtml))
-            {
-                return Enumerable.Empty<Uri>();
-            }
-
             var listStringLinks = _parseDocument.ParseDocument(documentHtml);
 
             if (!listStringLinks.Any())
@@ -74,7 +64,8 @@ namespace InterviewTask.Logic.Crawlers
                 return Enumerable.Empty<Uri>();
             }
 
-            return listStringLinks.Select(link => _converter.ToUri(link, baseLink)).Where(link => link != null);
+            return listStringLinks.Select(link => _converter.ToUri(link, baseLink))
+                                  .Where(link => link != null);
         }
     }
 }
