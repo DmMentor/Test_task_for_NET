@@ -1,7 +1,9 @@
 ﻿using InterviewTask.Logic.Crawlers;
+using InterviewTask.Logic.Models;
 using InterviewTask.Logic.Parsers;
 using InterviewTask.Logic.Services;
 using System;
+using System.Collections.Generic;
 
 namespace InterviewTask.ConsoleApp
 {
@@ -24,24 +26,14 @@ namespace InterviewTask.ConsoleApp
             {
                 Uri inputLink = InputLink();
 
-                if (inputLink == null)
-                {
-                    return;
-                }
-
                 Console.WriteLine($"Starting parsing website....{Environment.NewLine}");
 
                 WebsiteCrawler crawler = SetupCrawler();
+
                 var listAllLinks = crawler.Start(inputLink);
-
-                _linksDisplay.DisplayHtmlLinks(listAllLinks);
-                _linksDisplay.DisplaySitemapLinks(listAllLinks);
-
                 var listAllLinksWithResponse = _linkRequest.GetListWithLinksResponseTime(listAllLinks);
 
-                _linksDisplay.DisplayAllLinks(listAllLinksWithResponse);
-
-                _linksDisplay.DisplayAmountLinks(listAllLinks);
+                Display(listAllLinks, listAllLinksWithResponse);
             }
             catch (Exception ex)
             {
@@ -53,7 +45,9 @@ namespace InterviewTask.ConsoleApp
         {
             var parseDocumentHtml = new ParseDocumentHtml();
             var parseDocumentXml = new ParseDocumentSitemap();
-            var downloadDocument = new LinkHandling();
+
+            var httpService = new HttpService();
+            var downloadDocument = new LinkHandling(httpService);
 
             var parseHtml = new HtmlCrawler(parseDocumentHtml, downloadDocument, _converter);
             var parseSitemap = new SitemapCrawler(parseDocumentXml, downloadDocument);
@@ -71,9 +65,16 @@ namespace InterviewTask.ConsoleApp
                 return linkUri;
             }
 
-            Console.WriteLine("Link is invalid");
+            throw new UriFormatException("Link is invalid");
+        }
 
-            return null;
+        private void Display(IEnumerable<Link> listAllLinks, IEnumerable<LinkWithResponse> listAllLinksWithResponse)
+        {
+            _linksDisplay.DisplayHtmlLinks(listAllLinks);
+            _linksDisplay.DisplaySitemapLinks(listAllLinks);
+
+            _linksDisplay.DisplayAllLinks(listAllLinksWithResponse);
+            _linksDisplay.DisplayAmountLinks(listAllLinks);
         }
     }
 }
