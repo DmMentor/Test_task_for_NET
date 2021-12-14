@@ -31,9 +31,15 @@ namespace InterviewTask.Logic.Services
         public virtual string GetContent(Uri link)
         {
             var response = GetResponseMessage(link);
-            using HttpContent content = response.Content;
 
-            return content.ReadAsStringAsync().Result;
+            if (response.IsSuccessStatusCode)
+            {
+                using HttpContent content = response.Content;
+
+                return content.ReadAsStringAsync().Result;
+            }
+
+            return string.Empty;
         }
     }
 }
