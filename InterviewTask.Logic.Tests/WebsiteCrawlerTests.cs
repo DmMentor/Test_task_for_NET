@@ -13,77 +13,36 @@ namespace InterviewTask.Logic.Tests
     [TestFixture]
     internal class WebsiteCrawlerTests
     {
-        private Mock<LinkHandling> mockLinkHandlingHtml;
         private Mock<HtmlCrawler> mockHtmlCrawler;
-
-        private Mock<LinkHandling> mockLinkHandlingSitemap;
         private Mock<SitemapCrawler> mockSitemapCrawler;
-
         private WebsiteCrawler websiteCrawler;
 
         [SetUp]
         public void SetUp()
         {
-            var parseDocumentHtml = new ParseDocumentHtml();
-            var convertLink = new Converter();
-            mockLinkHandlingHtml = new Mock<LinkHandling>(It.IsAny<int>());
-            mockHtmlCrawler = new Mock<HtmlCrawler>(parseDocumentHtml, mockLinkHandlingHtml.Object, convertLink);
-
-            var parseDocumentSitemap = new ParseDocumentSitemap();
-            mockLinkHandlingSitemap = new Mock<LinkHandling>(It.IsAny<int>());
-            mockSitemapCrawler = new Mock<SitemapCrawler>(parseDocumentSitemap, mockLinkHandlingSitemap.Object);
+            mockHtmlCrawler = new Mock<HtmlCrawler>(It.IsAny<ParseDocumentHtml>(), It.IsAny<LinkHandling>(), It.IsAny<Converter>());
+            mockSitemapCrawler = new Mock<SitemapCrawler>(It.IsAny<ParseDocumentSitemap>(), It.IsAny<LinkHandling>());
 
             websiteCrawler = new WebsiteCrawler(mockHtmlCrawler.Object, mockSitemapCrawler.Object);
-        }
-
-        [Test]
-        public void Start_DocumentsHaveLinks_ReturnsAllLinks()
-        {
-            //Arrange
-            var expected = new List<Uri>()
-            {
-                new Uri("https://test1.com/chill"),
-                new Uri("https://test1.com"),
-                new Uri("https://test1.com/chill/arg/buysell"),
-                new Uri("https://test.com/coffe")
-            };
-            var baseLink = new Uri("https://test1.com");
-            var documentHtml = "<a href=\"https://test1.com\" ></a> \n <a class=\"info\" href=\"https://test1.com/chill/arg/buysell\" >\n</a> " +
-                "\n\r <a href=\"https://test1.com/chill\" ></a> ";
-            mockLinkHandlingHtml.SetupSequence(d => d.DownloadDocument(It.IsAny<Uri>())).Returns(documentHtml);
-            mockHtmlCrawler.CallBase = true;
-            string documentSitemap = "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\" xmlns:xhtml=\"http://www.w3.org/1999/xhtml\"> " +
-                "<url> <loc>https://test1.com/chill</loc> </url> <url> <loc>https://test.com/coffe</loc> </url> </urlset>";
-            mockLinkHandlingSitemap.Setup(d => d.DownloadDocument(It.IsAny<Uri>())).Returns(documentSitemap);
-            mockSitemapCrawler.CallBase = true;
-
-            //Act
-            var actual = websiteCrawler.Start(baseLink).ToList();
-
-            //Assert
-            Assert.AreEqual(expected, actual.Select(_ => _.Url));
         }
 
         [Test]
         public void Start_HtmlIsEmpty_ReturnsLinksOnlySitemap()
         {
             //Arrange
+            var baseLink = new Uri("https://test1.com");
             var expected = new List<Uri>()
             {
-                new Uri("https://test1.com"),
-                new Uri("https://test1.com/chill"),
-                new Uri("https://test.com/coffe")
+                new Uri("https://test1.com/chill/arg/buysell"),
+                new Uri("https://test1.com/chill")
             };
-            var baseLink = new Uri("https://test1.com");
-            mockLinkHandlingHtml.SetupSequence(d => d.DownloadDocument(It.IsAny<Uri>()))
-                .Returns(string.Empty);
-            mockHtmlCrawler.CallBase = true;
-            string documentSitemap = "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\" xmlns:xhtml=\"http://www.w3.org/1999/xhtml\"> " +
-                "<url> <loc>https://test1.com/chill</loc> </url> <url> " +
-                "<loc>https://test.com/coffe</loc> </url> </urlset>";
-            mockLinkHandlingSitemap.Setup(d => d.DownloadDocument(It.IsAny<Uri>()))
-                .Returns(documentSitemap);
-            mockSitemapCrawler.CallBase = true;
+            var listSitemap = new List<Uri>()
+            {
+                new Uri("https://test1.com/chill/arg/buysell"),
+                new Uri("https://test1.com/chill")
+            };
+            mockHtmlCrawler.Setup(l => l.StartParse(It.IsAny<Uri>())).Returns(Enumerable.Empty<Uri>());
+            mockSitemapCrawler.Setup(l => l.Parse(It.IsAny<Uri>())).Returns(listSitemap);
 
             //Act
             var actual = websiteCrawler.Start(baseLink);
@@ -96,20 +55,19 @@ namespace InterviewTask.Logic.Tests
         public void Start_SitemapIsEmpty_ReturnsLinksOnlyHtml()
         {
             //Arrange
+            var baseLink = new Uri("https://test1.com");
             var expected = new List<Uri>()
             {
                 new Uri("https://test1.com"),
-                new Uri("https://test1.com/chill/arg/buysell"),
                 new Uri("https://test1.com/chill")
             };
-            var baseLink = new Uri("https://test1.com");
-            var documentHtml = "<a href=\"https://test1.com/chill/arg/buysell\" ></a> \n <a class=\"info\"  >\n</a> \n\r <a href=\"https://test1.com/chill\" ></a> ";
-            mockLinkHandlingHtml.SetupSequence(d => d.DownloadDocument(It.IsAny<Uri>()))
-                .Returns(documentHtml);
-            mockHtmlCrawler.CallBase = true;
-            mockLinkHandlingSitemap.Setup(d => d.DownloadDocument(It.IsAny<Uri>()))
-                .Returns(string.Empty);
-            mockSitemapCrawler.CallBase = true;
+            var listHtml = new List<Uri>()
+            {
+                new Uri("https://test1.com"),
+                new Uri("https://test1.com/chill")
+            };
+            mockHtmlCrawler.Setup(l => l.StartParse(It.IsAny<Uri>())).Returns(listHtml);
+            mockSitemapCrawler.Setup(l => l.Parse(It.IsAny<Uri>())).Returns(Enumerable.Empty<Uri>());
 
             //Act
             var actual = websiteCrawler.Start(baseLink);
@@ -123,12 +81,8 @@ namespace InterviewTask.Logic.Tests
         {
             //Arrange
             var baseLink = new Uri("https://test1.com");
-            mockLinkHandlingHtml.SetupSequence(d => d.DownloadDocument(It.IsAny<Uri>()))
-                .Returns(string.Empty);
-            mockHtmlCrawler.CallBase = true;
-            mockLinkHandlingSitemap.Setup(d => d.DownloadDocument(It.IsAny<Uri>()))
-                .Returns(string.Empty);
-            mockSitemapCrawler.CallBase = true;
+            mockHtmlCrawler.Setup(l => l.StartParse(It.IsAny<Uri>())).Returns(Enumerable.Empty<Uri>());
+            mockSitemapCrawler.Setup(l => l.Parse(It.IsAny<Uri>())).Returns(Enumerable.Empty<Uri>());
 
             //Act
             var actual = websiteCrawler.Start(baseLink).Where(_ => _.Url != baseLink);
@@ -156,6 +110,7 @@ namespace InterviewTask.Logic.Tests
         public void ConcatLists_CombiningListsWithLinks_ReturnsListAllLinks()
         {
             //Arrange
+            var baseLink = new Uri("https://test1.com");
             var expected = new List<Link>()
             {
                 new Link(){Url = new Uri("https://test1.com/chill"), IsLinkFromHtml = true, IsLinkFromSitemap = true},
@@ -172,9 +127,11 @@ namespace InterviewTask.Logic.Tests
                 new Uri("https://test1.com/chill/arg/buysell"),
                 new Uri("https://test1.com/chill")
             };
+            mockHtmlCrawler.Setup(l => l.StartParse(It.IsAny<Uri>())).Returns(listHtml);
+            mockSitemapCrawler.Setup(l => l.Parse(It.IsAny<Uri>())).Returns(listSitemap);
 
             //Act
-            var actual = websiteCrawler.ConcatLists(listHtml, listSitemap);
+            var actual = websiteCrawler.Start(baseLink);
 
             //Assert
             Assert.AreEqual(expected.Select(_ => _.Url), actual.Select(_ => _.Url));

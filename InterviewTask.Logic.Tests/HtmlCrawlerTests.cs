@@ -86,22 +86,6 @@ namespace InterviewTask.Logic.Tests
         }
 
         [Test]
-        public void StartParse_CallMethodParceDocumentOnce_ReturnsEmpty()
-        {
-            //Arrange
-            var baseLink = new Uri("https://test1.com");
-            mockLinkHandling.Setup(d => d.DownloadDocument(It.IsAny<Uri>())).Returns(" ");
-            mockParseDocumentHtml.Setup(s => s.ParseDocument(It.IsAny<string>()))
-                .Returns(Enumerable.Empty<string>());
-
-            //Act
-            var actual = htmlCrawler.StartParse(baseLink);
-
-            //Assert
-            mockParseDocumentHtml.Verify(p => p.ParseDocument(It.IsAny<string>()), Times.Once());
-        }
-
-        [Test]
         public void StartParse_CallMethodDownloadOnce_ReturnsForrmattedLinks()
         {
             //Arrange
@@ -144,33 +128,6 @@ namespace InterviewTask.Logic.Tests
 
             //Assert
             Assert.AreEqual(expectedString, actualException.Message);
-        }
-
-        [Test]
-        public void ConvertDocumentToLinks_LinkIsNotAbsolute_ThrowException()
-        {
-            //Arrange
-            string expectedString = "Link must be absolute";
-            var link = new Uri("ukad-group.com", UriKind.Relative);
-
-            //Act
-            var actualException = Assert.Throws<ArgumentException>(() => htmlCrawler.ParseDocumentToLinks(string.Empty, link));
-
-            //Assert
-            Assert.AreEqual(expectedString, actualException.Message);
-        }
-
-        [Test]
-        public void ConvertDocumentToLinks_BlankDocument_ReturnEmpty()
-        {
-            //Arrange
-            var baseLink = new Uri("https://test1.com");
-
-            //Act
-            var actualList = htmlCrawler.ParseDocumentToLinks(string.Empty, baseLink);
-
-            //Assert
-            Assert.IsEmpty(actualList);
         }
     }
 }

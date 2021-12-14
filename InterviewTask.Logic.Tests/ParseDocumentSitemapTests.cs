@@ -17,21 +17,6 @@ namespace InterviewTask.Logic.Tests
         }
 
         [Test]
-        public void ParseDocument_DocumentHaveSingleLink_ReturnsLinks()
-        {
-            //Arrange
-            string document = "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\" xmlns:xhtml=\"http://www.w3.org/1999/xhtml/\"> " +
-                "<url> <loc>http://test.com</loc> </url> </urlset>";
-            Uri[] expectedLink = new[] { new Uri("http://test.com/") };
-
-            //Act
-            var actualList = parserDocumentSitemap.ParseDocument(document);
-
-            //Assert
-            Assert.AreEqual(expectedLink, actualList);
-        }
-
-        [Test]
         public void ParseDocument_BlankDocument_ReturnEmpty()
         {
             //Arrange
@@ -41,7 +26,7 @@ namespace InterviewTask.Logic.Tests
             IEnumerable<Uri> actual = parserDocumentSitemap.ParseDocument(document);
 
             //Assert
-            Assert.IsNull(actual);
+            Assert.IsEmpty(actual);
         }
 
         [Test]
@@ -83,7 +68,7 @@ namespace InterviewTask.Logic.Tests
             var actualLinks = parserDocumentSitemap.ParseDocument(document);
 
             //Assert
-            Assert.IsNull(actualLinks);
+            Assert.IsEmpty(actualLinks);
         }
     }
 }

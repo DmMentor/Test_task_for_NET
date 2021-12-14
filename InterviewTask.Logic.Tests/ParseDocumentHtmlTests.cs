@@ -16,21 +16,7 @@ namespace InterviewTask.Logic.Tests
         }
 
         [Test]
-        public void ParseDocument_ParsingSingleLink_ReturnListWithOnceLink()
-        {
-            //Arrange
-            var expectedLinks = new string[] { "https://test.com/#test-one/" };
-            string document = "<a href=\"https://test.com/#test-one/\">";
-
-            //Act
-            var actualLinks = parseDocumenthtml.ParseDocument(document);
-
-            //Assert
-            Assert.AreEqual(expectedLinks, actualLinks);
-        }
-
-        [Test]
-        public void ParseDocument_gDocumentNotHaveLinks_ReturnEmptyList()
+        public void ParseDocument_DocumentNotHaveLinks_ReturnEmptyList()
         {
             //Arrange
             string document = "<a class=\"test.cs\">";

@@ -24,7 +24,7 @@ namespace InterviewTask.Logic.Tests
         }
 
         [Test]
-        public void Parse_DocumentHaveLinks_ReturnsLinks()
+        public void Parse_DocumentHaveLinks_ReturnListLinks()
         {
             //Arrange
             IEnumerable<Uri> expected = new List<Uri>() { new Uri("http://test.com"), new Uri("http://test.com/coffe") };
@@ -43,7 +43,7 @@ namespace InterviewTask.Logic.Tests
         }
 
         [Test]
-        public void Parse_DocumentDontHaveLinks_ReturnEmpty()
+        public void Parse_DocumentDontHaveLinks_ReturnEmptyListLinks()
         {
             //Arrange
             var baseLink = new Uri("http://test.com");
@@ -57,42 +57,6 @@ namespace InterviewTask.Logic.Tests
 
             //Assert
             Assert.IsEmpty(actualResult);
-        }
-
-        [Test]
-        public void Parse_CallMethodDocumentOnce_ReturnsLinks()
-        {
-            //Arrange
-            var baseLink = new Uri("http://test.com");
-            string document = "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\" xmlns:xhtml=\"http://www.w3.org/1999/xhtml/\"> <url> <loc>http://test.com</loc> </url> <url> <loc>http://test.com/coffe</loc> </url> </urlset>";
-            mockLinkHandling.Setup(d => d.DownloadDocument(It.IsAny<Uri>()))
-                .Returns(document);
-            mockParseDocumentSitemap.CallBase = true;
-
-            //Act
-            sitemapCrawler.Parse(baseLink);
-
-            //Assert
-            mockLinkHandling.Verify(d => d.DownloadDocument(It.IsAny<Uri>()), Times.Once());
-        }
-
-        [Test]
-        public void Parse_CallMethodParceDocumentOnce_ReturnsLinks()
-        {
-            //Arrange
-            var baseLink = new Uri("http://test.com");
-            string document = "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\" xmlns:xhtml=\"http://www.w3.org/1999/xhtml/\"> " +
-                "<url> <loc>http://test.com</loc> </url> " +
-                "<url> <loc>http://test.com/coffe</loc> </url> </urlset>";
-            mockLinkHandling.Setup(d => d.DownloadDocument(It.IsAny<Uri>()))
-                .Returns(document);
-            mockParseDocumentSitemap.CallBase = true;
-
-            //Act
-            sitemapCrawler.Parse(baseLink);
-
-            //Assert
-            mockParseDocumentSitemap.Verify(p => p.ParseDocument(It.IsAny<string>()), Times.Once());
         }
 
         [Test]
