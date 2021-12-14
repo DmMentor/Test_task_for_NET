@@ -13,23 +13,22 @@ namespace InterviewTask.Logic.Services
             {
                 return new Uri(baseStartLink);
             }
-            else if (inputLink.StartsWith("http"))
+
+            if (inputLink.StartsWith("http"))
             {
                 Uri link = new Uri(inputLink);
 
                 return link.Host == baseLink.Host ? link : null;
             }
-            else
+
+            if (inputLink.Where(s => s == ':').Any())
             {
-                if (inputLink.Where(s => s == ':').Count() > 0)
-                {
-                    return null;
-                }
-
-                string absolutePath = inputLink.StartsWith('/') ? inputLink : '/' + inputLink;
-
-                return new Uri(baseStartLink + absolutePath);
+                return null;
             }
+
+            string absolutePath = inputLink.StartsWith('/') ? inputLink : '/' + inputLink;
+
+            return new Uri(baseStartLink + absolutePath);
         }
     }
 }
