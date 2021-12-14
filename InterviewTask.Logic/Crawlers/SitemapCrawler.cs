@@ -10,13 +10,13 @@ namespace InterviewTask.Logic.Crawlers
         private readonly ParseDocumentSitemap _parseDocument;
         private readonly LinkHandling _linkHandling;
 
-        public SitemapCrawler(ParseDocumentSitemap parseDocument, LinkHandling downloadDocument)
+        public SitemapCrawler(ParseDocumentSitemap parseDocument, LinkHandling linkHandling)
         {
             _parseDocument = parseDocument;
-            _linkHandling = downloadDocument;
+            _linkHandling = linkHandling;
         }
 
-        public IEnumerable<Uri> Parse(Uri baseLink)
+        public virtual IEnumerable<Uri> Parse(Uri baseLink)
         {
             if (!baseLink.IsAbsoluteUri)
             {
@@ -30,7 +30,7 @@ namespace InterviewTask.Logic.Crawlers
 
             IEnumerable<Uri> listLinkSitemap = _parseDocument.ParseDocument(requestedDocument);
 
-            return listLinkSitemap ?? Array.Empty<Uri>();
+            return listLinkSitemap;
         }
     }
 }
