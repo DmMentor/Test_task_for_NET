@@ -1,7 +1,6 @@
 ﻿using InterviewTask.Logic.Models;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 
 namespace InterviewTask.Logic.Services
 {
@@ -18,7 +17,7 @@ namespace InterviewTask.Logic.Services
         {
             if (inputListLinks == null)
             {
-                throw new ArgumentNullException("inputList", "List is null");
+                throw new ArgumentNullException(nameof(inputListLinks), "List is null");
             }
 
             var listLinksWithResponse = new List<LinkWithResponse>();
@@ -26,14 +25,10 @@ namespace InterviewTask.Logic.Services
             foreach (var link in inputListLinks)
             {
                 LinkWithResponse linkResponse = new LinkWithResponse();
+
                 linkResponse.Url = link.Url;
-
-                var timer = Stopwatch.StartNew();
-                _linkHandling.GetLinkResponse(link.Url);
-                timer.Stop();
-
-                linkResponse.ResponseTime = timer.Elapsed.Milliseconds;
-
+                linkResponse.ResponseTime = _linkHandling.GetLinkResponse(link.Url);
+                
                 listLinksWithResponse.Add(linkResponse);
             }
 
