@@ -33,16 +33,16 @@ namespace InterviewTask.Logic.Services
             return listAllLinks;
         }
 
-        public IEnumerable<Link> ConcatLists(IEnumerable<Uri> listLinksHtml, IEnumerable<Uri> listLinksSitemap)
+        private IEnumerable<Link> ConcatLists(IEnumerable<Uri> listLinksHtml, IEnumerable<Uri> listLinksSitemap)
         {
             var intersectLinks = listLinksHtml.Intersect(listLinksSitemap);
 
             var listUniqueLinks = intersectLinks.Select(s => new Link()
-            {
-                Url = s,
-                IsLinkFromHtml = true,
-                IsLinkFromSitemap = true
-            });
+                {
+                    Url = s,
+                    IsLinkFromHtml = true,
+                    IsLinkFromSitemap = true
+                });
 
             var onlyLinksHtml = listLinksHtml.Except(intersectLinks)
                 .Select(s => new Link()
