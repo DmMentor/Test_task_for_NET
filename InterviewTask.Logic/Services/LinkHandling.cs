@@ -1,36 +1,34 @@
 ﻿using System;
-using System.Net;
-using System.Net.Http;
+using System.Diagnostics;
 
 namespace InterviewTask.Logic.Services
 {
     public class LinkHandling
     {
-        private readonly int _timeout;
+        private readonly HttpService _httpService;
 
-        public LinkHandling(int timeout = 10000)
+        public LinkHandling(HttpService httpService)
         {
-            _timeout = timeout;
+            _httpService = httpService;
         }
 
-        public virtual HttpResponseMessage GetLinkResponse(Uri inputLink)
+        public virtual int GetLinkResponse(Uri inputLink)
         {
             if (!inputLink.IsAbsoluteUri)
             {
                 throw new ArgumentException("Link must be absolute");
             }
 
-            HttpClient client = new HttpClient();
-            client.Timeout = TimeSpan.FromMilliseconds(_timeout);
+            var timer = Stopwatch.StartNew();
+            var responseMessage = _httpService.GetResponseMessage(inputLink);
+            timer.Stop();
 
-            try
+            if (responseMessage.IsSuccessStatusCode)
             {
-                return client.GetAsync(inputLink).Result;
+                return timer.Elapsed.Milliseconds;
             }
-            catch (WebException)
-            {
-                return new HttpResponseMessage() { StatusCode = HttpStatusCode.RequestTimeout };
-            }
+
+            return -1;
         }
 
         public virtual string DownloadDocument(Uri inputLink)
@@ -40,16 +38,9 @@ namespace InterviewTask.Logic.Services
                 throw new ArgumentException("Link must be absolute");
             }
 
-            var response = GetLinkResponse(inputLink);
+            string document = _httpService.GetContent(inputLink);
 
-            if (!response.IsSuccessStatusCode)
-            {
-                return string.Empty;
-            }
-
-            using HttpContent content = response.Content;
-
-            return content.ReadAsStringAsync().Result;
+            return document;
         }
     }
 }
