@@ -7,12 +7,12 @@ namespace InterviewTask.Logic.Tests
     [TestFixture]
     internal class ParseDocumentHtmlTests
     {
-        private ParseDocumentHtml parseDocumenthtml;
+        private ParseDocumentHtml _parseDocumenthtml;
 
         [SetUp]
         public void SetUp()
         {
-            parseDocumenthtml = new ParseDocumentHtml();
+            _parseDocumenthtml = new ParseDocumentHtml();
         }
 
         [Test]
@@ -22,7 +22,7 @@ namespace InterviewTask.Logic.Tests
             string document = "<a class=\"test.cs\">";
 
             //Act
-            var actualLinks = parseDocumenthtml.ParseDocument(document);
+            var actualLinks = _parseDocumenthtml.ParseDocument(document);
 
             //Assert
             Assert.IsEmpty(actualLinks);
@@ -38,7 +38,7 @@ namespace InterviewTask.Logic.Tests
                 "<a class=\"test.cs\" href=\"https://test.com/#test-two/\"> ";
 
             //Act
-            var actualLinks = parseDocumenthtml.ParseDocument(document);
+            var actualLinks = _parseDocumenthtml.ParseDocument(document);
 
             //Assert
             Assert.AreEqual(expectedLinks, actualLinks);
@@ -51,7 +51,7 @@ namespace InterviewTask.Logic.Tests
             string document = string.Empty;
 
             //Act
-            IEnumerable<string> actualList = parseDocumenthtml.ParseDocument(document);
+            IEnumerable<string> actualList = _parseDocumenthtml.ParseDocument(document);
 
             //Assert
             Assert.IsEmpty(actualList);
@@ -64,7 +64,7 @@ namespace InterviewTask.Logic.Tests
             string document = null;
 
             //Act
-            IEnumerable<string> actualList = parseDocumenthtml.ParseDocument(document);
+            IEnumerable<string> actualList = _parseDocumenthtml.ParseDocument(document);
 
             //Assert
             Assert.IsEmpty(actualList);

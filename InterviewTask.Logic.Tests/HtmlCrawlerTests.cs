@@ -12,18 +12,18 @@ namespace InterviewTask.Logic.Tests
     [TestFixture]
     internal class HtmlCrawlerTests
     {
-        private Mock<ParseDocumentHtml> mockParseDocumentHtml;
-        private Mock<LinkHandling> mockLinkHandling;
-        private Mock<Converter> mockConverter;
-        private HtmlCrawler htmlCrawler;
+        private Mock<ParseDocumentHtml> _mockParseDocumentHtml;
+        private Mock<LinkHandling> _mockLinkHandling;
+        private Mock<Converter> _mockConverter;
+        private HtmlCrawler _htmlCrawler;
 
         [SetUp]
         public void SetUp()
         {
-            mockParseDocumentHtml = new Mock<ParseDocumentHtml>();
-            mockLinkHandling = new Mock<LinkHandling>(It.IsAny<int>());
-            mockConverter = new Mock<Converter>();
-            htmlCrawler = new HtmlCrawler(mockParseDocumentHtml.Object, mockLinkHandling.Object, mockConverter.Object);
+            _mockParseDocumentHtml = new Mock<ParseDocumentHtml>();
+            _mockLinkHandling = new Mock<LinkHandling>(It.IsAny<HttpService>());
+            _mockConverter = new Mock<Converter>();
+            _htmlCrawler = new HtmlCrawler(_mockParseDocumentHtml.Object, _mockLinkHandling.Object, _mockConverter.Object);
         }
 
         [Test]
@@ -41,14 +41,14 @@ namespace InterviewTask.Logic.Tests
             var documentFirst = "<a href=\"https://test1.com/\" ></a> \n <a class=\"info\" href=\"https://test1.com/chill/arg/buysell\" >\n</a>" +
                 " \n\r <a href=\"https://test1.com/chill\" ></a> ";
             var documentSecond = "<a href=\"/trainee.work/\" ></a> \n <a href=\"skype:gg.com@group\" class=\"offens.cs\"></a>";
-            mockLinkHandling.SetupSequence(d => d.DownloadDocument(It.IsAny<Uri>()))
+            _mockLinkHandling.SetupSequence(d => d.DownloadDocument(It.IsAny<Uri>()))
                 .Returns(documentFirst)
                 .Returns(documentSecond);
-            mockParseDocumentHtml.CallBase = true;
-            mockConverter.CallBase = true;
+            _mockParseDocumentHtml.CallBase = true;
+            _mockConverter.CallBase = true;
 
             //Act
-            var actual = htmlCrawler.StartParse(baseLink);
+            var actual = _htmlCrawler.StartParse(baseLink);
 
             //Assert
             Assert.AreEqual(expected, actual);
@@ -60,11 +60,11 @@ namespace InterviewTask.Logic.Tests
             //Arrange
             var baseLink = new Uri("https://test1.com");
             var document = "<a href=\"https://test2.com/\" ></a> \r <a href=\"skype:gg.com@group\" class=\"offens.cs\"></a>";
-            mockLinkHandling.SetupSequence(d => d.DownloadDocument(It.IsAny<Uri>()))
+            _mockLinkHandling.SetupSequence(d => d.DownloadDocument(It.IsAny<Uri>()))
                 .Returns(document);
 
             //Act
-            var actual = htmlCrawler.StartParse(baseLink).Where(_ => _ != baseLink);
+            var actual = _htmlCrawler.StartParse(baseLink).Where(_ => _ != baseLink);
 
             //Assert
             Assert.IsEmpty(actual);
@@ -75,14 +75,14 @@ namespace InterviewTask.Logic.Tests
         {
             //Arrange
             var baseLink = new Uri("https://test1.com");
-            mockParseDocumentHtml.Setup(s => s.ParseDocument(It.IsAny<string>()))
+            _mockParseDocumentHtml.Setup(s => s.ParseDocument(It.IsAny<string>()))
                 .Returns(Enumerable.Empty<string>());
 
             //Act
-            var actual = htmlCrawler.StartParse(baseLink);
+            var actual = _htmlCrawler.StartParse(baseLink);
 
             //Assert
-            mockParseDocumentHtml.Verify(p => p.ParseDocument(It.IsAny<string>()), Times.Never());
+            _mockParseDocumentHtml.Verify(p => p.ParseDocument(It.IsAny<string>()), Times.Never());
         }
 
         [Test]
@@ -90,14 +90,14 @@ namespace InterviewTask.Logic.Tests
         {
             //Arrange
             var baseLink = new Uri("https://test1.com");
-            mockLinkHandling.SetupSequence(d => d.DownloadDocument(It.IsAny<Uri>()))
+            _mockLinkHandling.SetupSequence(d => d.DownloadDocument(It.IsAny<Uri>()))
                 .Returns(string.Empty);
 
             //Act
-            var actual = htmlCrawler.StartParse(baseLink);
+            var actual = _htmlCrawler.StartParse(baseLink);
 
             //Assert
-            mockLinkHandling.Verify(d => d.DownloadDocument(It.IsAny<Uri>()), Times.Once());
+            _mockLinkHandling.Verify(d => d.DownloadDocument(It.IsAny<Uri>()), Times.Once());
         }
 
 
@@ -106,11 +106,11 @@ namespace InterviewTask.Logic.Tests
         {
             //Arrange
             var baseLink = new Uri("https://test1.com");
-            mockLinkHandling.SetupSequence(d => d.DownloadDocument(It.IsAny<Uri>()))
+            _mockLinkHandling.SetupSequence(d => d.DownloadDocument(It.IsAny<Uri>()))
                 .Returns(string.Empty);
 
             //Act
-            var actualList = htmlCrawler.StartParse(baseLink).Where(_ => _ != baseLink);
+            var actualList = _htmlCrawler.StartParse(baseLink).Where(_ => _ != baseLink);
 
             //Assert
             Assert.IsEmpty(actualList);
@@ -124,7 +124,7 @@ namespace InterviewTask.Logic.Tests
             var link = new Uri("ukad-group.com", UriKind.Relative);
 
             //Act
-            var actualException = Assert.Throws<ArgumentException>(() => htmlCrawler.StartParse(link));
+            var actualException = Assert.Throws<ArgumentException>(() => _htmlCrawler.StartParse(link));
 
             //Assert
             Assert.AreEqual(expectedString, actualException.Message);

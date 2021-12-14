@@ -12,14 +12,14 @@ namespace InterviewTask.Logic.Tests
     [TestFixture]
     class LinkRequestTests
     {
-        private Mock<LinkHandling> mockLinkHandling;
-        private LinkRequest linkRequest;
+        private Mock<LinkHandling> _mockLinkHandling;
+        private LinkRequest _linkRequest;
 
         [SetUp]
         public void Setup()
         {
-            mockLinkHandling = new Mock<LinkHandling>(10000);
-            linkRequest = new LinkRequest(mockLinkHandling.Object);
+            _mockLinkHandling = new Mock<LinkHandling>(It.IsAny<HttpService>());
+            _linkRequest = new LinkRequest(_mockLinkHandling.Object);
         }
 
         [Test]
@@ -38,10 +38,10 @@ namespace InterviewTask.Logic.Tests
                new Link() { Url = new Uri("https://test5.com/tea"), IsLinkFromHtml = false, IsLinkFromSitemap = true },
                new Link() { Url = new Uri("https://test2-beta.com/account/12345"), IsLinkFromHtml = true, IsLinkFromSitemap = true }
             };
-            mockLinkHandling.Setup(m => m.GetLinkResponse(It.IsAny<Uri>())).Returns<HttpResponseMessage>(null);
+            _mockLinkHandling.Setup(m => m.GetLinkResponse(It.IsAny<Uri>())).Returns<HttpResponseMessage>(null);
 
             //Act
-            var actual = linkRequest.GetListWithLinksResponseTime(inputList);
+            var actual = _linkRequest.GetListWithLinksResponseTime(inputList);
 
             //Assert
             Assert.AreEqual(expected.Select(_ => _.Url), actual.Select(_ => _.Url));
@@ -51,10 +51,10 @@ namespace InterviewTask.Logic.Tests
         public void ToLinkWithResponse_PassingNullIsParameters_ThrowException()
         {
             //Arrange
-            string expectedMessage = "List is null (Parameter 'inputList')";
+            string expectedMessage = "List is null (Parameter 'inputListLinks')";
 
             //Act
-            var actualException = Assert.Throws<ArgumentNullException>(() => linkRequest.GetListWithLinksResponseTime(null));
+            var actualException = Assert.Throws<ArgumentNullException>(() => _linkRequest.GetListWithLinksResponseTime(null));
 
             //Assert
             Assert.AreEqual(expectedMessage, actualException.Message);

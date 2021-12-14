@@ -8,12 +8,12 @@ namespace InterviewTask.Logic.Tests
     [TestFixture]
     internal class ParseDocumentSitemapTests
     {
-        private ParseDocumentSitemap parserDocumentSitemap;
+        private ParseDocumentSitemap _parserDocumentSitemap;
 
         [SetUp]
         public void SetUp()
         {
-            parserDocumentSitemap = new ParseDocumentSitemap();
+            _parserDocumentSitemap = new ParseDocumentSitemap();
         }
 
         [Test]
@@ -23,7 +23,7 @@ namespace InterviewTask.Logic.Tests
             string document = string.Empty;
 
             //Act
-            IEnumerable<Uri> actual = parserDocumentSitemap.ParseDocument(document);
+            IEnumerable<Uri> actual = _parserDocumentSitemap.ParseDocument(document);
 
             //Assert
             Assert.IsEmpty(actual);
@@ -36,7 +36,7 @@ namespace InterviewTask.Logic.Tests
             string document = "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\" xmlns:xhtml=\"http://www.w3.org/1999/xhtml/\"></urlset>";
 
             //Act
-            var actualLink = parserDocumentSitemap.ParseDocument(document);
+            var actualLink = _parserDocumentSitemap.ParseDocument(document);
 
             //Assert
             Assert.IsEmpty(actualLink);
@@ -52,7 +52,7 @@ namespace InterviewTask.Logic.Tests
                 "<url> <loc>https://test3.com/</loc> </url> </urlset>";
 
             //Act
-            var actualLinks = parserDocumentSitemap.ParseDocument(document);
+            var actualLinks = _parserDocumentSitemap.ParseDocument(document);
 
             //Assert
             Assert.AreEqual(expectedLinks, actualLinks);
@@ -65,7 +65,7 @@ namespace InterviewTask.Logic.Tests
             string document = null;
 
             //Act
-            var actualLinks = parserDocumentSitemap.ParseDocument(document);
+            var actualLinks = _parserDocumentSitemap.ParseDocument(document);
 
             //Assert
             Assert.IsEmpty(actualLinks);

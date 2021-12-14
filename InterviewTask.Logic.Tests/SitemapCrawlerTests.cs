@@ -11,16 +11,16 @@ namespace InterviewTask.Logic.Tests
     [TestFixture]
     internal class SitemapCrawlerTests
     {
-        private Mock<ParseDocumentSitemap> mockParseDocumentSitemap;
-        private Mock<LinkHandling> mockLinkHandling;
-        private SitemapCrawler sitemapCrawler;
+        private Mock<ParseDocumentSitemap> _mockParseDocumentSitemap;
+        private Mock<LinkHandling> _mockLinkHandling;
+        private SitemapCrawler _sitemapCrawler;
 
         [SetUp]
         public void SetUp()
         {
-            mockParseDocumentSitemap = new Mock<ParseDocumentSitemap>();
-            mockLinkHandling = new Mock<LinkHandling>(It.IsAny<int>());
-            sitemapCrawler = new SitemapCrawler(mockParseDocumentSitemap.Object, mockLinkHandling.Object);
+            _mockParseDocumentSitemap = new Mock<ParseDocumentSitemap>();
+            _mockLinkHandling = new Mock<LinkHandling>(It.IsAny<HttpService>());
+            _sitemapCrawler = new SitemapCrawler(_mockParseDocumentSitemap.Object, _mockLinkHandling.Object);
         }
 
         [Test]
@@ -31,12 +31,12 @@ namespace InterviewTask.Logic.Tests
             var baseLink = new Uri("http://test.com");
             string document = "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\" xmlns:xhtml=\"http://www.w3.org/1999/xhtml/\"> " +
                 "<url> <loc>http://test.com</loc> </url> <url> <loc>http://test.com/coffe</loc> </url> </urlset>";
-            mockLinkHandling.Setup(d => d.DownloadDocument(It.IsAny<Uri>()))
+            _mockLinkHandling.Setup(d => d.DownloadDocument(It.IsAny<Uri>()))
                 .Returns(document);
-            mockParseDocumentSitemap.CallBase = true;
+            _mockParseDocumentSitemap.CallBase = true;
 
             //Act
-            var actual = sitemapCrawler.Parse(baseLink);
+            var actual = _sitemapCrawler.Parse(baseLink);
 
             //Assert
             Assert.AreEqual(expected, actual);
@@ -48,12 +48,12 @@ namespace InterviewTask.Logic.Tests
             //Arrange
             var baseLink = new Uri("http://test.com");
             string document = "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\" xmlns:xhtml=\"http://www.w3.org/1999/xhtml/\"> </urlset>";
-            mockLinkHandling.Setup(d => d.DownloadDocument(It.IsAny<Uri>()))
+            _mockLinkHandling.Setup(d => d.DownloadDocument(It.IsAny<Uri>()))
                 .Returns(document);
-            mockParseDocumentSitemap.CallBase = true;
+            _mockParseDocumentSitemap.CallBase = true;
 
             //Act
-            var actualResult = sitemapCrawler.Parse(baseLink);
+            var actualResult = _sitemapCrawler.Parse(baseLink);
 
             //Assert
             Assert.IsEmpty(actualResult);
@@ -67,7 +67,7 @@ namespace InterviewTask.Logic.Tests
             var link = new Uri("ukad-group.com", UriKind.Relative);
 
             //Act
-            var exception = Assert.Throws<ArgumentException>(() => sitemapCrawler.Parse(link));
+            var exception = Assert.Throws<ArgumentException>(() => _sitemapCrawler.Parse(link));
 
             //Assert
             Assert.AreEqual(expectedString, exception.Message);

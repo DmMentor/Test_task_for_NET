@@ -6,12 +6,12 @@ namespace InterviewTask.Logic.Tests
 {
     internal class ConverterTests
     {
-        private Converter convertLink;
+        private Converter _convertLink;
 
         [SetUp]
         public void SetUp()
         {
-            convertLink = new Converter();
+            _convertLink = new Converter();
         }
 
         [Test]
@@ -23,7 +23,7 @@ namespace InterviewTask.Logic.Tests
             string testLink = "/coffebreak";
 
             //Act
-            Uri actualLink = convertLink.ToUri(testLink, baseLink);
+            Uri actualLink = _convertLink.ToUri(testLink, baseLink);
 
             //Assert
             Assert.AreEqual(expectedLink, actualLink);
@@ -37,7 +37,7 @@ namespace InterviewTask.Logic.Tests
             string testLink = "https://new-example.com/coffebreak";
 
             //Act
-            Uri actualLink = convertLink.ToUri(testLink, baseLink);
+            Uri actualLink = _convertLink.ToUri(testLink, baseLink);
 
             //Assert
             Assert.IsNull(actualLink);
@@ -51,7 +51,7 @@ namespace InterviewTask.Logic.Tests
             var baseLink = new Uri("https://example.com");
 
             //Act
-            Uri actualLink = convertLink.ToUri(testLink, baseLink);
+            Uri actualLink = _convertLink.ToUri(testLink, baseLink);
 
             //Assert
             Assert.IsNull(actualLink);
@@ -66,7 +66,7 @@ namespace InterviewTask.Logic.Tests
             var expectedLink = new Uri("https://example.com/mytea/see");
 
             //Act
-            Uri actualLink = convertLink.ToUri(testLink, baseLink);
+            Uri actualLink = _convertLink.ToUri(testLink, baseLink);
 
             //Assert
             Assert.AreEqual(expectedLink, actualLink);

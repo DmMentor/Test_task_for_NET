@@ -13,17 +13,17 @@ namespace InterviewTask.Logic.Tests
     [TestFixture]
     internal class WebsiteCrawlerTests
     {
-        private Mock<HtmlCrawler> mockHtmlCrawler;
-        private Mock<SitemapCrawler> mockSitemapCrawler;
-        private WebsiteCrawler websiteCrawler;
+        private Mock<HtmlCrawler> _mockHtmlCrawler;
+        private Mock<SitemapCrawler> _mockSitemapCrawler;
+        private WebsiteCrawler _websiteCrawler;
 
         [SetUp]
         public void SetUp()
         {
-            mockHtmlCrawler = new Mock<HtmlCrawler>(It.IsAny<ParseDocumentHtml>(), It.IsAny<LinkHandling>(), It.IsAny<Converter>());
-            mockSitemapCrawler = new Mock<SitemapCrawler>(It.IsAny<ParseDocumentSitemap>(), It.IsAny<LinkHandling>());
+            _mockHtmlCrawler = new Mock<HtmlCrawler>(It.IsAny<ParseDocumentHtml>(), It.IsAny<LinkHandling>(), It.IsAny<Converter>());
+            _mockSitemapCrawler = new Mock<SitemapCrawler>(It.IsAny<ParseDocumentSitemap>(), It.IsAny<LinkHandling>());
 
-            websiteCrawler = new WebsiteCrawler(mockHtmlCrawler.Object, mockSitemapCrawler.Object);
+            _websiteCrawler = new WebsiteCrawler(_mockHtmlCrawler.Object, _mockSitemapCrawler.Object);
         }
 
         [Test]
@@ -41,11 +41,11 @@ namespace InterviewTask.Logic.Tests
                 new Uri("https://test1.com/chill/arg/buysell"),
                 new Uri("https://test1.com/chill")
             };
-            mockHtmlCrawler.Setup(l => l.StartParse(It.IsAny<Uri>())).Returns(Enumerable.Empty<Uri>());
-            mockSitemapCrawler.Setup(l => l.Parse(It.IsAny<Uri>())).Returns(listSitemap);
+            _mockHtmlCrawler.Setup(l => l.StartParse(It.IsAny<Uri>())).Returns(Enumerable.Empty<Uri>());
+            _mockSitemapCrawler.Setup(l => l.Parse(It.IsAny<Uri>())).Returns(listSitemap);
 
             //Act
-            var actual = websiteCrawler.Start(baseLink);
+            var actual = _websiteCrawler.Start(baseLink);
 
             //Assert
             Assert.AreEqual(expected, actual.Select(_ => _.Url));
@@ -66,11 +66,11 @@ namespace InterviewTask.Logic.Tests
                 new Uri("https://test1.com"),
                 new Uri("https://test1.com/chill")
             };
-            mockHtmlCrawler.Setup(l => l.StartParse(It.IsAny<Uri>())).Returns(listHtml);
-            mockSitemapCrawler.Setup(l => l.Parse(It.IsAny<Uri>())).Returns(Enumerable.Empty<Uri>());
+            _mockHtmlCrawler.Setup(l => l.StartParse(It.IsAny<Uri>())).Returns(listHtml);
+            _mockSitemapCrawler.Setup(l => l.Parse(It.IsAny<Uri>())).Returns(Enumerable.Empty<Uri>());
 
             //Act
-            var actual = websiteCrawler.Start(baseLink);
+            var actual = _websiteCrawler.Start(baseLink);
 
             //Assert
             Assert.AreEqual(expected, actual.Select(_ => _.Url));
@@ -81,11 +81,11 @@ namespace InterviewTask.Logic.Tests
         {
             //Arrange
             var baseLink = new Uri("https://test1.com");
-            mockHtmlCrawler.Setup(l => l.StartParse(It.IsAny<Uri>())).Returns(Enumerable.Empty<Uri>());
-            mockSitemapCrawler.Setup(l => l.Parse(It.IsAny<Uri>())).Returns(Enumerable.Empty<Uri>());
+            _mockHtmlCrawler.Setup(l => l.StartParse(It.IsAny<Uri>())).Returns(Enumerable.Empty<Uri>());
+            _mockSitemapCrawler.Setup(l => l.Parse(It.IsAny<Uri>())).Returns(Enumerable.Empty<Uri>());
 
             //Act
-            var actual = websiteCrawler.Start(baseLink).Where(_ => _.Url != baseLink);
+            var actual = _websiteCrawler.Start(baseLink).Where(_ => _.Url != baseLink);
 
             //Assert
             Assert.IsEmpty(actual);
@@ -97,10 +97,9 @@ namespace InterviewTask.Logic.Tests
             //Arrange
             string expectedString = "Link must be absolute";
             var link = new Uri("ukad-group.com", UriKind.Relative);
-            var downloadDocument = new LinkHandling();
 
             //Act
-            var actualException = Assert.Throws<ArgumentException>(() => websiteCrawler.Start(link));
+            var actualException = Assert.Throws<ArgumentException>(() => _websiteCrawler.Start(link));
 
             //Assert
             Assert.AreEqual(expectedString, actualException.Message);
@@ -127,11 +126,11 @@ namespace InterviewTask.Logic.Tests
                 new Uri("https://test1.com/chill/arg/buysell"),
                 new Uri("https://test1.com/chill")
             };
-            mockHtmlCrawler.Setup(l => l.StartParse(It.IsAny<Uri>())).Returns(listHtml);
-            mockSitemapCrawler.Setup(l => l.Parse(It.IsAny<Uri>())).Returns(listSitemap);
+            _mockHtmlCrawler.Setup(l => l.StartParse(It.IsAny<Uri>())).Returns(listHtml);
+            _mockSitemapCrawler.Setup(l => l.Parse(It.IsAny<Uri>())).Returns(listSitemap);
 
             //Act
-            var actual = websiteCrawler.Start(baseLink);
+            var actual = _websiteCrawler.Start(baseLink);
 
             //Assert
             Assert.AreEqual(expected.Select(_ => _.Url), actual.Select(_ => _.Url));
