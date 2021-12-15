@@ -27,7 +27,7 @@ namespace InterviewTask.Logic.Tests
         public void Parse_DocumentHaveLinks_ReturnListLinks()
         {
             //Arrange
-            var expected = new List<Uri>() { new Uri("http://test.com"), new Uri("http://test.com/coffe") };
+            var expectedList = new List<Uri>() { new Uri("http://test.com"), new Uri("http://test.com/coffe") };
             var baseLink = new Uri("http://test.com");
             string document = "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\" xmlns:xhtml=\"http://www.w3.org/1999/xhtml/\"> " +
                 "<url> <loc>http://test.com</loc> </url> <url> <loc>http://test.com/coffe</loc> </url> </urlset>";
@@ -36,10 +36,10 @@ namespace InterviewTask.Logic.Tests
             _mockParseDocumentSitemap.CallBase = true;
 
             //Act
-            var actual = _sitemapCrawler.Parse(baseLink);
+            var actualList = _sitemapCrawler.Parse(baseLink);
 
             //Assert
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(expectedList, actualList);
         }
 
         [Test]
@@ -53,10 +53,10 @@ namespace InterviewTask.Logic.Tests
             _mockParseDocumentSitemap.CallBase = true;
 
             //Act
-            var actualResult = _sitemapCrawler.Parse(baseLink);
+            var actualList = _sitemapCrawler.Parse(baseLink);
 
             //Assert
-            Assert.IsEmpty(actualResult);
+            Assert.IsEmpty(actualList);
         }
 
         [Test]
@@ -64,13 +64,13 @@ namespace InterviewTask.Logic.Tests
         {
             //Arrange
             string expectedString = "Link must be absolute";
-            var link = new Uri("ukad-group.com", UriKind.Relative);
+            var link = new Uri("example-1.com", UriKind.Relative);
 
             //Act
-            var exception = Assert.Throws<ArgumentException>(() => _sitemapCrawler.Parse(link));
+            var actualException = Assert.Throws<ArgumentException>(() => _sitemapCrawler.Parse(link));
 
             //Assert
-            Assert.AreEqual(expectedString, exception.Message);
+            Assert.AreEqual(expectedString, actualException.Message);
         }
     }
 }

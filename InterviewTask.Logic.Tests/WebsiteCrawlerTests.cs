@@ -31,7 +31,7 @@ namespace InterviewTask.Logic.Tests
         {
             //Arrange
             var baseLink = new Uri("https://test1.com");
-            var expected = new List<Uri>()
+            var expectedList = new List<Uri>()
             {
                 new Uri("https://test1.com/chill/arg/buysell"),
                 new Uri("https://test1.com/chill")
@@ -45,18 +45,18 @@ namespace InterviewTask.Logic.Tests
             _mockSitemapCrawler.Setup(l => l.Parse(It.IsAny<Uri>())).Returns(listSitemap);
 
             //Act
-            var actual = _websiteCrawler.Start(baseLink);
+            var actualList = _websiteCrawler.Start(baseLink);
 
             //Assert
-            Assert.AreEqual(expected, actual.Select(_ => _.Url));
+            Assert.AreEqual(expectedList, actualList.Select(_ => _.Url));
         }
 
         [Test]
-        public void Start_SitemapIsEmpty_ReturnsLinksOnlyHtml()
+        public void Start_SitemapIsEmpty_ReturnsListWithLinksOnlyHtml()
         {
             //Arrange
             var baseLink = new Uri("https://test1.com");
-            var expected = new List<Uri>()
+            var expectedList = new List<Uri>()
             {
                 new Uri("https://test1.com"),
                 new Uri("https://test1.com/chill")
@@ -70,14 +70,14 @@ namespace InterviewTask.Logic.Tests
             _mockSitemapCrawler.Setup(l => l.Parse(It.IsAny<Uri>())).Returns(Enumerable.Empty<Uri>());
 
             //Act
-            var actual = _websiteCrawler.Start(baseLink);
+            var actualList = _websiteCrawler.Start(baseLink);
 
             //Assert
-            Assert.AreEqual(expected, actual.Select(_ => _.Url));
+            Assert.AreEqual(expectedList, actualList.Select(_ => _.Url));
         }
 
         [Test]
-        public void Start_DocumentsEmpty_ReturnEmpty()
+        public void Start_DocumentsEmpty_ReturnEmptyList()
         {
             //Arrange
             var baseLink = new Uri("https://test1.com");
@@ -85,10 +85,10 @@ namespace InterviewTask.Logic.Tests
             _mockSitemapCrawler.Setup(l => l.Parse(It.IsAny<Uri>())).Returns(Enumerable.Empty<Uri>());
 
             //Act
-            var actual = _websiteCrawler.Start(baseLink).Where(_ => _.Url != baseLink);
+            var actualList = _websiteCrawler.Start(baseLink).Where(_ => _.Url != baseLink);
 
             //Assert
-            Assert.IsEmpty(actual);
+            Assert.IsEmpty(actualList);
         }
 
         [Test]
@@ -96,7 +96,7 @@ namespace InterviewTask.Logic.Tests
         {
             //Arrange
             string expectedString = "Link must be absolute";
-            var link = new Uri("ukad-group.com", UriKind.Relative);
+            var link = new Uri("example-1.com", UriKind.Relative);
 
             //Act
             var actualException = Assert.Throws<ArgumentException>(() => _websiteCrawler.Start(link));
@@ -110,7 +110,7 @@ namespace InterviewTask.Logic.Tests
         {
             //Arrange
             var baseLink = new Uri("https://test1.com");
-            var expected = new List<Link>()
+            var expectedList = new List<Link>()
             {
                 new Link(){Url = new Uri("https://test1.com/chill"), IsLinkFromHtml = true, IsLinkFromSitemap = true},
                 new Link(){Url = new Uri("https://test1.com"), IsLinkFromHtml = true, IsLinkFromSitemap = false},
@@ -130,12 +130,12 @@ namespace InterviewTask.Logic.Tests
             _mockSitemapCrawler.Setup(l => l.Parse(It.IsAny<Uri>())).Returns(listSitemap);
 
             //Act
-            var actual = _websiteCrawler.Start(baseLink);
+            var actualList = _websiteCrawler.Start(baseLink);
 
             //Assert
-            Assert.AreEqual(expected.Select(_ => _.Url), actual.Select(_ => _.Url));
-            Assert.AreEqual(expected.Select(_ => _.IsLinkFromHtml), actual.Select(_ => _.IsLinkFromHtml));
-            Assert.AreEqual(expected.Select(_ => _.IsLinkFromSitemap), actual.Select(_ => _.IsLinkFromSitemap));
+            Assert.AreEqual(expectedList.Select(_ => _.Url), actualList.Select(_ => _.Url));
+            Assert.AreEqual(expectedList.Select(_ => _.IsLinkFromHtml), actualList.Select(_ => _.IsLinkFromHtml));
+            Assert.AreEqual(expectedList.Select(_ => _.IsLinkFromSitemap), actualList.Select(_ => _.IsLinkFromSitemap));
         }
     }
 }

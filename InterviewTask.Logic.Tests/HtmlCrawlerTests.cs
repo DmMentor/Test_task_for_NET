@@ -31,7 +31,7 @@ namespace InterviewTask.Logic.Tests
         {
             //Arrange
             var baseLink = new Uri("https://test1.com");
-            IEnumerable<Uri> expected = new List<Uri>()
+            IEnumerable<Uri> expectedList = new List<Uri>()
             {
                 new Uri("https://test1.com/"),
                 new Uri("https://test1.com/chill/arg/buysell"),
@@ -48,10 +48,10 @@ namespace InterviewTask.Logic.Tests
             _mockConverter.CallBase = true;
 
             //Act
-            var actual = _htmlCrawler.StartParse(baseLink);
+            var actualList = _htmlCrawler.StartParse(baseLink);
 
             //Assert
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(expectedList, actualList);
         }
 
         [Test]
@@ -64,10 +64,10 @@ namespace InterviewTask.Logic.Tests
                 .Returns(document);
 
             //Act
-            var actual = _htmlCrawler.StartParse(baseLink).Where(_ => _ != baseLink);
+            var actualList = _htmlCrawler.StartParse(baseLink).Where(_ => _ != baseLink);
 
             //Assert
-            Assert.IsEmpty(actual);
+            Assert.IsEmpty(actualList);
         }
 
         [Test]
@@ -79,7 +79,7 @@ namespace InterviewTask.Logic.Tests
                 .Returns(Enumerable.Empty<string>());
 
             //Act
-            var actual = _htmlCrawler.StartParse(baseLink);
+            var actualList = _htmlCrawler.StartParse(baseLink);
 
             //Assert
             _mockParseDocumentHtml.Verify(p => p.ParseDocument(It.IsAny<string>()), Times.Never());
@@ -94,7 +94,7 @@ namespace InterviewTask.Logic.Tests
                 .Returns(string.Empty);
 
             //Act
-            var actual = _htmlCrawler.StartParse(baseLink);
+            _htmlCrawler.StartParse(baseLink);
 
             //Assert
             _mockLinkHandling.Verify(d => d.DownloadDocument(It.IsAny<Uri>()), Times.Once());
@@ -121,7 +121,7 @@ namespace InterviewTask.Logic.Tests
         {
             //Arrange
             string expectedString = "Link must be absolute";
-            var link = new Uri("ukad-group.com", UriKind.Relative);
+            var link = new Uri("example-1.com", UriKind.Relative);
 
             //Act
             var actualException = Assert.Throws<ArgumentException>(() => _htmlCrawler.StartParse(link));

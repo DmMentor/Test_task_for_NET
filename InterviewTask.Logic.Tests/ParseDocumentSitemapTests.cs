@@ -17,16 +17,16 @@ namespace InterviewTask.Logic.Tests
         }
 
         [Test]
-        public void ParseDocument_BlankDocument_ReturnEmpty()
+        public void ParseDocument_BlankDocument_ReturnEmptyList()
         {
             //Arrange
             string document = string.Empty;
 
             //Act
-            var actual = _parserDocumentSitemap.ParseDocument(document);
+            var actualList = _parserDocumentSitemap.ParseDocument(document);
 
             //Assert
-            Assert.IsEmpty(actual);
+            Assert.IsEmpty(actualList);
         }
 
         [Test]
@@ -36,39 +36,39 @@ namespace InterviewTask.Logic.Tests
             string document = "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\" xmlns:xhtml=\"http://www.w3.org/1999/xhtml/\"></urlset>";
 
             //Act
-            var actualLink = _parserDocumentSitemap.ParseDocument(document);
+            var actualList = _parserDocumentSitemap.ParseDocument(document);
 
             //Assert
-            Assert.IsEmpty(actualLink);
+            Assert.IsEmpty(actualList);
         }
 
         [Test]
         public void ParseDocument_DocumentHaveSeveralLink_ReturnList()
         {
             //Arrange
-            var expectedLinks = new List<Uri>(3) { new Uri("https://test1.com/tea/"), new Uri("https://test2.com/coffe/"), new Uri("https://test3.com/") };
+            var expectedList = new List<Uri>() { new Uri("https://test1.com/tea/"), new Uri("https://test2.com/coffe/"), new Uri("https://test3.com/") };
             string document = "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\" xmlns:xhtml=\"https://www.w3.org/1999/xhtml/\"> " +
                 "<url> <loc>https://test1.com/tea/</loc> </url> <url> <loc>https://test2.com/coffe/</loc> </url> " +
                 "<url> <loc>https://test3.com/</loc> </url> </urlset>";
 
             //Act
-            var actualLinks = _parserDocumentSitemap.ParseDocument(document);
+            var actualList = _parserDocumentSitemap.ParseDocument(document);
 
             //Assert
-            Assert.AreEqual(expectedLinks, actualLinks);
+            Assert.AreEqual(expectedList, actualList);
         }
 
         [Test]
-        public void ParseDocument_PassingNullIsParameters_ReturnList()
+        public void ParseDocument_PassingNullIsParameters_ReturnListLinks()
         {
             //Arrange
             string document = null;
 
             //Act
-            var actualLinks = _parserDocumentSitemap.ParseDocument(document);
+            var actualList = _parserDocumentSitemap.ParseDocument(document);
 
             //Assert
-            Assert.IsEmpty(actualLinks);
+            Assert.IsEmpty(actualList);
         }
     }
 }

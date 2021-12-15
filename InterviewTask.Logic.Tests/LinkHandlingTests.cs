@@ -9,13 +9,13 @@ namespace InterviewTask.Logic.Tests
     [TestFixture]
     internal class LinkHandlingTests
     {
-        private readonly int timeout = 1;
         private Mock<HttpService> _mockHttpService;
         private LinkHandling _linkHandling;
 
         [SetUp]
         public void SetUp()
         {
+            const int timeout = 1;
             _mockHttpService = new Mock<HttpService>(timeout);
             _linkHandling = new LinkHandling(_mockHttpService.Object);
         }
@@ -25,7 +25,7 @@ namespace InterviewTask.Logic.Tests
         {
             //Arrange
             string expectedString = "Link must be absolute";
-            var link = new Uri("ukad-group.com", UriKind.Relative);
+            var link = new Uri("example-1.com", UriKind.Relative);
 
             //Act
             var actualException = Assert.Throws<ArgumentException>(() => _linkHandling.DownloadDocument(link));
@@ -39,7 +39,7 @@ namespace InterviewTask.Logic.Tests
         {
             //Arrange
             string expectedString = "Link must be absolute";
-            var link = new Uri("ukad-group.com", UriKind.Relative);
+            var link = new Uri("example-2.com", UriKind.Relative);
 
             //Act
             var actualException = Assert.Throws<ArgumentException>(() => _linkHandling.GetLinkResponse(link));
@@ -58,10 +58,10 @@ namespace InterviewTask.Logic.Tests
                 .Returns(returnsResponseMessage);
 
             //Act
-            var actual = _linkHandling.GetLinkResponse(baseLink);
+            var actualResponseTime = _linkHandling.GetLinkResponse(baseLink);
 
             //Assert
-            Assert.IsTrue(actual >= 0);
+            Assert.IsTrue(actualResponseTime >= 0);
         }
 
         [Test]
@@ -74,10 +74,10 @@ namespace InterviewTask.Logic.Tests
                 .Returns(returnsResponseMessage);
 
             //Act
-            var actual = _linkHandling.GetLinkResponse(baseLink);
+            var actualResponseTime = _linkHandling.GetLinkResponse(baseLink);
 
             //Assert
-            Assert.IsTrue(actual == int.MaxValue);
+            Assert.IsTrue(actualResponseTime == int.MaxValue);
         }
     }
 }

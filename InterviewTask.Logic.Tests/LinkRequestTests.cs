@@ -23,7 +23,7 @@ namespace InterviewTask.Logic.Tests
         }
 
         [Test]
-        public void GetListWithLinksResponseTime_ConvertListOtherType_ReturnsLinkWithResponse()
+        public void GetListWithLinksResponseTime_ConvertListOtherType_ReturnsListLinkWithResponse()
         {
             //Arrange
             var expected = new List<LinkWithResponse>()
@@ -41,10 +41,10 @@ namespace InterviewTask.Logic.Tests
             _mockLinkHandling.Setup(m => m.GetLinkResponse(It.IsAny<Uri>())).Returns<HttpResponseMessage>(null);
 
             //Act
-            var actual = _linkRequest.GetListWithLinksResponseTime(inputList);
+            var actualList = _linkRequest.GetListWithLinksResponseTime(inputList);
 
             //Assert
-            Assert.AreEqual(expected.Select(_ => _.Url), actual.Select(_ => _.Url));
+            Assert.AreEqual(expected.Select(_ => _.Url), actualList.Select(_ => _.Url));
         }
 
         [Test]
