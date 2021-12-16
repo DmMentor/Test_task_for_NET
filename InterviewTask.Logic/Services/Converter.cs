@@ -26,9 +26,9 @@ namespace InterviewTask.Logic.Services
                 return null;
             }
 
-            string absolutePath = inputLink.StartsWith('/') ? inputLink : '/' + inputLink;
+            string relativePath = inputLink.StartsWith('/') ? inputLink : '/' + inputLink;
 
-            return new Uri(baseStartLink + absolutePath);
+            return new Uri(baseStartLink + relativePath);
         }
     }
 }
