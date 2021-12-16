@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net;
 using System.Net.Http;
 
 namespace InterviewTask.Logic.Services
@@ -16,30 +15,13 @@ namespace InterviewTask.Logic.Services
             };
         }
 
-        public virtual HttpResponseMessage GetResponseMessage(Uri link)
+        public virtual HttpResponseMessage GetResponseMessage(Uri link) => _client.GetAsync(link).Result;
+
+        public virtual string GetContent(HttpResponseMessage response)
         {
-            try
-            {
-                return _client.GetAsync(link).Result;
-            }
-            catch (WebException)
-            {
-                return new HttpResponseMessage() { StatusCode = HttpStatusCode.RequestTimeout };
-            }
-        }
+            using HttpContent content = response.Content;
 
-        public virtual string GetContent(Uri link)
-        {
-            var response = GetResponseMessage(link);
-
-            if (response.IsSuccessStatusCode)
-            {
-                using HttpContent content = response.Content;
-
-                return content.ReadAsStringAsync().Result;
-            }
-
-            return string.Empty;
+            return content.ReadAsStringAsync().Result;
         }
     }
 }

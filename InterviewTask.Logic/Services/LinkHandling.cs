@@ -38,9 +38,13 @@ namespace InterviewTask.Logic.Services
                 throw new ArgumentException("Link must be absolute");
             }
 
-            string document = _httpService.GetContent(inputLink);
+            var responseMessage = _httpService.GetResponseMessage(inputLink);
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                return _httpService.GetContent(responseMessage);
+            }
 
-            return document;
+            return string.Empty;
         }
     }
 }
