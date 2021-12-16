@@ -1,4 +1,7 @@
-﻿using InterviewTask.Logic.Services;
+﻿using InterviewTask.Logic.Extensions;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace InterviewTask.ConsoleApp
 {
@@ -6,15 +9,18 @@ namespace InterviewTask.ConsoleApp
     {
         private static void Main(string[] args)
         {
-            var linksDisplay = new LinksDisplay();
-            var httpService = new HttpService();
-            var linkHandling = new LinkHandling(httpService);
-
-            var linkRequest = new LinkRequest(linkHandling);
-            var converter = new Converter();
-            var consoleApp = new ConsoleApp(linksDisplay, converter, linkRequest);
-
-            consoleApp.Run();
+            CreateHostBuilder(args).Build().Run();
         }
+
+        private static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                .ConfigureServices((context, services) =>
+                {
+                    services.AddHostedService<ConsoleHostedService>();
+                    services.AddScoped<ConsoleApp>();
+                    services.AddScoped<LinksDisplay>();
+                    services.AddInterviewTaskLogicServices();
+                })
+                .ConfigureLogging(options => options.ClearProviders());
     }
 }

@@ -1,6 +1,4 @@
-﻿using InterviewTask.Logic.Crawlers;
-using InterviewTask.Logic.Models;
-using InterviewTask.Logic.Parsers;
+﻿using InterviewTask.Logic.Models;
 using InterviewTask.Logic.Services;
 using System;
 using System.Collections.Generic;
@@ -10,49 +8,26 @@ namespace InterviewTask.ConsoleApp
     internal class ConsoleApp
     {
         private readonly LinksDisplay _linksDisplay;
-        private readonly Converter _converter;
         private readonly LinkRequest _linkRequest;
+        private readonly WebsiteCrawler _crawler;
 
-        public ConsoleApp(LinksDisplay linksDisplay, Converter converter, LinkRequest linkRequest)
+        public ConsoleApp(LinksDisplay linksDisplay, LinkRequest linkRequest, WebsiteCrawler crawler)
         {
             _linksDisplay = linksDisplay;
-            _converter = converter;
             _linkRequest = linkRequest;
+            _crawler = crawler;
         }
 
         public void Run()
         {
-            try
-            {
-                Uri inputLink = InputLink();
+            Uri inputLink = InputLink();
 
-                Console.WriteLine($"Starting parsing website....{Environment.NewLine}");
+            Console.WriteLine($"Starting parsing website....{Environment.NewLine}");
 
-                WebsiteCrawler crawler = SetupCrawler();
+            var listAllLinks = _crawler.Start(inputLink);
+            var listAllLinksWithResponse = _linkRequest.GetListWithLinksResponseTime(listAllLinks);
 
-                var listAllLinks = crawler.Start(inputLink);
-                var listAllLinksWithResponse = _linkRequest.GetListWithLinksResponseTime(listAllLinks);
-
-                Display(listAllLinks, listAllLinksWithResponse);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-        }
-
-        private WebsiteCrawler SetupCrawler()
-        {
-            var parseDocumentHtml = new ParseDocumentHtml();
-            var parseDocumentXml = new ParseDocumentSitemap();
-
-            var httpService = new HttpService();
-            var downloadDocument = new LinkHandling(httpService);
-
-            var parseHtml = new HtmlCrawler(parseDocumentHtml, downloadDocument, _converter);
-            var parseSitemap = new SitemapCrawler(parseDocumentXml, downloadDocument);
-
-            return new WebsiteCrawler(parseHtml, parseSitemap);
+            Display(listAllLinks, listAllLinksWithResponse);
         }
 
         private Uri InputLink()
