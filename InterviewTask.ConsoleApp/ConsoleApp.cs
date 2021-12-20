@@ -20,14 +20,21 @@ namespace InterviewTask.ConsoleApp
 
         public void Run()
         {
-            Uri inputLink = InputLink();
+            try
+            {
+                Uri inputLink = InputLink();
 
-            Console.WriteLine($"Starting parsing website....{Environment.NewLine}");
+                Console.WriteLine($"Starting parsing website....{Environment.NewLine}");
 
-            var listAllLinks = _crawler.Start(inputLink);
-            var listAllLinksWithResponse = _linkRequest.GetListWithLinksResponseTime(listAllLinks);
+                var listAllLinks = _crawler.Start(inputLink);
+                var listAllLinksWithResponse = _linkRequest.GetListWithLinksResponseTime(listAllLinks);
 
-            Display(listAllLinks, listAllLinksWithResponse);
+                Display(listAllLinks, listAllLinksWithResponse);
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception.Message);
+            }
         }
 
         private Uri InputLink()

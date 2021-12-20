@@ -12,9 +12,9 @@ namespace InterviewTask.Logic.Parsers
             IEnumerable<string> listLinks = document?.Split('\n', '\r')
                 .Where(d => d.Contains("<a"))
                 .Where(d => d.Contains(conditionalLink))
-                .Select(d => CutLinkString(d, conditionalLink));
+                .Select(d => CutLinkString(d, conditionalLink)) ?? Enumerable.Empty<string>();
 
-            return listLinks ?? Enumerable.Empty<string>();
+            return listLinks;
         }
 
         private string CutLinkString(string link, string conditionalLink)

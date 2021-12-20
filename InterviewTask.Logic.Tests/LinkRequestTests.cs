@@ -10,7 +10,7 @@ using System.Net.Http;
 namespace InterviewTask.Logic.Tests
 {
     [TestFixture]
-    class LinkRequestTests
+    internal class LinkRequestTests
     {
         private Mock<LinkHandling> _mockLinkHandling;
         private LinkRequest _linkRequest;

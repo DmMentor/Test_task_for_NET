@@ -9,15 +9,15 @@ namespace InterviewTask.Logic.Extensions
     {
         public static IServiceCollection AddInterviewTaskLogicServices(this IServiceCollection services)
         {
-            services.AddScoped<WebsiteCrawler>();
-            services.AddScoped<HtmlCrawler>();
-            services.AddScoped<SitemapCrawler>();
-            services.AddScoped<ParseDocumentHtml>();
-            services.AddScoped<ParseDocumentSitemap>();
-            services.AddScoped<Converter>();
-            services.AddScoped<HttpService>();
-            services.AddScoped<LinkHandling>();
-            services.AddScoped<LinkRequest>();
+            services.AddScoped<WebsiteCrawler>()
+                    .AddScoped<HtmlCrawler>()
+                    .AddScoped<SitemapCrawler>()
+                    .AddScoped<ParseDocumentHtml>()
+                    .AddScoped<ParseDocumentSitemap>()
+                    .AddScoped<Converter>()
+                    .AddScoped<HttpService>()
+                    .AddScoped<LinkHandling>()
+                    .AddScoped<LinkRequest>();
 
             return services;
         }

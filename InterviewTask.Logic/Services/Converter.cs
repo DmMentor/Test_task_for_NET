@@ -21,7 +21,7 @@ namespace InterviewTask.Logic.Services
                 return link.Host == baseLink.Host ? link : null;
             }
 
-            if (inputLink.Where(s => s == ':').Any())
+            if (inputLink.Any(s => s == ':'))
             {
                 return null;
             }
