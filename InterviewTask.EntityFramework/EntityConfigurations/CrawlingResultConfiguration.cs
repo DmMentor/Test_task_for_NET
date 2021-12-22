@@ -8,9 +8,10 @@ namespace InterviewTask.EntityFramework.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<CrawlingResult> builder)
         {
-            builder.Property(p => p.IsLinkFromHtml);
-            builder.Property(p => p.IsLinkFromSitemap);
-            builder.Property(p => p.Url).HasColumnName("Links");
+            builder.HasOne(p => p.Test)
+                   .WithMany(p => p.Links)
+                   .OnDelete(DeleteBehavior.Cascade)
+                   .IsRequired(true);
         }
     }
 }
