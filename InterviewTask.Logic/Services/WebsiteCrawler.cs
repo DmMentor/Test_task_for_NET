@@ -38,11 +38,11 @@ namespace InterviewTask.Logic.Services
             var intersectLinks = listLinksHtml.Intersect(listLinksSitemap);
 
             var listUniqueLinks = intersectLinks.Select(s => new Link()
-                {
-                    Url = s,
-                    IsLinkFromHtml = true,
-                    IsLinkFromSitemap = true
-                });
+            {
+                Url = s,
+                IsLinkFromHtml = true,
+                IsLinkFromSitemap = true
+            });
 
             var onlyLinksHtml = listLinksHtml.Except(intersectLinks)
                 .Select(s => new Link()
