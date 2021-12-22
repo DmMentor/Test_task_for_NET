@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InterviewTask.EntityFramework.Migrations
 {
     [DbContext(typeof(CrawlerContext))]
-    [Migration("20211221152600_RenameProperties")]
+    [Migration("20211222145030_RenameProperties")]
     partial class RenameProperties
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,7 +21,7 @@ namespace InterviewTask.EntityFramework.Migrations
                 .HasAnnotation("ProductVersion", "5.0.13")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("InterviewTask.EntityFramework.Models.LinkEntity", b =>
+            modelBuilder.Entity("InterviewTask.EntityFramework.Entities.CrawlingResult", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -50,7 +50,7 @@ namespace InterviewTask.EntityFramework.Migrations
                     b.ToTable("Links");
                 });
 
-            modelBuilder.Entity("InterviewTask.EntityFramework.Models.TestEntity", b =>
+            modelBuilder.Entity("InterviewTask.EntityFramework.Entities.Test", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -71,9 +71,9 @@ namespace InterviewTask.EntityFramework.Migrations
                     b.ToTable("Tests");
                 });
 
-            modelBuilder.Entity("InterviewTask.EntityFramework.Models.LinkEntity", b =>
+            modelBuilder.Entity("InterviewTask.EntityFramework.Entities.CrawlingResult", b =>
                 {
-                    b.HasOne("InterviewTask.EntityFramework.Models.TestEntity", "Test")
+                    b.HasOne("InterviewTask.EntityFramework.Entities.Test", "Test")
                         .WithMany("Links")
                         .HasForeignKey("TestId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -82,7 +82,7 @@ namespace InterviewTask.EntityFramework.Migrations
                     b.Navigation("Test");
                 });
 
-            modelBuilder.Entity("InterviewTask.EntityFramework.Models.TestEntity", b =>
+            modelBuilder.Entity("InterviewTask.EntityFramework.Entities.Test", b =>
                 {
                     b.Navigation("Links");
                 });
