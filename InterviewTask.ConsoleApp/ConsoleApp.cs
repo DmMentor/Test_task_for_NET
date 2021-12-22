@@ -10,31 +10,28 @@ namespace InterviewTask.ConsoleApp
         private readonly LinksDisplay _linksDisplay;
         private readonly LinkRequest _linkRequest;
         private readonly WebsiteCrawler _crawler;
+        private readonly DbHandling _handlingDb;
 
-        public ConsoleApp(LinksDisplay linksDisplay, LinkRequest linkRequest, WebsiteCrawler crawler)
+        public ConsoleApp(LinksDisplay linksDisplay, LinkRequest linkRequest, WebsiteCrawler crawler, DbHandling handlingDb)
         {
             _linksDisplay = linksDisplay;
             _linkRequest = linkRequest;
             _crawler = crawler;
+            _handlingDb = handlingDb;
         }
 
         public void Run()
         {
-            try
-            {
-                Uri inputLink = InputLink();
+            Uri inputLink = InputLink();
 
-                Console.WriteLine($"Starting parsing website....{Environment.NewLine}");
+            Console.WriteLine($"Starting parsing website....{Environment.NewLine}");
 
-                var listAllLinks = _crawler.Start(inputLink);
-                var listAllLinksWithResponse = _linkRequest.GetListWithLinksResponseTime(listAllLinks);
+            var listAllLinks = _crawler.Start(inputLink);
+            var listAllLinksWithResponse = _linkRequest.GetListWithLinksResponseTime(listAllLinks);
 
-                Display(listAllLinks, listAllLinksWithResponse);
-            }
-            catch (Exception exception)
-            {
-                Console.WriteLine(exception.Message);
-            }
+            Display(listAllLinks, listAllLinksWithResponse);
+
+            _handlingDb.SaveDatabase(inputLink, listAllLinks, listAllLinksWithResponse);
         }
 
         private Uri InputLink()

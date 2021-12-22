@@ -1,5 +1,10 @@
-﻿using InterviewTask.Logic.Extensions;
+﻿using InterviewTask.EntityFramework;
+using InterviewTask.Logic.Extensions;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace InterviewTask.ConsoleApp
 {
@@ -7,16 +12,29 @@ namespace InterviewTask.ConsoleApp
     {
         private static void Main(string[] args)
         {
-            var serviceCollection = new ServiceCollection()
-                    .AddScoped<ConsoleApp>()
-                    .AddScoped<LinksDisplay>()
-                    .AddInterviewTaskLogicServices();
-
-            using (var serviceProvider = serviceCollection.BuildServiceProvider())
-            {
-                var consoleApp = serviceProvider.GetService<ConsoleApp>();
-                consoleApp.Run();
-            }
+            var consoleApp = CreateHostBuilder(args)
+                             .Build()
+                             .Services
+                             .GetService<ConsoleApp>();
+            consoleApp.Run();
         }
+
+        private static IHostBuilder CreateHostBuilder(string[] args) =>
+           Host.CreateDefaultBuilder(args)
+               .ConfigureServices((context, services) =>
+               {
+                   services.AddScoped<ConsoleApp>()
+                     .AddScoped<LinksDisplay>()
+                     .AddEfRepository<CrawlerContext>(o =>
+                     {
+                         var builder = new ConfigurationBuilder();
+                         builder.AddJsonFile("consolesettings.json");
+
+                         string dbConnection = builder.Build().GetConnectionString("connection");
+                         o.UseSqlServer(dbConnection);
+                     })
+                     .AddInterviewTaskLogicServices();
+               })
+               .ConfigureLogging(options => options.SetMinimumLevel(LogLevel.Error));
     }
 }

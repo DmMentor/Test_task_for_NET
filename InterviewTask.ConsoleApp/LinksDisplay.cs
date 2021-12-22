@@ -43,8 +43,8 @@ namespace InterviewTask.ConsoleApp
 
         public void DisplayAmountLinks(IEnumerable<Link> listAllLinks)
         {
-            int urlHtml = listAllLinks?.Where(l => (!l.IsLinkFromSitemap || l.IsLinkFromHtml)).Count() ?? 0;
-            int urlSitemap = listAllLinks?.Where(l => (l.IsLinkFromSitemap || !l.IsLinkFromHtml)).Count() ?? 0;
+            int urlHtml = listAllLinks?.Where(l => (l.IsLinkFromHtml)).Count() ?? 0;
+            int urlSitemap = listAllLinks?.Where(l => (l.IsLinkFromSitemap)).Count() ?? 0;
 
             Console.WriteLine($"\nUrls(html documents) found after crawling a website: {urlHtml}");
             Console.WriteLine($"Urls found in sitemap: {urlSitemap}");
