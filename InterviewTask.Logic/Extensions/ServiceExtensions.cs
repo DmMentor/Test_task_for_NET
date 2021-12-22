@@ -1,4 +1,5 @@
-﻿using InterviewTask.Logic.Crawlers;
+﻿using InterviewTask.EntityFramework.Entities;
+using InterviewTask.Logic.Crawlers;
 using InterviewTask.Logic.Parsers;
 using InterviewTask.Logic.Services;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,7 +18,10 @@ namespace InterviewTask.Logic.Extensions
                     .AddScoped<Converter>()
                     .AddScoped<HttpService>()
                     .AddScoped<LinkHandling>()
-                    .AddScoped<LinkRequest>();
+                    .AddScoped<LinkRequest>()
+                    .AddScoped<DbHandling>()
+                    .AddScoped<CrawlingResult>()
+                    .AddScoped<Test>();
 
             return services;
         }
