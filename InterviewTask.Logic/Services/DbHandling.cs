@@ -11,27 +11,28 @@ namespace InterviewTask.Logic.Services
     {
         private readonly IRepository<Test> _testRepository;
 
-        public DbHandling(IRepository<Test> repositoryTest)
+        public DbHandling(IRepository<Test> testRepository)
         {
-            _testRepository = repositoryTest;
+            _testRepository = testRepository;
         }
 
         public void SaveDatabase(Uri baseLink, IEnumerable<Link> listLinksFlags, IEnumerable<LinkWithResponse> listLinksWithResponse)
         {
 
-            var listLinksForDb = listLinksFlags.Join(listLinksWithResponse,
-                                                     linksFlags => linksFlags.Url,
-                                                     linksResponse => linksResponse.Url,
-                                                     (linksFlags, linksResponse) =>
-                                                     {
-                                                         return new CrawlingResult()
-                                                         {
-                                                             Url = linksResponse.Url,
-                                                             IsLinkFromHtml = linksFlags.IsLinkFromHtml,
-                                                             IsLinkFromSitemap = linksFlags.IsLinkFromSitemap,
-                                                             ResponseTime = linksResponse.ResponseTime
-                                                         };
-                                                     }).ToList();
+            var listLinksForDb = listLinksFlags.Join(
+                listLinksWithResponse,
+                linksFlags => linksFlags.Url,
+                linksResponse => linksResponse.Url,
+                (linksFlags, linksResponse) =>
+                {
+                    return new CrawlingResult()
+                    {
+                        Url = linksResponse.Url,
+                        IsLinkFromHtml = linksFlags.IsLinkFromHtml,
+                        IsLinkFromSitemap = linksFlags.IsLinkFromSitemap,
+                        ResponseTime = linksResponse.ResponseTime
+                    };
+                }).ToList();
 
             var test = new Test() { Url = baseLink, Links = listLinksForDb };
 
