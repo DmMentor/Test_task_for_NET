@@ -8,6 +8,8 @@ namespace InterviewTask.EntityFramework.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<CrawlingResult> builder)
         {
+            builder.Property(p => p.Url)
+                   .HasMaxLength(2000);
             builder.HasOne(p => p.Test)
                    .WithMany(p => p.Links)
                    .OnDelete(DeleteBehavior.Cascade)
