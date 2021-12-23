@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net.Http;
 
-namespace InterviewTask.LogicCrawler.Services
+namespace InterviewTask.CrawlerServices.Services
 {
     public class HttpService
     {

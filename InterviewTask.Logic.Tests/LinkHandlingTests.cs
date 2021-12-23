@@ -1,10 +1,10 @@
-﻿using InterviewTask.LogicCrawler.Services;
+﻿using InterviewTask.CrawlerServices.Services;
 using Moq;
 using NUnit.Framework;
 using System;
 using System.Net.Http;
 
-namespace InterviewTask.LogicCrawler.Tests
+namespace InterviewTask.CrawlerServices.Tests
 {
     [TestFixture]
     internal class LinkHandlingTests

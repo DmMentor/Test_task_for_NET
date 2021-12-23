@@ -1,6 +1,6 @@
 ﻿using InterviewTask.EntityFramework;
-using InterviewTask.LogicCrawler.Extensions;
-using InterviewTask.LogicDatabase.Extensions;
+using InterviewTask.CrawlerServices.Extensions;
+using InterviewTask.DatabaseServices.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

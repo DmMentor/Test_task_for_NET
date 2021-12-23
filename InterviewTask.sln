@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31729.503
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InterviewTask.LogicCrawler", "InterviewTask.Logic\InterviewTask.LogicCrawler.csproj", "{C9AAE682-F7FD-4E80-84C0-8351D161370A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InterviewTask.CrawlerServices", "InterviewTask.Logic\InterviewTask.CrawlerServices.csproj", "{C9AAE682-F7FD-4E80-84C0-8351D161370A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InterviewTask.Logic.Tests", "InterviewTask.Logic.Tests\InterviewTask.Logic.Tests.csproj", "{D760C8CD-FD59-47D6-92E6-B12B3B5B0E05}"
 EndProject
@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InterviewTask.ConsoleApp", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InterviewTask.EntityFramework", "InterviewTask.EntityFramework\InterviewTask.EntityFramework.csproj", "{E80F2556-88CC-452D-8E20-F1B07795E962}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InterviewTask.LogicDatabase", "InterviewTask.LogicDatabase\InterviewTask.LogicDatabase.csproj", "{D9400A03-8E6E-4802-85F4-9C809A253001}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InterviewTask.DatabaseServices", "InterviewTask.LogicDatabase\InterviewTask.DatabaseServices.csproj", "{D9400A03-8E6E-4802-85F4-9C809A253001}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,11 +1,11 @@
 ﻿using InterviewTask.EntityFramework.Entities;
-using InterviewTask.LogicCrawler.Models;
+using InterviewTask.CrawlerServices.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 
-namespace InterviewTask.LogicDatabase.Services
+namespace InterviewTask.DatabaseServices.Services
 {
     public class DatabaseOperation
     {

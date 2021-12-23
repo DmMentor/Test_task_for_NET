@@ -1,5 +1,5 @@
-﻿using InterviewTask.LogicCrawler.Models;
-using InterviewTask.LogicCrawler.Services;
+﻿using InterviewTask.CrawlerServices.Models;
+using InterviewTask.CrawlerServices.Services;
 using Moq;
 using NUnit.Framework;
 using System;
@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 
-namespace InterviewTask.LogicCrawler.Tests
+namespace InterviewTask.CrawlerServices.Tests
 {
     [TestFixture]
     internal class LinkRequestTests

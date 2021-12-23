@@ -1,9 +1,9 @@
-﻿using InterviewTask.LogicCrawler.Parsers;
-using InterviewTask.LogicCrawler.Services;
+﻿using InterviewTask.CrawlerServices.Parsers;
+using InterviewTask.CrawlerServices.Services;
 using System;
 using System.Collections.Generic;
 
-namespace InterviewTask.LogicCrawler.Crawlers
+namespace InterviewTask.CrawlerServices.Crawlers
 {
     public class SitemapCrawler
     {

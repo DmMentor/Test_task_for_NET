@@ -1,6 +1,6 @@
-﻿using InterviewTask.LogicCrawler.Models;
-using InterviewTask.LogicCrawler.Services;
-using InterviewTask.LogicDatabase.Services;
+﻿using InterviewTask.CrawlerServices.Models;
+using InterviewTask.CrawlerServices.Services;
+using InterviewTask.DatabaseServices.Services;
 using System;
 using System.Collections.Generic;
 
@@ -11,14 +11,14 @@ namespace InterviewTask.ConsoleApp
         private readonly LinksDisplay _linksDisplay;
         private readonly LinkRequest _linkRequest;
         private readonly WebsiteCrawler _crawler;
-        private readonly DatabaseOperation _handlingDb;
+        private readonly DatabaseOperation _databaseOperation;
 
-        public ConsoleApp(LinksDisplay linksDisplay, LinkRequest linkRequest, WebsiteCrawler crawler, DatabaseOperation handlingDb)
+        public ConsoleApp(LinksDisplay linksDisplay, LinkRequest linkRequest, WebsiteCrawler crawler, DatabaseOperation databaseOperation)
         {
             _linksDisplay = linksDisplay;
             _linkRequest = linkRequest;
             _crawler = crawler;
-            _handlingDb = handlingDb;
+            _databaseOperation = databaseOperation;
         }
 
         public void Run()
@@ -32,7 +32,7 @@ namespace InterviewTask.ConsoleApp
 
             Display(listAllLinks, listAllLinksWithResponse);
 
-            _handlingDb.SaveToDatabase(inputLink, listAllLinks, listAllLinksWithResponse);
+            _databaseOperation.SaveToDatabase(inputLink, listAllLinks, listAllLinksWithResponse);
         }
 
         private Uri InputLink()

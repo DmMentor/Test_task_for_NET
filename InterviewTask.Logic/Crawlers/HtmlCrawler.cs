@@ -1,10 +1,10 @@
-﻿using InterviewTask.LogicCrawler.Parsers;
-using InterviewTask.LogicCrawler.Services;
+﻿using InterviewTask.CrawlerServices.Parsers;
+using InterviewTask.CrawlerServices.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace InterviewTask.LogicCrawler.Crawlers
+namespace InterviewTask.CrawlerServices.Crawlers
 {
     public class HtmlCrawler
     {

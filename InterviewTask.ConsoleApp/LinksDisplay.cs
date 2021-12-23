@@ -1,4 +1,4 @@
-﻿using InterviewTask.LogicCrawler.Models;
+﻿using InterviewTask.CrawlerServices.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
