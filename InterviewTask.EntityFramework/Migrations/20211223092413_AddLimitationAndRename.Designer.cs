@@ -4,14 +4,16 @@ using InterviewTask.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace InterviewTask.EntityFramework.Migrations
 {
     [DbContext(typeof(CrawlerContext))]
-    partial class CrawlerContextModelSnapshot : ModelSnapshot
+    [Migration("20211223092413_AddLimitationAndRename")]
+    partial class AddLimitationAndRename
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

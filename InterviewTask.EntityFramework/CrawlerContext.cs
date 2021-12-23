@@ -10,12 +10,14 @@ namespace InterviewTask.EntityFramework
         public DbSet<CrawlingResult> Links { get; set; }
         public DbSet<Test> Tests { get; set; }
 
-        public CrawlerContext(DbContextOptions<CrawlerContext> dbContextOptions) : base(dbContextOptions)
+        public CrawlerContext(DbContextOptions<CrawlerContext> dbContextOptions)
+            : base(dbContextOptions)
         {
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
     }
