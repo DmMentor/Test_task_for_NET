@@ -1,5 +1,6 @@
 ﻿using InterviewTask.EntityFramework;
-using InterviewTask.Logic.Extensions;
+using InterviewTask.LogicCrawler.Extensions;
+using InterviewTask.LogicDatabase.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,10 +28,10 @@ namespace InterviewTask.ConsoleApp
                      .AddScoped<LinksDisplay>()
                      .AddEfRepository<CrawlerContext>(o =>
                      {
-                         string dbConnection = context.Configuration.GetConnectionString("connection");
-                         o.UseSqlServer(dbConnection);
+                         o.UseSqlServer(context.Configuration.GetConnectionString("Connection"));
                      })
-                     .AddInterviewTaskLogicServices();
+                     .AddLogicCrawlerServices()
+                     .AddLogicDatabaseServices();
                })
                .ConfigureLogging(options => options.SetMinimumLevel(LogLevel.Error));
     }
