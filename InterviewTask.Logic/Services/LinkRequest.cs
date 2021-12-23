@@ -1,8 +1,8 @@
-﻿using InterviewTask.Logic.Models;
+﻿using InterviewTask.LogicCrawler.Models;
 using System;
 using System.Collections.Generic;
 
-namespace InterviewTask.Logic.Services
+namespace InterviewTask.LogicCrawler.Services
 {
     public class LinkRequest
     {

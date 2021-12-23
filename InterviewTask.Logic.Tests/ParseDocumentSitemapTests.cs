@@ -1,9 +1,9 @@
-﻿using InterviewTask.Logic.Parsers;
+﻿using InterviewTask.LogicCrawler.Parsers;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 
-namespace InterviewTask.Logic.Tests
+namespace InterviewTask.LogicCrawler.Tests
 {
     [TestFixture]
     internal class ParseDocumentSitemapTests

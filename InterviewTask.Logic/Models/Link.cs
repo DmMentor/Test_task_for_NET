@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace InterviewTask.Logic.Models
+namespace InterviewTask.LogicCrawler.Models
 {
     public class Link
     {

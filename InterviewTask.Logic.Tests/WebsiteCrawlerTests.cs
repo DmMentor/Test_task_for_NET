@@ -1,14 +1,14 @@
-﻿using InterviewTask.Logic.Crawlers;
-using InterviewTask.Logic.Models;
-using InterviewTask.Logic.Parsers;
-using InterviewTask.Logic.Services;
+﻿using InterviewTask.LogicCrawler.Crawlers;
+using InterviewTask.LogicCrawler.Models;
+using InterviewTask.LogicCrawler.Parsers;
+using InterviewTask.LogicCrawler.Services;
 using Moq;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace InterviewTask.Logic.Tests
+namespace InterviewTask.LogicCrawler.Tests
 {
     [TestFixture]
     internal class WebsiteCrawlerTests

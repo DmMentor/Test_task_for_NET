@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace InterviewTask.Logic.Parsers
+namespace InterviewTask.LogicCrawler.Parsers
 {
     public class ParseDocumentHtml
     {
