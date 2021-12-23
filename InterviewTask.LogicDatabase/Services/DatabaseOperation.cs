@@ -1,24 +1,23 @@
 ﻿using InterviewTask.EntityFramework.Entities;
-using InterviewTask.Logic.Models;
+using InterviewTask.LogicCrawler.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 
-namespace InterviewTask.Logic.Services
+namespace InterviewTask.LogicDatabase.Services
 {
-    public class DbHandling
+    public class DatabaseOperation
     {
         private readonly IRepository<Test> _testRepository;
 
-        public DbHandling(IRepository<Test> testRepository)
+        public DatabaseOperation(IRepository<Test> testRepository)
         {
             _testRepository = testRepository;
         }
 
-        public void SaveDatabase(Uri baseLink, IEnumerable<Link> listLinksFlags, IEnumerable<LinkWithResponse> listLinksWithResponse)
+        public void SaveToDatabase(Uri baseLink, IEnumerable<Link> listLinksFlags, IEnumerable<LinkWithResponse> listLinksWithResponse)
         {
-
             var listLinksForDb = listLinksFlags.Join(
                 listLinksWithResponse,
                 linksFlags => linksFlags.Url,
@@ -34,7 +33,7 @@ namespace InterviewTask.Logic.Services
                     };
                 }).ToList();
 
-            var test = new Test() { Url = baseLink, Links = listLinksForDb };
+            var test = new Test() { BaseUrl = baseLink, Links = listLinksForDb };
 
             _testRepository.Add(test);
             _testRepository.SaveChanges();
