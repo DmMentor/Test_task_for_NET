@@ -27,10 +27,7 @@ namespace InterviewTask.ConsoleApp
                      .AddScoped<LinksDisplay>()
                      .AddEfRepository<CrawlerContext>(o =>
                      {
-                         var builder = new ConfigurationBuilder();
-                         builder.AddJsonFile("consolesettings.json");
-
-                         string dbConnection = builder.Build().GetConnectionString("connection");
+                         string dbConnection = context.Configuration.GetConnectionString("connection");
                          o.UseSqlServer(dbConnection);
                      })
                      .AddInterviewTaskLogicServices();
