@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\InterviewTask.Logic\InterviewTask.Logic.csproj" />
+    <ProjectReference Include="..\InterviewTask.Logic\InterviewTask.LogicCrawler.csproj" />
   </ItemGroup>
 
 </Project>
