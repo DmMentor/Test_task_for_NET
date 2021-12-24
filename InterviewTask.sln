@@ -5,13 +5,13 @@ VisualStudioVersion = 16.0.31729.503
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InterviewTask.CrawlerServices", "InterviewTask.Logic\InterviewTask.CrawlerServices.csproj", "{C9AAE682-F7FD-4E80-84C0-8351D161370A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InterviewTask.Logic.Tests", "InterviewTask.Logic.Tests\InterviewTask.Logic.Tests.csproj", "{D760C8CD-FD59-47D6-92E6-B12B3B5B0E05}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InterviewTask.ConsoleApp", "InterviewTask.ConsoleApp\InterviewTask.ConsoleApp.csproj", "{5A74A9F9-68B0-4FBE-BF5A-6F81537156AB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InterviewTask.EntityFramework", "InterviewTask.EntityFramework\InterviewTask.EntityFramework.csproj", "{E80F2556-88CC-452D-8E20-F1B07795E962}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InterviewTask.DatabaseServices", "InterviewTask.LogicDatabase\InterviewTask.DatabaseServices.csproj", "{D9400A03-8E6E-4802-85F4-9C809A253001}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InterviewTask.CrawlerServices.Tests", "InterviewTask.Logic.Tests\InterviewTask.CrawlerServices.Tests.csproj", "{6688828F-751B-4C1E-B7A6-26CD86649BFF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,6 @@ Global
 		{C9AAE682-F7FD-4E80-84C0-8351D161370A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C9AAE682-F7FD-4E80-84C0-8351D161370A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C9AAE682-F7FD-4E80-84C0-8351D161370A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D760C8CD-FD59-47D6-92E6-B12B3B5B0E05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D760C8CD-FD59-47D6-92E6-B12B3B5B0E05}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D760C8CD-FD59-47D6-92E6-B12B3B5B0E05}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D760C8CD-FD59-47D6-92E6-B12B3B5B0E05}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5A74A9F9-68B0-4FBE-BF5A-6F81537156AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5A74A9F9-68B0-4FBE-BF5A-6F81537156AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5A74A9F9-68B0-4FBE-BF5A-6F81537156AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -39,6 +35,10 @@ Global
 		{D9400A03-8E6E-4802-85F4-9C809A253001}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D9400A03-8E6E-4802-85F4-9C809A253001}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D9400A03-8E6E-4802-85F4-9C809A253001}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6688828F-751B-4C1E-B7A6-26CD86649BFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6688828F-751B-4C1E-B7A6-26CD86649BFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6688828F-751B-4C1E-B7A6-26CD86649BFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6688828F-751B-4C1E-B7A6-26CD86649BFF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
