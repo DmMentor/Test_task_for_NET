@@ -30,7 +30,7 @@ namespace InterviewTask.CrawlerServices.Services
 
             var listAllLinks = ConcatLists(listLinksHtml, listLinksSitemap);
 
-            return listAllLinks;
+            return listAllLinks.ToList();
         }
 
         private IEnumerable<Link> ConcatLists(IEnumerable<Uri> listLinksHtml, IEnumerable<Uri> listLinksSitemap)

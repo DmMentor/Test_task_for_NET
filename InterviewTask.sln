@@ -3,15 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31729.503
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InterviewTask.CrawlerServices", "InterviewTask.Logic\InterviewTask.CrawlerServices.csproj", "{C9AAE682-F7FD-4E80-84C0-8351D161370A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InterviewTask.CrawlerServices", "InterviewTask.CrawlerServices\InterviewTask.CrawlerServices.csproj", "{C9AAE682-F7FD-4E80-84C0-8351D161370A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InterviewTask.ConsoleApp", "InterviewTask.ConsoleApp\InterviewTask.ConsoleApp.csproj", "{5A74A9F9-68B0-4FBE-BF5A-6F81537156AB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InterviewTask.EntityFramework", "InterviewTask.EntityFramework\InterviewTask.EntityFramework.csproj", "{E80F2556-88CC-452D-8E20-F1B07795E962}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InterviewTask.DatabaseServices", "InterviewTask.LogicDatabase\InterviewTask.DatabaseServices.csproj", "{D9400A03-8E6E-4802-85F4-9C809A253001}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InterviewTask.DatabaseServices", "InterviewTask.DatabaseServices\InterviewTask.DatabaseServices.csproj", "{D9400A03-8E6E-4802-85F4-9C809A253001}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InterviewTask.CrawlerServices.Tests", "InterviewTask.Logic.Tests\InterviewTask.CrawlerServices.Tests.csproj", "{6688828F-751B-4C1E-B7A6-26CD86649BFF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InterviewTask.CrawlerServices.Tests", "InterviewTask.CrawlerServices.Tests\InterviewTask.CrawlerServices.Tests.csproj", "{6688828F-751B-4C1E-B7A6-26CD86649BFF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InterviewTask.WebApp", "InterviewTask.WebApp\InterviewTask.WebApp.csproj", "{A89DBBC6-4AD2-4213-BCD7-03D55048771B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{6688828F-751B-4C1E-B7A6-26CD86649BFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6688828F-751B-4C1E-B7A6-26CD86649BFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6688828F-751B-4C1E-B7A6-26CD86649BFF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A89DBBC6-4AD2-4213-BCD7-03D55048771B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A89DBBC6-4AD2-4213-BCD7-03D55048771B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A89DBBC6-4AD2-4213-BCD7-03D55048771B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A89DBBC6-4AD2-4213-BCD7-03D55048771B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

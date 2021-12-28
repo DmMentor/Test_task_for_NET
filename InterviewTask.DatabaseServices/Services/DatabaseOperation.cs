@@ -10,10 +10,12 @@ namespace InterviewTask.DatabaseServices.Services
     public class DatabaseOperation
     {
         private readonly IRepository<Test> _testRepository;
+        IRepository<CrawlingResult> _crawlingResultRepository;
 
-        public DatabaseOperation(IRepository<Test> testRepository)
+        public DatabaseOperation(IRepository<Test> testRepository, IRepository<CrawlingResult> crawlingResultRepository)
         {
             _testRepository = testRepository;
+            _crawlingResultRepository = crawlingResultRepository;
         }
 
         public void SaveToDatabase(Uri baseLink, IEnumerable<Link> listLinksFlags, IEnumerable<LinkWithResponse> listLinksWithResponse)
@@ -37,6 +39,17 @@ namespace InterviewTask.DatabaseServices.Services
 
             _testRepository.Add(test);
             _testRepository.SaveChanges();
+        }
+
+        public IEnumerable<Test> GetListTests()
+        {
+            return _testRepository.GetAllAsNoTracking();
+        }
+
+        public IQueryable<CrawlingResult> GetListLinks(int id)
+        {
+            return _crawlingResultRepository.GetAllAsNoTracking()
+                                            .Where(s => s.TestId == id);
         }
     }
 }

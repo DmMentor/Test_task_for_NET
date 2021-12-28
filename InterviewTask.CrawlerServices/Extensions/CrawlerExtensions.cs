@@ -7,7 +7,7 @@ namespace InterviewTask.CrawlerServices.Extensions
 {
     public static class CrawlerExtensions
     {
-        public static IServiceCollection AddLogicCrawlerServices(this IServiceCollection services)
+        public static IServiceCollection AddCrawlerServices(this IServiceCollection services)
         {
             services.AddScoped<WebsiteCrawler>()
                     .AddScoped<HtmlCrawler>()

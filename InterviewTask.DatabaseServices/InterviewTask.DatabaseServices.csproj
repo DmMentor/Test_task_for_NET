@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\InterviewTask.EntityFramework\InterviewTask.EntityFramework.csproj" />
-    <ProjectReference Include="..\InterviewTask.Logic\InterviewTask.CrawlerServices.csproj" />
+    <ProjectReference Include="..\InterviewTask.CrawlerServices\InterviewTask.CrawlerServices.csproj" />
   </ItemGroup>
 
 </Project>

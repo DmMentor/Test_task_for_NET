@@ -5,7 +5,7 @@ namespace InterviewTask.DatabaseServices.Extensions
 {
     public static class DatabaseExtensions
     {
-        public static IServiceCollection AddLogicDatabaseServices(this IServiceCollection services)
+        public static IServiceCollection AddDatabaseServices(this IServiceCollection services)
         {
             services.AddScoped<DatabaseOperation>();
 
