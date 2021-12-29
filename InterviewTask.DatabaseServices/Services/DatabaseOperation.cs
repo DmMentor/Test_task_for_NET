@@ -43,13 +43,30 @@ namespace InterviewTask.DatabaseServices.Services
 
         public IEnumerable<Test> GetListTests()
         {
-            return _testRepository.GetAllAsNoTracking();
+            return _testRepository.GetAllAsNoTracking().ToList();
         }
 
-        public IQueryable<CrawlingResult> GetListLinks(int id)
+        public IEnumerable<CrawlingResult> GetListAllLinks(int id)
         {
             return _crawlingResultRepository.GetAllAsNoTracking()
-                                            .Where(s => s.TestId == id);
+                                            .Where(s => s.TestId == id)
+                                            .ToList();
+        }
+
+        public IEnumerable<CrawlingResult> GetListHtmlLinks(int id)
+        {
+            return _crawlingResultRepository.GetAllAsNoTracking()
+                                            .Where(s => s.TestId == id)
+                                            .Where(i => i.IsLinkFromHtml && !i.IsLinkFromSitemap)
+                                            .ToList();
+        }
+
+        public IEnumerable<CrawlingResult> GetListSitemapLinks(int id)
+        {
+            return _crawlingResultRepository.GetAllAsNoTracking()
+                                            .Where(s => s.TestId == id)
+                                            .Where(i => !i.IsLinkFromHtml && i.IsLinkFromSitemap)
+                                            .ToList();
         }
     }
 }
