@@ -10,7 +10,7 @@ namespace InterviewTask.DatabaseServices.Services
     public class DatabaseOperation
     {
         private readonly IRepository<Test> _testRepository;
-        IRepository<CrawlingResult> _crawlingResultRepository;
+        private readonly IRepository<CrawlingResult> _crawlingResultRepository;
 
         public DatabaseOperation(IRepository<Test> testRepository, IRepository<CrawlingResult> crawlingResultRepository)
         {
@@ -43,7 +43,8 @@ namespace InterviewTask.DatabaseServices.Services
 
         public IEnumerable<Test> GetListTests()
         {
-            return _testRepository.GetAllAsNoTracking().ToList();
+            return _testRepository.GetAllAsNoTracking()
+                                  .ToList();
         }
 
         public IEnumerable<CrawlingResult> GetListAllLinks(int id)
