@@ -1,0 +1,30 @@
+﻿@model IPagedList<InterviewTask.EntityFramework.Entities.Test>
+@{
+    ViewData["Title"] = "Info";
+}
+
+<table border="1" class="bg-light">
+    <tr class="text-center">
+        <th>№</th>
+        <th>Base url</th>
+        <th>Parsing date</th>
+        <th>List all links</th>
+        <th>List crawling links</th>
+        <th>List sitemap links</th>
+    </tr>
+
+    @foreach (var item in @Model)
+    {
+        <tr>
+            <td class="text-center" width=30>@item.Id</td>
+            <td width=300>@item.BaseUrl</td>
+            <td width=200>@item.ParsingDate</td>
+            <td class="text-center" width=150>@Html.ActionLink("All", "GetCrawlingResultsAllLink", "Database", new { id = item.Id }, new { @class = "btn | btn-outline-dark" })</td>
+            <td class="text-center" width=150>@Html.ActionLink("Html", "GetCrawlingResultsLinkByFlag", "Database", new { id = item.Id, isHtmlFlag = true }, new { @class = "btn | btn-outline-dark" })</td>
+            <td class="text-center" width=150>@Html.ActionLink("Sitemap", "GetCrawlingResultsLinkByFlag", "Database", new { id = item.Id, isHtmlFlag = false }, new { @class = "btn | btn-outline-dark" })</td>
+        </tr>
+    }
+</table>
+
+@(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+@Html.PagedListPager(Model, page => Url.Action("GetTest", new { page }), X.PagedList.Web.Common.PagedListRenderOptions.ClassicPlusFirstAndLast)
