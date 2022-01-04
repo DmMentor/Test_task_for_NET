@@ -1,5 +1,4 @@
-﻿@model string
-@{
+﻿@{
     ViewData["Title"] = "View";
 }
 
@@ -8,27 +7,14 @@
 <h1 class="text-center | display-4">
     Welcome
 </h1>
-<h4 class="text-monospace">
-    Enter link for parse:
-</h4>
 
-<form method="post">
-    <h3>
-        <input size="50" type="url" name="inputLink" />
-        <input class="table-light" type="submit" value="Parsing" />
-    </h3>
-</form>
-
-<div class="col-sm-8">
-    @foreach (var item in Html.ViewContext.ModelState.Keys)
-    {
-        foreach (var item2 in Html.ViewContext.ModelState[item].Errors)
-        {
-            <ul>
-                <li class="text-danger">@item: @item2.ErrorMessage</li>
-            </ul>
-        }
-    }
+<div>
+    <form method="post" class="form-group">
+        <h3>
+            <input size="50" type="url" name="inputLink" placeholder="https:/example.com/" />
+            <input asp-controller="Crawler" asp-action="Input" class="table-light" type="submit" value="Parsing" />
+        </h3>
+    </form>
 </div>
 
-<@ViewData["completed"]>@Model</@ViewData["completed"]>
+<div id="message"></div>
