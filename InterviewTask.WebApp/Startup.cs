@@ -54,7 +54,7 @@ namespace InterviewTask.WebApp
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Database}/{action=GetTest}/{id?}");
+                    pattern: "{controller=Result}/{action=GetTest}/{id?}");
             });
         }
     }

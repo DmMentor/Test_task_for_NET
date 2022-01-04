@@ -26,7 +26,7 @@ namespace InterviewTask.WebApp.Controllers
                 await _webApp.StartAsync(inputLink);
             }
 
-            return RedirectToAction("GetTest", "Database", new { message = resultTest.Message });
+            return RedirectToAction("GetTest", "Result", new { message = resultTest.Message });
         }
     }
 }

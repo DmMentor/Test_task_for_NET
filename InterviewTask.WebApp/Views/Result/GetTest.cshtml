@@ -30,7 +30,7 @@
                     <td width=300>@item.BaseUrl</td>
                     <td width=200>@item.ParsingDate</td>
                     <td class="text-center" width=150>
-                        @Html.ActionLink("Details", "GetCrawlingResults", "Database", new { id = item.Id }, new { @class = "btn | btn-outline-dark" })
+                        @Html.ActionLink("Details", "GetCrawlingResults", "Result", new { id = item.Id }, new { @class = "btn | btn-outline-dark" })
                     </td>
                 </tr>
             }
@@ -40,11 +40,11 @@
         <h4>
             @if (!Model.IsFirstPage)
             {
-                @Html.ActionLink("previous", "GetTest", "Database", new { page = Model.Page - 1 }, new { @class = "btn | btn-outline-secondary" })
+                @Html.ActionLink("previous", "GetTest", "Result", new { page = Model.Page - 1 }, new { @class = "btn | btn-outline-secondary" })
             }
             @if (!Model.IsLastPage)
             {
-                @Html.ActionLink("next", "GetTest", "Database", new { page = Model.Page + 1 }, new { @class = "btn | btn-outline-secondary" })
+                @Html.ActionLink("next", "GetTest", "Result", new { page = Model.Page + 1 }, new { @class = "btn | btn-outline-secondary" })
             }
         </h4>
     </div>

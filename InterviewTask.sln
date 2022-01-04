@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InterviewTask.CrawlerLogic.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InterviewTask.WebApp", "InterviewTask.WebApp\InterviewTask.WebApp.csproj", "{A89DBBC6-4AD2-4213-BCD7-03D55048771B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InterviewTask.DatabaseLogic.Tests", "InterviewTask.DatabaseLogic.Tests\InterviewTask.DatabaseLogic.Tests.csproj", "{B04ACBA7-174D-4BF4-9C68-173328198B1D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InterviewTask.Logic.Tests", "InterviewTask.DatabaseLogic.Tests\InterviewTask.Logic.Tests.csproj", "{B04ACBA7-174D-4BF4-9C68-173328198B1D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
