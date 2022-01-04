@@ -1,6 +1,7 @@
-using InterviewTask.CrawlerServices.Extensions;
-using InterviewTask.DatabaseServices.Extensions;
+using InterviewTask.CrawlerLogic.Extensions;
+using InterviewTask.Logic.Extensions;
 using InterviewTask.EntityFramework;
+using InterviewTask.WebApp.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -28,6 +29,8 @@ namespace InterviewTask.WebApp
              });
             services.AddCrawlerServices();
             services.AddDatabaseServices();
+            services.AddScoped<Crawler>();
+            services.AddScoped<LinkValidator>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -51,7 +54,7 @@ namespace InterviewTask.WebApp
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Crawler}/{action=Input}/{id?}");
+                    pattern: "{controller=Database}/{action=GetTest}/{id?}");
             });
         }
     }

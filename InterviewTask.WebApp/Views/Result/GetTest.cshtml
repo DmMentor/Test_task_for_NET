@@ -1,0 +1,51 @@
+﻿@model InterviewTask.WebApp.Models.Result
+@{
+    ViewData["Title"] = "TestInfo";
+}
+
+@await Html.PartialAsync("/Views/Crawler/Input.cshtml")
+
+@if (ViewData["message"] != null)
+{
+    <ul>
+        <li>
+            @ViewData["message"]
+        </li>
+    </ul>
+}
+
+<div class="table-responsive" style="padding: 120px 0px 100px 0px;">
+    <table border="1" class="bg-light | table">
+        <thead>
+            <tr class="text-center">
+                <th>Base url</th>
+                <th>Parsing date</th>
+                <th>List all links</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.List)
+            {
+                <tr>
+                    <td width=300>@item.BaseUrl</td>
+                    <td width=200>@item.ParsingDate</td>
+                    <td class="text-center" width=150>
+                        @Html.ActionLink("Details", "GetCrawlingResults", "Database", new { id = item.Id }, new { @class = "btn | btn-outline-dark" })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="custom-control">
+        <h4>
+            @if (!Model.IsFirstPage)
+            {
+                @Html.ActionLink("previous", "GetTest", "Database", new { page = Model.Page - 1 }, new { @class = "btn | btn-outline-secondary" })
+            }
+            @if (!Model.IsLastPage)
+            {
+                @Html.ActionLink("next", "GetTest", "Database", new { page = Model.Page + 1 }, new { @class = "btn | btn-outline-secondary" })
+            }
+        </h4>
+    </div>
+</div>
