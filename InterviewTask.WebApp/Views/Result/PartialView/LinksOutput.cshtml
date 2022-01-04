@@ -1,0 +1,20 @@
+﻿@model IEnumerable<InterviewTask.EntityFramework.Entities.CrawlingResult>
+
+<div class="table-responsive">
+    <table border="1" class="bg-light | table">
+        <thead>
+            <tr class="text-center">
+                <th>Link</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td width=1200>@item.Url</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

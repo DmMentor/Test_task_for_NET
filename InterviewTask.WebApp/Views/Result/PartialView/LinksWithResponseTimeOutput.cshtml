@@ -1,0 +1,27 @@
+﻿@model IEnumerable<InterviewTask.EntityFramework.Entities.CrawlingResult>
+
+<div class="table-responsive">
+    <table border="1" class="bg-light | table">
+        <thead>
+            <tr class="text-center">
+                <th>№</th>
+                <th>Link</th>
+                <th>Response time</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @{
+                int i = 1;
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td width=50 class="text-center">@(i++)</td>
+                        <td width=1200>@item.Url</td>
+                        <td width=70 class="text-center">@item.ResponseTime</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
