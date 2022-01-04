@@ -1,8 +1,8 @@
-using InterviewTask.CrawlerServices.Services;
+using InterviewTask.CrawlerLogic.Services;
 using NUnit.Framework;
 using System;
 
-namespace InterviewTask.CrawlerServices.Tests
+namespace InterviewTask.CrawlerLogic.Tests
 {
     internal class ConverterTests
     {

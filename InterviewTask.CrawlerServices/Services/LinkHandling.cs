@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Threading.Tasks;
 
-namespace InterviewTask.CrawlerServices.Services
+namespace InterviewTask.CrawlerLogic.Services
 {
     public class LinkHandling
     {
@@ -12,7 +13,7 @@ namespace InterviewTask.CrawlerServices.Services
             _httpService = httpService;
         }
 
-        public virtual int GetLinkResponse(Uri inputLink)
+        public virtual async Task<int> GetLinkResponseAsync(Uri inputLink)
         {
             if (!inputLink.IsAbsoluteUri)
             {
@@ -20,7 +21,7 @@ namespace InterviewTask.CrawlerServices.Services
             }
 
             var timer = Stopwatch.StartNew();
-            var responseMessage = _httpService.GetResponseMessage(inputLink);
+            var responseMessage = await _httpService.GetResponseMessageAsync(inputLink);
             timer.Stop();
 
             if (responseMessage.IsSuccessStatusCode)
@@ -31,17 +32,17 @@ namespace InterviewTask.CrawlerServices.Services
             return int.MaxValue;
         }
 
-        public virtual string DownloadDocument(Uri inputLink)
+        public virtual async Task<string> DownloadDocumentAsync(Uri inputLink)
         {
             if (!inputLink.IsAbsoluteUri)
             {
                 throw new ArgumentException("Link must be absolute");
             }
 
-            var responseMessage = _httpService.GetResponseMessage(inputLink);
+            var responseMessage = await _httpService.GetResponseMessageAsync(inputLink);
             if (responseMessage.IsSuccessStatusCode)
             {
-                return _httpService.GetContent(responseMessage);
+                return await _httpService.GetContentAsync(responseMessage);
             }
 
             return string.Empty;

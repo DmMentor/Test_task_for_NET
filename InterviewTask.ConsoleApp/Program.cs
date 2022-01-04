@@ -1,23 +1,24 @@
-﻿using InterviewTask.EntityFramework;
-using InterviewTask.CrawlerServices.Extensions;
-using InterviewTask.DatabaseServices.Extensions;
+﻿using InterviewTask.CrawlerLogic.Extensions;
+using InterviewTask.Logic.Extensions;
+using InterviewTask.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
 
 namespace InterviewTask.ConsoleApp
 {
     internal class Program
     {
-        private static void Main(string[] args)
+        private static async Task Main(string[] args)
         {
             var consoleApp = CreateHostBuilder(args)
                              .Build()
                              .Services
                              .GetService<ConsoleApp>();
-            consoleApp.Run();
+            await consoleApp.RunAsync();
         }
 
         private static IHostBuilder CreateHostBuilder(string[] args) =>

@@ -1,10 +1,11 @@
-﻿using InterviewTask.CrawlerServices.Parsers;
-using InterviewTask.CrawlerServices.Services;
+﻿using InterviewTask.CrawlerLogic.Parsers;
+using InterviewTask.CrawlerLogic.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
-namespace InterviewTask.CrawlerServices.Crawlers
+namespace InterviewTask.CrawlerLogic.Crawlers
 {
     public class HtmlCrawler
     {
@@ -19,7 +20,7 @@ namespace InterviewTask.CrawlerServices.Crawlers
             _converter = converter;
         }
 
-        public virtual IEnumerable<Uri> StartParse(Uri baseLink)
+        public virtual async Task<IEnumerable<Uri>> StartParseAsync(Uri baseLink)
         {
             if (!baseLink.IsAbsoluteUri)
             {
@@ -36,7 +37,7 @@ namespace InterviewTask.CrawlerServices.Crawlers
             {
                 var linkToParse = parseLinksQueue.Dequeue();
 
-                string documentHtml = _linkHandling.DownloadDocument(linkToParse);
+                string documentHtml = await _linkHandling.DownloadDocumentAsync(linkToParse);
 
                 if (string.IsNullOrWhiteSpace(documentHtml))
                 {

@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\InterviewTask.CrawlerServices\InterviewTask.CrawlerServices.csproj" />
+    <ProjectReference Include="..\InterviewTask.CrawlerServices\InterviewTask.CrawlerLogic.csproj" />
   </ItemGroup>
 
 </Project>

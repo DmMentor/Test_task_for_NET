@@ -1,9 +1,10 @@
-﻿using InterviewTask.CrawlerServices.Parsers;
-using InterviewTask.CrawlerServices.Services;
+﻿using InterviewTask.CrawlerLogic.Parsers;
+using InterviewTask.CrawlerLogic.Services;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
-namespace InterviewTask.CrawlerServices.Crawlers
+namespace InterviewTask.CrawlerLogic.Crawlers
 {
     public class SitemapCrawler
     {
@@ -16,7 +17,7 @@ namespace InterviewTask.CrawlerServices.Crawlers
             _linkHandling = linkHandling;
         }
 
-        public virtual IEnumerable<Uri> Parse(Uri baseLink)
+        public virtual async Task<IEnumerable<Uri>> ParseAsync(Uri baseLink)
         {
             if (!baseLink.IsAbsoluteUri)
             {
@@ -26,7 +27,7 @@ namespace InterviewTask.CrawlerServices.Crawlers
             var linkBuilderSitemap = new UriBuilder(baseLink.Scheme, baseLink.Host, baseLink.Port, "/sitemap.xml");
             Uri linkToDownloadDocument = linkBuilderSitemap.Uri;
 
-            var requestedDocument = _linkHandling.DownloadDocument(linkToDownloadDocument);
+            var requestedDocument = await _linkHandling.DownloadDocumentAsync(linkToDownloadDocument);
 
             var listLinkSitemap = _parseDocument.ParseDocument(requestedDocument);
 

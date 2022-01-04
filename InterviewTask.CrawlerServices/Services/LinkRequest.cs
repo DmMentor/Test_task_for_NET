@@ -1,8 +1,9 @@
-﻿using InterviewTask.CrawlerServices.Models;
+﻿using InterviewTask.CrawlerLogic.Models;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
-namespace InterviewTask.CrawlerServices.Services
+namespace InterviewTask.CrawlerLogic.Services
 {
     public class LinkRequest
     {
@@ -13,7 +14,7 @@ namespace InterviewTask.CrawlerServices.Services
             _linkHandling = linkHandling;
         }
 
-        public IEnumerable<LinkWithResponse> GetListWithLinksResponseTime(IEnumerable<Link> inputListLinks)
+        public async Task<IEnumerable<LinkWithResponse>> GetListWithLinksResponseTimeAsync(IEnumerable<Link> inputListLinks)
         {
             if (inputListLinks == null)
             {
@@ -27,7 +28,7 @@ namespace InterviewTask.CrawlerServices.Services
                 var linkResponse = new LinkWithResponse
                 {
                     Url = link.Url,
-                    ResponseTime = _linkHandling.GetLinkResponse(link.Url)
+                    ResponseTime = await _linkHandling.GetLinkResponseAsync(link.Url)
                 };
 
                 listLinksWithResponse.Add(linkResponse);

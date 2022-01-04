@@ -1,14 +1,15 @@
-﻿using InterviewTask.CrawlerServices.Crawlers;
-using InterviewTask.CrawlerServices.Models;
-using InterviewTask.CrawlerServices.Parsers;
-using InterviewTask.CrawlerServices.Services;
+﻿using InterviewTask.CrawlerLogic.Crawlers;
+using InterviewTask.CrawlerLogic.Models;
+using InterviewTask.CrawlerLogic.Parsers;
+using InterviewTask.CrawlerLogic.Services;
 using Moq;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
-namespace InterviewTask.CrawlerServices.Tests
+namespace InterviewTask.CrawlerLogic.Tests
 {
     [TestFixture]
     internal class WebsiteCrawlerTests
@@ -27,7 +28,7 @@ namespace InterviewTask.CrawlerServices.Tests
         }
 
         [Test]
-        public void Start_HtmlIsEmpty_ReturnsLinksOnlySitemap()
+        public async Task StartAsync_HtmlIsEmpty_ReturnsLinksOnlySitemapAsync()
         {
             //Arrange
             var baseLink = new Uri("https://test1.com");
@@ -41,18 +42,18 @@ namespace InterviewTask.CrawlerServices.Tests
                 new Uri("https://test1.com/chill/arg/buysell"),
                 new Uri("https://test1.com/chill")
             };
-            _mockHtmlCrawler.Setup(l => l.StartParse(It.IsAny<Uri>())).Returns(Enumerable.Empty<Uri>());
-            _mockSitemapCrawler.Setup(l => l.Parse(It.IsAny<Uri>())).Returns(listSitemap);
+            _mockHtmlCrawler.Setup(l => l.StartParseAsync(It.IsAny<Uri>())).ReturnsAsync(Enumerable.Empty<Uri>());
+            _mockSitemapCrawler.Setup(l => l.ParseAsync(It.IsAny<Uri>())).ReturnsAsync(listSitemap);
 
             //Act
-            var actualList = _websiteCrawler.Start(baseLink);
+            var actualList = await _websiteCrawler.StartAsync(baseLink);
 
             //Assert
             Assert.AreEqual(expectedList, actualList.Select(_ => _.Url));
         }
 
         [Test]
-        public void Start_SitemapIsEmpty_ReturnsListWithLinksOnlyHtml()
+        public async Task StartAsync_SitemapIsEmpty_ReturnsListWithLinksOnlyHtmlAsync()
         {
             //Arrange
             var baseLink = new Uri("https://test1.com");
@@ -66,47 +67,47 @@ namespace InterviewTask.CrawlerServices.Tests
                 new Uri("https://test1.com"),
                 new Uri("https://test1.com/chill")
             };
-            _mockHtmlCrawler.Setup(l => l.StartParse(It.IsAny<Uri>())).Returns(listHtml);
-            _mockSitemapCrawler.Setup(l => l.Parse(It.IsAny<Uri>())).Returns(Enumerable.Empty<Uri>());
+            _mockHtmlCrawler.Setup(l => l.StartParseAsync(It.IsAny<Uri>())).ReturnsAsync(listHtml);
+            _mockSitemapCrawler.Setup(l => l.ParseAsync(It.IsAny<Uri>())).ReturnsAsync(Enumerable.Empty<Uri>());
 
             //Act
-            var actualList = _websiteCrawler.Start(baseLink);
+            var actualList = await _websiteCrawler.StartAsync(baseLink);
 
             //Assert
             Assert.AreEqual(expectedList, actualList.Select(_ => _.Url));
         }
 
         [Test]
-        public void Start_DocumentsEmpty_ReturnEmptyList()
+        public async Task StartAsync_DocumentsEmpty_ReturnEmptyListAsync()
         {
             //Arrange
             var baseLink = new Uri("https://test1.com");
-            _mockHtmlCrawler.Setup(l => l.StartParse(It.IsAny<Uri>())).Returns(Enumerable.Empty<Uri>());
-            _mockSitemapCrawler.Setup(l => l.Parse(It.IsAny<Uri>())).Returns(Enumerable.Empty<Uri>());
+            _mockHtmlCrawler.Setup(l => l.StartParseAsync(It.IsAny<Uri>())).ReturnsAsync(Enumerable.Empty<Uri>());
+            _mockSitemapCrawler.Setup(l => l.ParseAsync(It.IsAny<Uri>())).ReturnsAsync(Enumerable.Empty<Uri>());
 
             //Act
-            var actualList = _websiteCrawler.Start(baseLink).Where(_ => _.Url != baseLink);
+            var actualList = (await _websiteCrawler.StartAsync(baseLink)).Where(_ => _.Url != baseLink);
 
             //Assert
             Assert.IsEmpty(actualList);
         }
 
         [Test]
-        public void Start_LinkIsNotAbsolute_ThrowException()
+        public void StartAsync_LinkIsNotAbsolute_ThrowException()
         {
             //Arrange
             string expectedString = "Link must be absolute";
             var link = new Uri("example-1.com", UriKind.Relative);
 
             //Act
-            var actualException = Assert.Throws<ArgumentException>(() => _websiteCrawler.Start(link));
+            var actualException = Assert.ThrowsAsync<ArgumentException>(() => _websiteCrawler.StartAsync(link));
 
             //Assert
             Assert.AreEqual(expectedString, actualException.Message);
         }
 
         [Test]
-        public void ConcatLists_CombiningListsWithLinks_ReturnsListAllLinks()
+        public async Task StartAsync_CombiningListsWithLinks_ReturnsListAllLinksAsync()
         {
             //Arrange
             var baseLink = new Uri("https://test1.com");
@@ -126,11 +127,11 @@ namespace InterviewTask.CrawlerServices.Tests
                 new Uri("https://test1.com/chill/arg/buysell"),
                 new Uri("https://test1.com/chill")
             };
-            _mockHtmlCrawler.Setup(l => l.StartParse(It.IsAny<Uri>())).Returns(listHtml);
-            _mockSitemapCrawler.Setup(l => l.Parse(It.IsAny<Uri>())).Returns(listSitemap);
+            _mockHtmlCrawler.Setup(l => l.StartParseAsync(It.IsAny<Uri>())).ReturnsAsync(listHtml);
+            _mockSitemapCrawler.Setup(l => l.ParseAsync(It.IsAny<Uri>())).ReturnsAsync(listSitemap);
 
             //Act
-            var actualList = _websiteCrawler.Start(baseLink);
+            var actualList = await _websiteCrawler.StartAsync(baseLink);
 
             //Assert
             Assert.AreEqual(expectedList.Select(_ => _.Url), actualList.Select(_ => _.Url));

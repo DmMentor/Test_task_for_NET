@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace InterviewTask.CrawlerServices.Services
+namespace InterviewTask.CrawlerLogic.Services
 {
     public class Converter
     {

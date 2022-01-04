@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Net.Http;
+using System.Threading.Tasks;
 
-namespace InterviewTask.CrawlerServices.Services
+namespace InterviewTask.CrawlerLogic.Services
 {
     public class HttpService
     {
@@ -15,13 +16,13 @@ namespace InterviewTask.CrawlerServices.Services
             };
         }
 
-        public virtual HttpResponseMessage GetResponseMessage(Uri link) => _client.GetAsync(link).Result;
+        public virtual async Task<HttpResponseMessage> GetResponseMessageAsync(Uri link) => await _client.GetAsync(link);
 
-        public virtual string GetContent(HttpResponseMessage response)
+        public virtual async Task<string> GetContentAsync(HttpResponseMessage response)
         {
             using HttpContent content = response.Content;
 
-            return content.ReadAsStringAsync().Result;
+            return await content.ReadAsStringAsync();
         }
     }
 }

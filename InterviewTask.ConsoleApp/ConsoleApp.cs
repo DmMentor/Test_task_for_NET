@@ -1,8 +1,9 @@
-﻿using InterviewTask.CrawlerServices.Models;
-using InterviewTask.CrawlerServices.Services;
-using InterviewTask.DatabaseServices.Services;
+﻿using InterviewTask.CrawlerLogic.Models;
+using InterviewTask.CrawlerLogic.Services;
+using InterviewTask.Logic.Services;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace InterviewTask.ConsoleApp
 {
@@ -21,18 +22,18 @@ namespace InterviewTask.ConsoleApp
             _databaseOperation = databaseOperation;
         }
 
-        public void Run()
+        public async Task RunAsync()
         {
             Uri inputLink = InputLink();
 
             Console.WriteLine($"Starting parsing website....{Environment.NewLine}");
 
-            var listAllLinks = _crawler.Start(inputLink);
-            var listAllLinksWithResponse = _linkRequest.GetListWithLinksResponseTime(listAllLinks);
+            var listAllLinks = await _crawler.StartAsync(inputLink);
+            var listAllLinksWithResponse = await _linkRequest.GetListWithLinksResponseTimeAsync(listAllLinks);
 
             Display(listAllLinks, listAllLinksWithResponse);
 
-            _databaseOperation.SaveToDatabase(inputLink, listAllLinks, listAllLinksWithResponse);
+            await _databaseOperation.SaveToDatabaseAsync(inputLink, listAllLinks, listAllLinksWithResponse);
         }
 
         private Uri InputLink()

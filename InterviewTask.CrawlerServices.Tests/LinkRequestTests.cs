@@ -1,13 +1,14 @@
-﻿using InterviewTask.CrawlerServices.Models;
-using InterviewTask.CrawlerServices.Services;
+﻿using InterviewTask.CrawlerLogic.Models;
+using InterviewTask.CrawlerLogic.Services;
 using Moq;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Threading.Tasks;
 
-namespace InterviewTask.CrawlerServices.Tests
+namespace InterviewTask.CrawlerLogic.Tests
 {
     [TestFixture]
     internal class LinkRequestTests
@@ -23,7 +24,7 @@ namespace InterviewTask.CrawlerServices.Tests
         }
 
         [Test]
-        public void GetListWithLinksResponseTime_ConvertListOtherType_ReturnsListLinkWithResponse()
+        public async Task GetListWithLinksResponseTimeAsync_ConvertListOtherType_ReturnsListLinkWithResponseAsync()
         {
             //Arrange
             var expected = new List<LinkWithResponse>()
@@ -38,23 +39,23 @@ namespace InterviewTask.CrawlerServices.Tests
                new Link() { Url = new Uri("https://test5.com/tea"), IsLinkFromHtml = false, IsLinkFromSitemap = true },
                new Link() { Url = new Uri("https://test2-beta.com/account/12345"), IsLinkFromHtml = true, IsLinkFromSitemap = true }
             };
-            _mockLinkHandling.Setup(m => m.GetLinkResponse(It.IsAny<Uri>())).Returns<HttpResponseMessage>(null);
+            _mockLinkHandling.Setup(m => m.GetLinkResponseAsync(It.IsAny<Uri>())).Returns<HttpResponseMessage>(null);
 
             //Act
-            var actualList = _linkRequest.GetListWithLinksResponseTime(inputList);
+            var actualList = await _linkRequest.GetListWithLinksResponseTimeAsync(inputList);
 
             //Assert
             Assert.AreEqual(expected.Select(_ => _.Url), actualList.Select(_ => _.Url));
         }
 
         [Test]
-        public void ToLinkWithResponse_PassingNullIsParameters_ThrowException()
+        public void GetListWithLinksResponseTimeAsync_PassingNullIsParameters_ThrowException()
         {
             //Arrange
             string expectedMessage = "List is null (Parameter 'inputListLinks')";
 
             //Act
-            var actualException = Assert.Throws<ArgumentNullException>(() => _linkRequest.GetListWithLinksResponseTime(null));
+            var actualException = Assert.ThrowsAsync<ArgumentNullException>(() => _linkRequest.GetListWithLinksResponseTimeAsync(null));
 
             //Assert
             Assert.AreEqual(expectedMessage, actualException.Message);

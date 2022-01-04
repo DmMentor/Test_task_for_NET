@@ -1,11 +1,13 @@
 ﻿using InterviewTask.EntityFramework.Entities;
-using InterviewTask.CrawlerServices.Models;
+using InterviewTask.CrawlerLogic.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Threading.Tasks;
+using InterviewTask.Logic.Models;
 
-namespace InterviewTask.DatabaseServices.Services
+namespace InterviewTask.Logic.Services
 {
     public class DatabaseOperation
     {
@@ -18,7 +20,7 @@ namespace InterviewTask.DatabaseServices.Services
             _crawlingResultRepository = crawlingResultRepository;
         }
 
-        public void SaveToDatabase(Uri baseLink, IEnumerable<Link> listLinksFlags, IEnumerable<LinkWithResponse> listLinksWithResponse)
+        public async Task SaveToDatabaseAsync(Uri baseLink, IEnumerable<Link> listLinksFlags, IEnumerable<LinkWithResponse> listLinksWithResponse)
         {
             var listLinksForDb = listLinksFlags.Join(
                 listLinksWithResponse,
@@ -37,36 +39,23 @@ namespace InterviewTask.DatabaseServices.Services
 
             var test = new Test() { BaseUrl = baseLink, Links = listLinksForDb };
 
-            _testRepository.Add(test);
-            _testRepository.SaveChanges();
+            await _testRepository.AddAsync(test);
+            await _testRepository.SaveChangesAsync();
         }
 
-        public IEnumerable<Test> GetListTests()
+        public async Task<LinkTest> GetListTestsAsync(int currentPage, int pageSize)
         {
-            return _testRepository.GetAllAsNoTracking()
-                                  .ToList();
+            var links = _testRepository.GetAllAsNoTracking();
+
+            var linksPart = await _testRepository.GetPageAsync(links, currentPage, pageSize);
+
+            return new LinkTest { List = linksPart.Result, TotalCount=linksPart.TotalCount };
         }
 
         public IEnumerable<CrawlingResult> GetListAllLinks(int id)
         {
             return _crawlingResultRepository.GetAllAsNoTracking()
                                             .Where(s => s.TestId == id)
-                                            .ToList();
-        }
-
-        public IEnumerable<CrawlingResult> GetListHtmlLinks(int id)
-        {
-            return _crawlingResultRepository.GetAllAsNoTracking()
-                                            .Where(s => s.TestId == id)
-                                            .Where(i => i.IsLinkFromHtml && !i.IsLinkFromSitemap)
-                                            .ToList();
-        }
-
-        public IEnumerable<CrawlingResult> GetListSitemapLinks(int id)
-        {
-            return _crawlingResultRepository.GetAllAsNoTracking()
-                                            .Where(s => s.TestId == id)
-                                            .Where(i => !i.IsLinkFromHtml && i.IsLinkFromSitemap)
                                             .ToList();
         }
     }

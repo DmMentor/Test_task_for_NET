@@ -1,7 +1,7 @@
-﻿using InterviewTask.DatabaseServices.Services;
+﻿using InterviewTask.Logic.Services;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace InterviewTask.DatabaseServices.Extensions
+namespace InterviewTask.Logic.Extensions
 {
     public static class DatabaseExtensions
     {

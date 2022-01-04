@@ -1,9 +1,9 @@
-﻿using InterviewTask.CrawlerServices.Crawlers;
-using InterviewTask.CrawlerServices.Parsers;
-using InterviewTask.CrawlerServices.Services;
+﻿using InterviewTask.CrawlerLogic.Crawlers;
+using InterviewTask.CrawlerLogic.Parsers;
+using InterviewTask.CrawlerLogic.Services;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace InterviewTask.CrawlerServices.Extensions
+namespace InterviewTask.CrawlerLogic.Extensions
 {
     public static class CrawlerExtensions
     {

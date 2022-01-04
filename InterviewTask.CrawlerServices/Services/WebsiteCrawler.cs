@@ -1,10 +1,11 @@
-﻿using InterviewTask.CrawlerServices.Crawlers;
-using InterviewTask.CrawlerServices.Models;
+﻿using InterviewTask.CrawlerLogic.Crawlers;
+using InterviewTask.CrawlerLogic.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
-namespace InterviewTask.CrawlerServices.Services
+namespace InterviewTask.CrawlerLogic.Services
 {
     public class WebsiteCrawler
     {
@@ -17,16 +18,16 @@ namespace InterviewTask.CrawlerServices.Services
             _parserSitemap = parseSitemap;
         }
 
-        public IEnumerable<Link> Start(Uri inputLink)
+        public async Task<IEnumerable<Link>> StartAsync(Uri inputLink)
         {
             if (!inputLink.IsAbsoluteUri)
             {
                 throw new ArgumentException("Link must be absolute");
             }
 
-            var listLinksHtml = _parserHtml.StartParse(inputLink);
+            var listLinksHtml = await _parserHtml.StartParseAsync(inputLink);
 
-            var listLinksSitemap = _parserSitemap.Parse(inputLink);
+            var listLinksSitemap = await _parserSitemap.ParseAsync(inputLink);
 
             var listAllLinks = ConcatLists(listLinksHtml, listLinksSitemap);
 

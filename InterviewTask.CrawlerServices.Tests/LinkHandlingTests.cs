@@ -1,10 +1,12 @@
-﻿using InterviewTask.CrawlerServices.Services;
+﻿using InterviewTask.CrawlerLogic.Services;
 using Moq;
 using NUnit.Framework;
 using System;
 using System.Net.Http;
+using System.Threading.Tasks;
+using System.Net;
 
-namespace InterviewTask.CrawlerServices.Tests
+namespace InterviewTask.CrawlerLogic.Tests
 {
     [TestFixture]
     internal class LinkHandlingTests
@@ -21,60 +23,60 @@ namespace InterviewTask.CrawlerServices.Tests
         }
 
         [Test]
-        public void DownloadDocument_LinkIsNotAbsolute_ThrowException()
+        public void DownloadDocumentAsync_LinkIsNotAbsolute_ThrowException()
         {
             //Arrange
             string expectedString = "Link must be absolute";
             var link = new Uri("example-1.com", UriKind.Relative);
 
             //Act
-            var actualException = Assert.Throws<ArgumentException>(() => _linkHandling.DownloadDocument(link));
+            var actualException = Assert.ThrowsAsync<ArgumentException>(() => _linkHandling.DownloadDocumentAsync(link));
 
             //Assert
             Assert.AreEqual(expectedString, actualException.Message);
         }
 
         [Test]
-        public void GetLinkResponse_LinkIsNotAbsolute_ThrowException()
+        public void GetLinkResponseAsync_LinkIsNotAbsolute_ThrowException()
         {
             //Arrange
             string expectedString = "Link must be absolute";
             var link = new Uri("example-2.com", UriKind.Relative);
 
             //Act
-            var actualException = Assert.Throws<ArgumentException>(() => _linkHandling.GetLinkResponse(link));
+            var actualException = Assert.ThrowsAsync<ArgumentException>(() => _linkHandling.GetLinkResponseAsync(link));
 
             //Assert
             Assert.AreEqual(expectedString, actualException.Message);
         }
 
         [Test]
-        public void GetLinkResponse_HttpResponseStatusCodeOk_ReturnResponseTime()
+        public async Task GetLinkResponseAsync_HttpResponseStatusCodeOk_ReturnResponseTimeAsync()
         {
             //Arrange
             var baseLink = new Uri("https://test1.com");
-            var returnsResponseMessage = new HttpResponseMessage() { StatusCode = System.Net.HttpStatusCode.OK };
-            _mockHttpService.Setup(m => m.GetResponseMessage(It.IsAny<Uri>()))
-                .Returns(returnsResponseMessage);
+            var returnsResponseMessage = new HttpResponseMessage() { StatusCode = HttpStatusCode.OK };
+            _mockHttpService.Setup(m => m.GetResponseMessageAsync(It.IsAny<Uri>()))
+                .ReturnsAsync(returnsResponseMessage);
 
             //Act
-            var actualResponseTime = _linkHandling.GetLinkResponse(baseLink);
+            var actualResponseTime = await _linkHandling.GetLinkResponseAsync(baseLink);
 
             //Assert
             Assert.IsTrue(actualResponseTime >= 0);
         }
 
         [Test]
-        public void GetLinkResponse_HttpResponseStatusCodeRequestTimeout_ReturnNegativeNumber()
+        public async Task GetLinkResponseAsync_HttpResponseStatusCodeRequestTimeout_ReturnNegativeNumberAsync()
         {
             //Arrange
             var baseLink = new Uri("https://test1.com");
-            var returnsResponseMessage = new HttpResponseMessage() { StatusCode = System.Net.HttpStatusCode.RequestTimeout };
-            _mockHttpService.Setup(m => m.GetResponseMessage(It.IsAny<Uri>()))
-                .Returns(returnsResponseMessage);
+            var returnsResponseMessage = new HttpResponseMessage() { StatusCode = HttpStatusCode.RequestTimeout };
+            _mockHttpService.Setup(m => m.GetResponseMessageAsync(It.IsAny<Uri>()))
+                .ReturnsAsync(returnsResponseMessage);
 
             //Act
-            var actualResponseTime = _linkHandling.GetLinkResponse(baseLink);
+            var actualResponseTime = await _linkHandling.GetLinkResponseAsync(baseLink);
 
             //Assert
             Assert.IsTrue(actualResponseTime == int.MaxValue);

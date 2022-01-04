@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 
-namespace InterviewTask.CrawlerServices.Parsers
+namespace InterviewTask.CrawlerLogic.Parsers
 {
     public class ParseDocumentSitemap
     {
