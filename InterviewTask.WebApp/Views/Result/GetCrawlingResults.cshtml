@@ -1,0 +1,24 @@
+﻿@model InterviewTask.WebApp.ViewModels.ResultView
+@{ 
+    ViewData["Title"] = "Info";
+}
+
+<div style="padding: 50px 0px 100px 0px;">
+    <h5>Urls FOUNDED IN SITEMAP but not founded after crawling a web site:</h5>
+    @await Html.PartialAsync("PartialView/LinksOutput", Model.Sitemap)
+</div>
+
+<div style="padding: 0px 0px 100px 0px;">
+    <h5>Urls FOUNDED BY CRAWLING THE WEBSITE but not in sitemap:</h5>
+    @await Html.PartialAsync("PartialView/LinksOutput", Model.Html)
+</div>
+
+<div style="padding: 0px 0px 100px 0px;" class="table-responsive">
+    <h5>Timing website(ms):</h5>
+    @await Html.PartialAsync("PartialView/LinksWithResponseTimeOutput", Model.All)
+</div>
+
+<div>
+    <h4>Urls(html documents) found after crawling a website: @Model.TotalLinksHtml</h4>
+    <h4>Urls found in sitemap: @Model.TotalLinksSitemap</h4>
+</div>
