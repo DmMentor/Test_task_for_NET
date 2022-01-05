@@ -47,7 +47,7 @@ namespace InterviewTask.Logic.Services
             await _testRepository.SaveChangesAsync();
         }
 
-        public async Task<ResultPartPage> GetListTestsAsync(int currentPage, int pageSize)
+        public async Task<ResultPagination<Test>> GetListTestsAsync(int currentPage, int pageSize)
         {
             var links = _testRepository.GetAllAsNoTracking();
 
@@ -55,7 +55,7 @@ namespace InterviewTask.Logic.Services
 
             var totalPage = (int)Math.Ceiling(linksPart.TotalCount / (decimal)pageSize);
 
-            return new ResultPartPage
+            return new ResultPagination<Test>
             {
                 List = linksPart.Result,
                 TotalCount = linksPart.TotalCount,
