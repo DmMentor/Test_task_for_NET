@@ -1,24 +1,21 @@
 using InterviewTask.CrawlerLogic.Extensions;
-using InterviewTask.Logic.Extensions;
 using InterviewTask.EntityFramework;
-using InterviewTask.WebApp.Services;
+using InterviewTask.Logic.Extensions;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 
 namespace InterviewTask.WebApp
 {
     public class Startup
     {
+        public IConfiguration Configuration { get; }
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
-
-        public IConfiguration Configuration { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {
@@ -28,25 +25,12 @@ namespace InterviewTask.WebApp
                  o.UseSqlServer(Configuration.GetConnectionString("Connection"));
              });
             services.AddCrawlerServices();
-            services.AddDatabaseServices();
-            services.AddScoped<Crawler>();
-            services.AddScoped<LinkValidator>();
+            services.AddLogicServices();
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                app.UseExceptionHandler("/Home/Error");
-                app.UseHsts();
-            }
-
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
+            app.UseDeveloperExceptionPage();
 
             app.UseRouting();
 
@@ -54,7 +38,7 @@ namespace InterviewTask.WebApp
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Result}/{action=GetTest}/{id?}");
+                    pattern: "{controller=Result}/{action=GetTest}/{page?}");
             });
         }
     }

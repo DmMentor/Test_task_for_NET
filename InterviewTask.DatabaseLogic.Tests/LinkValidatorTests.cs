@@ -1,4 +1,5 @@
 using InterviewTask.Logic.Services;
+using System;
 using Xunit;
 
 namespace InterviewTask.Logic.Tests
@@ -19,10 +20,9 @@ namespace InterviewTask.Logic.Tests
             var expected = "Input value equal null";
 
             //Act
-            var action = _linkValidator.CheckLink(null);
+            var action = Assert.Throws<ArgumentException>(() => _linkValidator.CheckLink(null));
 
             //Assert
-            Assert.False(action.IsValid);
             Assert.Equal(expected, action.Message);
         }
     }

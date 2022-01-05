@@ -19,14 +19,19 @@ namespace InterviewTask.WebApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Input(Uri inputLink)
         {
-            var resultTest = _linkValidator.CheckLink(inputLink);
+            string message = "Parsing completed successfully";
 
-            if (resultTest.IsValid)
+            try
             {
+                _linkValidator.CheckLink(inputLink);
                 await _webApp.StartAsync(inputLink);
             }
+            catch (Exception ex)
+            {
+                message = ex.Message;
+            }
 
-            return RedirectToAction("GetTest", "Result", new { message = resultTest.Message });
+            return RedirectToAction("GetTest", "Result", new { message });
         }
     }
 }
