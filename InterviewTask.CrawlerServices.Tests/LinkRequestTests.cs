@@ -39,7 +39,7 @@ namespace InterviewTask.CrawlerLogic.Tests
                new Link() { Url = new Uri("https://test5.com/tea"), IsLinkFromHtml = false, IsLinkFromSitemap = true },
                new Link() { Url = new Uri("https://test2-beta.com/account/12345"), IsLinkFromHtml = true, IsLinkFromSitemap = true }
             };
-            _mockLinkHandling.Setup(m => m.GetLinkResponseAsync(It.IsAny<Uri>())).Returns<HttpResponseMessage>(null);
+            _mockLinkHandling.Setup(m => m.GetLinkResponseAsync(It.IsAny<Uri>())).ReturnsAsync(0);
 
             //Act
             var actualList = await _linkRequest.GetListWithLinksResponseTimeAsync(inputList);

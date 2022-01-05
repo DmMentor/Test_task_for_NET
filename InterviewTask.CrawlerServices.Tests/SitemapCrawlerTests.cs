@@ -19,7 +19,8 @@ namespace InterviewTask.CrawlerLogic.Tests
         [SetUp]
         public void SetUp()
         {
-            _mockParseDocumentSitemap = new Mock<ParseDocumentSitemap>();
+            var converter = new Converter();
+            _mockParseDocumentSitemap = new Mock<ParseDocumentSitemap>(converter);
             _mockLinkHandling = new Mock<LinkHandling>(It.IsAny<HttpService>());
             _sitemapCrawler = new SitemapCrawler(_mockParseDocumentSitemap.Object, _mockLinkHandling.Object);
         }

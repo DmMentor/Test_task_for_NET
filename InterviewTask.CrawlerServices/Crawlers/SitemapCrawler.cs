@@ -29,7 +29,7 @@ namespace InterviewTask.CrawlerLogic.Crawlers
 
             var requestedDocument = await _linkHandling.DownloadDocumentAsync(linkToDownloadDocument);
 
-            var listLinkSitemap = _parseDocument.ParseDocument(requestedDocument);
+            var listLinkSitemap = _parseDocument.ParseDocument(requestedDocument, linkToDownloadDocument);
 
             return listLinkSitemap;
         }

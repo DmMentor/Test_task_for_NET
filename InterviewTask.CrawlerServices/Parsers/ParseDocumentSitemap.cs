@@ -1,4 +1,5 @@
-﻿using System;
+﻿using InterviewTask.CrawlerLogic.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
@@ -7,8 +8,20 @@ namespace InterviewTask.CrawlerLogic.Parsers
 {
     public class ParseDocumentSitemap
     {
-        public virtual IEnumerable<Uri> ParseDocument(string document)
+        private readonly Converter _converter;
+
+        public ParseDocumentSitemap(Converter converter)
         {
+            _converter = converter;
+        }
+
+        public virtual IEnumerable<Uri> ParseDocument(string document, Uri baseLink)
+        {
+            if (!baseLink.IsAbsoluteUri)
+            {
+                throw new ArgumentException("Link must be absolute");
+            }
+
             if (string.IsNullOrEmpty(document))
             {
                 return Enumerable.Empty<Uri>();
@@ -26,15 +39,15 @@ namespace InterviewTask.CrawlerLogic.Parsers
                 return Enumerable.Empty<Uri>();
             }
 
-            ICollection<Uri> listLinksSitemap = new List<Uri>(xmlListLinks.Count);
+            var listLinksSitemap = new List<Uri>(xmlListLinks.Count);
 
-            foreach (XmlNode xmlLink in xmlListLinks)
+            var listLinks = xmlListLinks.Cast<XmlNode>().Select(s => _converter.ToUri(s.InnerText, baseLink));
+
+            foreach (var item in listLinks)
             {
-                var link = new Uri(xmlLink.InnerText);
-
-                if (!listLinksSitemap.Contains(link))
+                if (!listLinksSitemap.Contains(item))
                 {
-                    listLinksSitemap.Add(link);
+                    listLinksSitemap.Add(item);
                 }
             }
 
