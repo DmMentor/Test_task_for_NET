@@ -3,11 +3,13 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace InterviewTask.Logic.Extensions
 {
-    public static class DatabaseExtensions
+    public static class LogicExtensions
     {
-        public static IServiceCollection AddDatabaseServices(this IServiceCollection services)
+        public static IServiceCollection AddLogicServices(this IServiceCollection services)
         {
             services.AddScoped<DatabaseOperation>();
+            services.AddScoped<Crawler>();
+            services.AddScoped<LinkValidator>();
 
             return services;
         }

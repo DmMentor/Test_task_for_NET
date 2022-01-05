@@ -32,7 +32,7 @@ namespace InterviewTask.ConsoleApp
                          o.UseSqlServer(context.Configuration.GetConnectionString("Connection"));
                      })
                      .AddCrawlerServices()
-                     .AddDatabaseServices();
+                     .AddLogicServices();
                })
                .ConfigureLogging(options => options.SetMinimumLevel(LogLevel.Error));
     }
