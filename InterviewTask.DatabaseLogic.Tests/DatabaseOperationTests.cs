@@ -1,10 +1,11 @@
 using InterviewTask.CrawlerLogic.Models;
-using InterviewTask.Logic.Services;
 using InterviewTask.EntityFramework.Entities;
+using InterviewTask.Logic.Services;
 using Moq;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -33,8 +34,8 @@ namespace InterviewTask.Logic.Tests
             await _databaseOperation.SaveToDatabaseAsync(link, new List<Link>(), new List<LinkWithResponse>());
 
             //Assert
-            _mockRepositoryTest.Verify(v => v.Add(It.Is<Test>(m => m.BaseUrl == link)), Times.Once);
-            _mockRepositoryTest.Verify(v => v.SaveChanges(), Times.Once);
+            _mockRepositoryTest.Verify(v => v.AddAsync(It.Is<Test>(m => m.BaseUrl == link), It.IsAny<CancellationToken>()), Times.Once);
+            _mockRepositoryTest.Verify(v => v.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
         }
 
         [Fact]
@@ -58,7 +59,7 @@ namespace InterviewTask.Logic.Tests
             await _databaseOperation.SaveToDatabaseAsync(link, listLink, listLinkWithResponse);
 
             //Assert
-            _mockRepositoryTest.Verify(v => v.Add(It.Is<Test>(t => t.Links.Count == expectedCount)), Times.Once);
+            _mockRepositoryTest.Verify(v => v.AddAsync(It.Is<Test>(t => t.Links.Count == expectedCount), It.IsAny<CancellationToken>()), Times.Once);
         }
     }
 }
