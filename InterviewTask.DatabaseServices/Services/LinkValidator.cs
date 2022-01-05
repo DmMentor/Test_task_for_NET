@@ -1,15 +1,17 @@
-﻿using InterviewTask.WebApp.Models;
+﻿using InterviewTask.Logic.Models;
 using System;
 using System.Net;
 
-namespace InterviewTask.WebApp.Services
+namespace InterviewTask.Logic.Services
 {
     public class LinkValidator
     {
         public TestResult CheckLink(Uri link)
         {
-            var testResult = new TestResult();
-            testResult.Message = "Parsing completed successfully";
+            var testResult = new TestResult
+            {
+                Message = "Parsing completed successfully"
+            };
 
             if (link == null)
             {

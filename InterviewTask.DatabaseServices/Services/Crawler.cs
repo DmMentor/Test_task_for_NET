@@ -1,9 +1,8 @@
 ﻿using InterviewTask.CrawlerLogic.Services;
-using InterviewTask.Logic.Services;
 using System;
 using System.Threading.Tasks;
 
-namespace InterviewTask.WebApp.Services
+namespace InterviewTask.Logic.Services
 {
     public class Crawler
     {

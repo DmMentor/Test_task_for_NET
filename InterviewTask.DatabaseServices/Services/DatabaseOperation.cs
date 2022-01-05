@@ -1,11 +1,11 @@
-﻿using InterviewTask.EntityFramework.Entities;
-using InterviewTask.CrawlerLogic.Models;
+﻿using InterviewTask.CrawlerLogic.Models;
+using InterviewTask.EntityFramework.Entities;
+using InterviewTask.Logic.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
-using InterviewTask.Logic.Models;
 
 namespace InterviewTask.Logic.Services
 {
@@ -28,7 +28,7 @@ namespace InterviewTask.Logic.Services
                 linksResponse => linksResponse.Url,
                 (linksFlags, linksResponse) =>
                 {
-                    return new CrawlingResult()
+                    return new CrawlingResult
                     {
                         Url = linksResponse.Url,
                         IsLinkFromHtml = linksFlags.IsLinkFromHtml,
@@ -37,25 +37,45 @@ namespace InterviewTask.Logic.Services
                     };
                 }).ToList();
 
-            var test = new Test() { BaseUrl = baseLink, Links = listLinksForDb };
+            var test = new Test
+            {
+                BaseUrl = baseLink,
+                Links = listLinksForDb
+            };
 
             await _testRepository.AddAsync(test);
             await _testRepository.SaveChangesAsync();
         }
 
-        public async Task<LinkTest> GetListTestsAsync(int currentPage, int pageSize)
+        public async Task<ResultPartPage> GetListTestsAsync(int currentPage, int pageSize)
         {
             var links = _testRepository.GetAllAsNoTracking();
 
             var linksPart = await _testRepository.GetPageAsync(links, currentPage, pageSize);
 
-            return new LinkTest { List = linksPart.Result, TotalCount=linksPart.TotalCount };
+            var totalPage = (int)Math.Ceiling(linksPart.TotalCount / (decimal)pageSize);
+
+            return new ResultPartPage
+            {
+                List = linksPart.Result,
+                TotalCount = linksPart.TotalCount,
+                CurrentPage = currentPage,
+                PageSize = pageSize,
+                TotalPage = totalPage
+            };
         }
 
-        public IEnumerable<CrawlingResult> GetListAllLinks(int id)
+        public IEnumerable<Result> GetListAllLinks(int id)
         {
             return _crawlingResultRepository.GetAllAsNoTracking()
                                             .Where(s => s.TestId == id)
+                                            .Select(s => new Result
+                                            {
+                                                Url = s.Url,
+                                                ResponseTime = s.ResponseTime,
+                                                IsLinkFromHtml = s.IsLinkFromHtml,
+                                                IsLinkFromSitemap = s.IsLinkFromSitemap
+                                            })
                                             .ToList();
         }
     }

@@ -1,4 +1,4 @@
-﻿namespace InterviewTask.WebApp.Models
+﻿namespace InterviewTask.Logic.Models
 {
     public class TestResult
     {
