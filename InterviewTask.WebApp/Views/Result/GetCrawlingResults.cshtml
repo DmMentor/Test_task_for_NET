@@ -1,24 +1,24 @@
-﻿@model InterviewTask.WebApp.ViewModels.ResultView
+﻿@model IEnumerable<InterviewTask.Logic.Models.Result>
 @{ 
     ViewData["Title"] = "Info";
 }
 
 <div style="padding: 50px 0px 100px 0px;">
     <h5>Urls FOUNDED IN SITEMAP but not founded after crawling a web site:</h5>
-    @await Html.PartialAsync("PartialView/LinksOutput", Model.Sitemap)
+    @await Html.PartialAsync("PartialView/LinksOutput", Model.Where(s => !s.IsLinkFromHtml && s.IsLinkFromSitemap))
 </div>
 
 <div style="padding: 0px 0px 100px 0px;">
     <h5>Urls FOUNDED BY CRAWLING THE WEBSITE but not in sitemap:</h5>
-    @await Html.PartialAsync("PartialView/LinksOutput", Model.Html)
+    @await Html.PartialAsync("PartialView/LinksOutput", Model.Where(s => s.IsLinkFromHtml && !s.IsLinkFromSitemap))
 </div>
 
 <div style="padding: 0px 0px 100px 0px;" class="table-responsive">
     <h5>Timing website(ms):</h5>
-    @await Html.PartialAsync("PartialView/LinksWithResponseTimeOutput", Model.All)
+    @await Html.PartialAsync("PartialView/LinksWithResponseTimeOutput", Model.OrderBy(r => r.ResponseTime))
 </div>
 
 <div>
-    <h4>Urls(html documents) found after crawling a website: @Model.TotalLinksHtml</h4>
-    <h4>Urls found in sitemap: @Model.TotalLinksSitemap</h4>
+    <h4>Urls(html documents) found after crawling a website: @Model.Where(l => (l.IsLinkFromHtml)).Count()</h4>
+    <h4>Urls found in sitemap: @Model.Where(l => (l.IsLinkFromSitemap)).Count()</h4>
 </div>

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<InterviewTask.EntityFramework.Entities.CrawlingResult>
+﻿@model IEnumerable<InterviewTask.Logic.Models.Result>
 
 <div class="table-responsive">
     <table border="1" class="bg-light | table">
@@ -8,12 +8,13 @@
             </tr>
         </thead>
         <tbody>
-
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td width=1200>@item.Url</td>
-                </tr>
+            @{
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td width=1200>@item.Url</td>
+                    </tr>
+                }
             }
         </tbody>
     </table>

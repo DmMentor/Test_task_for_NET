@@ -1,4 +1,4 @@
-﻿@model InterviewTask.WebApp.Models.Result
+﻿@model InterviewTask.Logic.Models.ResultPartPage
 @{
     ViewData["Title"] = "TestInfo";
 }
@@ -38,14 +38,28 @@
     </table>
     <div class="custom-control">
         <h4>
-            @if (!Model.IsFirstPage)
+            @if (Model.CurrentPage > 1)
             {
-                @Html.ActionLink("previous", "GetTest", "Result", new { page = Model.Page - 1 }, new { @class = "btn | btn-outline-secondary" })
+                @Html.ActionLink("prev", "GetTest", "Result", new { page = Model.CurrentPage - 1 }, new { @class = "btn | btn-outline-secondary" })
             }
-            @if (!Model.IsLastPage)
+
+            @for (int i = 1; i <= Model.TotalPage; i++)
             {
-                @Html.ActionLink("next", "GetTest", "Result", new { page = Model.Page + 1 }, new { @class = "btn | btn-outline-secondary" })
+                if (i == Model.CurrentPage)
+                {
+                    @Html.ActionLink(i.ToString(), "GetTest", "Result", new { page = i }, new { @class = "btn | btn-outline-success" })
+                }
+                else
+                {
+                    @Html.ActionLink(i.ToString(), "GetTest", "Result", new { page = i }, new { @class = "btn | btn-outline-secondary" })
+                }
             }
+
+            @if (Model.CurrentPage < Model.TotalPage)
+            {
+                @Html.ActionLink("next", "GetTest", "Result", new { page = Model.CurrentPage + 1 }, new { @class = "btn | btn-outline-secondary" })
+            }
+
         </h4>
     </div>
 </div>

@@ -1,4 +1,4 @@
-﻿using InterviewTask.WebApp.Services;
+﻿using InterviewTask.Logic.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
