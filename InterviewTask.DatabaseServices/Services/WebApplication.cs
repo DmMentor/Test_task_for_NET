@@ -4,13 +4,13 @@ using System.Threading.Tasks;
 
 namespace InterviewTask.Logic.Services
 {
-    public class Crawler
+    public class WebApplication
     {
         private readonly WebsiteCrawler _crawler;
         private readonly LinkRequest _linkRequest;
         private readonly DatabaseOperation _databaseOperation;
 
-        public Crawler(WebsiteCrawler crawler, LinkRequest linkRequest, DatabaseOperation databaseOperation)
+        public WebApplication(WebsiteCrawler crawler, LinkRequest linkRequest, DatabaseOperation databaseOperation)
         {
             _crawler = crawler;
             _linkRequest = linkRequest;

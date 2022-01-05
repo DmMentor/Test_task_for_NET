@@ -8,7 +8,7 @@ namespace InterviewTask.Logic.Extensions
         public static IServiceCollection AddLogicServices(this IServiceCollection services)
         {
             services.AddScoped<DatabaseOperation>();
-            services.AddScoped<Crawler>();
+            services.AddScoped<WebApplication>();
             services.AddScoped<LinkValidator>();
 
             return services;

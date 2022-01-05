@@ -7,10 +7,10 @@ namespace InterviewTask.WebApp.Controllers
 {
     public class CrawlerController : Controller
     {
-        private readonly Crawler _webApp;
+        private readonly WebApplication _webApp;
         private readonly LinkValidator _linkValidator;
 
-        public CrawlerController(Crawler webApp, LinkValidator linkValidator)
+        public CrawlerController(WebApplication webApp, LinkValidator linkValidator)
         {
             _webApp = webApp;
             _linkValidator = linkValidator;
