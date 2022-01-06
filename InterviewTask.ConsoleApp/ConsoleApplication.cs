@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 
 namespace InterviewTask.ConsoleApp
 {
-    internal class ConsoleApp
+    internal class ConsoleApplication
     {
         private readonly LinksDisplay _linksDisplay;
         private readonly LinkRequest _linkRequest;
         private readonly WebsiteCrawler _crawler;
         private readonly DatabaseOperation _databaseOperation;
 
-        public ConsoleApp(LinksDisplay linksDisplay, LinkRequest linkRequest, WebsiteCrawler crawler, DatabaseOperation databaseOperation)
+        public ConsoleApplication(LinksDisplay linksDisplay, LinkRequest linkRequest, WebsiteCrawler crawler, DatabaseOperation databaseOperation)
         {
             _linksDisplay = linksDisplay;
             _linkRequest = linkRequest;

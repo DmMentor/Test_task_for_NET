@@ -17,7 +17,7 @@ namespace InterviewTask.ConsoleApp
             var consoleApp = CreateHostBuilder(args)
                              .Build()
                              .Services
-                             .GetService<ConsoleApp>();
+                             .GetService<ConsoleApplication>();
             await consoleApp.RunAsync();
         }
 
@@ -25,7 +25,7 @@ namespace InterviewTask.ConsoleApp
            Host.CreateDefaultBuilder(args)
                .ConfigureServices((context, services) =>
                {
-                   services.AddScoped<ConsoleApp>()
+                   services.AddScoped<ConsoleApplication>()
                      .AddScoped<LinksDisplay>()
                      .AddEfRepository<CrawlerContext>(o =>
                      {

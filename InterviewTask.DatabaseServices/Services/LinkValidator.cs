@@ -13,7 +13,8 @@ namespace InterviewTask.Logic.Services
             }
             else
             {
-                WebRequest.Create(link).GetResponse().Close();
+                var webClient = new WebClient();
+                webClient.DownloadString(link);
             }
         }
     }
