@@ -17,6 +17,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InterviewTask.WebApp", "Int
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InterviewTask.Logic.Tests", "InterviewTask.DatabaseLogic.Tests\InterviewTask.Logic.Tests.csproj", "{B04ACBA7-174D-4BF4-9C68-173328198B1D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InterviewTask.WepApi", "InterviewTask.WepApi\InterviewTask.WepApi.csproj", "{7307556A-62AB-4152-B110-41E3ED578971}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{B04ACBA7-174D-4BF4-9C68-173328198B1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B04ACBA7-174D-4BF4-9C68-173328198B1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B04ACBA7-174D-4BF4-9C68-173328198B1D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7307556A-62AB-4152-B110-41E3ED578971}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7307556A-62AB-4152-B110-41E3ED578971}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7307556A-62AB-4152-B110-41E3ED578971}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7307556A-62AB-4152-B110-41E3ED578971}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
