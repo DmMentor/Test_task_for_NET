@@ -9,15 +9,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InterviewTask.ConsoleApp", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InterviewTask.EntityFramework", "InterviewTask.EntityFramework\InterviewTask.EntityFramework.csproj", "{E80F2556-88CC-452D-8E20-F1B07795E962}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InterviewTask.Logic", "InterviewTask.DatabaseServices\InterviewTask.Logic.csproj", "{D9400A03-8E6E-4802-85F4-9C809A253001}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InterviewTask.CrawlerLogic.Tests", "InterviewTask.CrawlerServices.Tests\InterviewTask.CrawlerLogic.Tests.csproj", "{6688828F-751B-4C1E-B7A6-26CD86649BFF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InterviewTask.WebApp", "InterviewTask.WebApp\InterviewTask.WebApp.csproj", "{A89DBBC6-4AD2-4213-BCD7-03D55048771B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InterviewTask.Logic.Tests", "InterviewTask.DatabaseLogic.Tests\InterviewTask.Logic.Tests.csproj", "{B04ACBA7-174D-4BF4-9C68-173328198B1D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InterviewTask.WepApi", "InterviewTask.WepApi\InterviewTask.WepApi.csproj", "{7307556A-62AB-4152-B110-41E3ED578971}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InterviewTask.WepApi", "InterviewTask.WepApi\InterviewTask.WepApi.csproj", "{7307556A-62AB-4152-B110-41E3ED578971}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InterviewTask.Logic", "InterviewTask.Logic\InterviewTask.Logic.csproj", "{08DDAD66-6CE1-40F4-BF35-1A342899ED15}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,10 +37,6 @@ Global
 		{E80F2556-88CC-452D-8E20-F1B07795E962}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E80F2556-88CC-452D-8E20-F1B07795E962}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E80F2556-88CC-452D-8E20-F1B07795E962}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D9400A03-8E6E-4802-85F4-9C809A253001}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D9400A03-8E6E-4802-85F4-9C809A253001}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D9400A03-8E6E-4802-85F4-9C809A253001}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D9400A03-8E6E-4802-85F4-9C809A253001}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6688828F-751B-4C1E-B7A6-26CD86649BFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6688828F-751B-4C1E-B7A6-26CD86649BFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6688828F-751B-4C1E-B7A6-26CD86649BFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -57,6 +53,10 @@ Global
 		{7307556A-62AB-4152-B110-41E3ED578971}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7307556A-62AB-4152-B110-41E3ED578971}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7307556A-62AB-4152-B110-41E3ED578971}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08DDAD66-6CE1-40F4-BF35-1A342899ED15}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08DDAD66-6CE1-40F4-BF35-1A342899ED15}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08DDAD66-6CE1-40F4-BF35-1A342899ED15}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08DDAD66-6CE1-40F4-BF35-1A342899ED15}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
