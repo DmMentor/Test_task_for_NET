@@ -11,7 +11,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\InterviewTask.DatabaseServices\InterviewTask.Logic.csproj" />
     <ProjectReference Include="..\InterviewTask.CrawlerServices\InterviewTask.CrawlerLogic.csproj" />
     <ProjectReference Include="..\InterviewTask.Logic\InterviewTask.Logic.csproj" />
   </ItemGroup>

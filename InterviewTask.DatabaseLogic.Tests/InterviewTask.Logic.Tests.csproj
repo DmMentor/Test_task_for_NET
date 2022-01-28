@@ -22,7 +22,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\InterviewTask.DatabaseServices\InterviewTask.Logic.csproj" />
     <ProjectReference Include="..\InterviewTask.EntityFramework\InterviewTask.EntityFramework.csproj" />
     <ProjectReference Include="..\InterviewTask.Logic\InterviewTask.Logic.csproj" />
   </ItemGroup>
