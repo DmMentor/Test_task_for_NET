@@ -1,4 +1,4 @@
-using InterviewTask.Logic.Services;
+using InterviewTask.Logic.Validators;
 using System;
 using Xunit;
 

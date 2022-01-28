@@ -1,4 +1,5 @@
 ﻿using InterviewTask.Logic.Services;
+using InterviewTask.Logic.Validators;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace InterviewTask.Logic.Extensions
@@ -7,7 +8,7 @@ namespace InterviewTask.Logic.Extensions
     {
         public static IServiceCollection AddLogicServices(this IServiceCollection services)
         {
-            services.AddScoped<DatabaseOperation>();
+            services.AddScoped<DatabaseService>();
             services.AddScoped<WebApplication>();
             services.AddScoped<LinkValidator>();
 

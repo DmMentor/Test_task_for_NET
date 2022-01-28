@@ -12,9 +12,9 @@ namespace InterviewTask.ConsoleApp
         private readonly LinksDisplay _linksDisplay;
         private readonly LinkRequest _linkRequest;
         private readonly WebsiteCrawler _crawler;
-        private readonly DatabaseOperation _databaseOperation;
+        private readonly DatabaseService _databaseOperation;
 
-        public ConsoleApplication(LinksDisplay linksDisplay, LinkRequest linkRequest, WebsiteCrawler crawler, DatabaseOperation databaseOperation)
+        public ConsoleApplication(LinksDisplay linksDisplay, LinkRequest linkRequest, WebsiteCrawler crawler, DatabaseService databaseOperation)
         {
             _linksDisplay = linksDisplay;
             _linkRequest = linkRequest;

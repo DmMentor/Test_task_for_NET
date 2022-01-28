@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace InterviewTask.Logic.Models
+namespace InterviewTask.Logic.Models.Logic
 {
     public class ResultPagination<T> : Pagination
     {

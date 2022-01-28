@@ -1,4 +1,4 @@
-﻿namespace InterviewTask.Logic.Models
+﻿namespace InterviewTask.Logic.Models.Logic
 {
     public abstract class Pagination
     {

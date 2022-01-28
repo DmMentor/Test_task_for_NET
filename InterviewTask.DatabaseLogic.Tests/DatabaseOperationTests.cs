@@ -15,13 +15,13 @@ namespace InterviewTask.Logic.Tests
     {
         private Mock<IRepository<Test>> _mockRepositoryTest;
         private Mock<IRepository<CrawlingResult>> _mockRepositoryCrawlingResult;
-        private DatabaseOperation _databaseOperation;
+        private DatabaseService _databaseOperation;
 
         public DatabaseOperationTests()
         {
             _mockRepositoryTest = new Mock<IRepository<Test>>();
             _mockRepositoryCrawlingResult = new Mock<IRepository<CrawlingResult>>();
-            _databaseOperation = new DatabaseOperation(_mockRepositoryTest.Object, _mockRepositoryCrawlingResult.Object);
+            _databaseOperation = new DatabaseService(_mockRepositoryTest.Object, _mockRepositoryCrawlingResult.Object);
         }
 
         [Fact]

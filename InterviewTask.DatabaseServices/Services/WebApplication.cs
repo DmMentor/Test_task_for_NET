@@ -8,9 +8,9 @@ namespace InterviewTask.Logic.Services
     {
         private readonly WebsiteCrawler _crawler;
         private readonly LinkRequest _linkRequest;
-        private readonly DatabaseOperation _databaseOperation;
+        private readonly DatabaseService _databaseOperation;
 
-        public WebApplication(WebsiteCrawler crawler, LinkRequest linkRequest, DatabaseOperation databaseOperation)
+        public WebApplication(WebsiteCrawler crawler, LinkRequest linkRequest, DatabaseService databaseOperation)
         {
             _crawler = crawler;
             _linkRequest = linkRequest;

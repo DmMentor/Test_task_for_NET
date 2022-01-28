@@ -6,9 +6,9 @@ namespace InterviewTask.WebApp.Controllers
 {
     public class ResultController : Controller
     {
-        private readonly DatabaseOperation _databaseOperation;
+        private readonly DatabaseService _databaseOperation;
 
-        public ResultController(DatabaseOperation databaseOperation)
+        public ResultController(DatabaseService databaseOperation)
         {
             _databaseOperation = databaseOperation;
         }
@@ -16,7 +16,7 @@ namespace InterviewTask.WebApp.Controllers
         [HttpGet]
         public async Task<IActionResult> GetTest(int page = 1, int pageSize = 3, string message = null)
         {
-            var resultTest = await _databaseOperation.GetListTestsAsync(page, pageSize);
+            var resultTest = await _databaseOperation.GetPageTestsAsync(page, pageSize);
 
             ViewData["message"] = message;
 
