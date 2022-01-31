@@ -364,3 +364,4 @@ FodyWeavers.xsd
 InterviewTask.ConsoleApp/Properties
 InterviewTask.WebApp/Properties
 InterviewTask.WepApi/Properties
+*.bak

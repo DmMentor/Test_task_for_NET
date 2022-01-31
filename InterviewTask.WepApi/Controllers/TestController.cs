@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace InterviewTask.WepApi.Controllers
 {
-    [Route("Api/[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class TestController : ControllerBase
     {
