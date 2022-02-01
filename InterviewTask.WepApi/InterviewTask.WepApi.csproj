@@ -5,8 +5,9 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>C:\Users\d.minaev\source\repos\dmitryMinaev\Test_task_for_NET\InterviewTask.WepApi\InterviewTask.WepApi.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\net5.0\InterviewTask.WepApi.xml</DocumentationFile>
     <NoWarn>1701;1702;1591</NoWarn>
+    <OutputPath>bin\Debug\net5.0\</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>

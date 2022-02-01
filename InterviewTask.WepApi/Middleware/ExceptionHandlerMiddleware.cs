@@ -3,10 +3,9 @@ using InterviewTask.Logic.Models.Response;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using System;
-using System.Net;
 using System.Threading.Tasks;
 
-namespace InterviewTask.WepApi.Middlewares
+namespace InterviewTask.WepApi.Middleware
 {
     public class ExceptionHandlerMiddleware
     {
@@ -25,15 +24,15 @@ namespace InterviewTask.WepApi.Middlewares
             }
             catch (InputLinkInvalidException linkInvalidException)
             {
-                await SendHttpResponse(context, linkInvalidException);
+                await SendHttpResponse(400, context, linkInvalidException);
             }
             catch (Exception ex)
             {
-                await SendHttpResponse(context, ex);
+                await SendHttpResponse(400, context, ex);
             }
         }
 
-        private async Task SendHttpResponse(HttpContext context, Exception exception)
+        private async Task SendHttpResponse(int statusCode, HttpContext context, Exception exception)
         {
             var jsonObject = JsonConvert.SerializeObject(new ExceptionResponse
             {
@@ -43,7 +42,7 @@ namespace InterviewTask.WepApi.Middlewares
             var response = context.Response;
 
             response.ContentType = "application/json";
-            response.StatusCode = (int)HttpStatusCode.BadRequest;
+            response.StatusCode = statusCode;
 
             await response.WriteAsync(jsonObject);
         }

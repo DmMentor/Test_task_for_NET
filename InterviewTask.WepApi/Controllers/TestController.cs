@@ -3,7 +3,6 @@ using InterviewTask.Logic.Models.Request;
 using InterviewTask.Logic.Services;
 using InterviewTask.Logic.Validators;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace InterviewTask.WepApi.Controllers
@@ -33,15 +32,6 @@ namespace InterviewTask.WepApi.Controllers
         }
 
         /// <summary>
-        /// Get a list with parsing results links
-        /// </summary>
-        [HttpGet("DetailsTest/{testId}")]
-        public IEnumerable<Result> GetDetailsTest([FromRoute] int testId)
-        {
-            return _databaseOperation.GetListAllLinks(testId);
-        }
-
-        /// <summary>
         /// Start link parsing
         /// </summary>
         /// <response code="200">Parsing of the reference has been initiated and successfully completed</response>
@@ -50,7 +40,7 @@ namespace InterviewTask.WepApi.Controllers
         public async Task<ActionResult> CreateTest([FromForm] InputLinkRequest inputLinkRequest)
         {
             _linkValidator.CheckLink(inputLinkRequest.Link);
-   
+
             await _webApp.StartAsync(inputLinkRequest.Link);
 
             return Ok("Parsing completed successfully");
