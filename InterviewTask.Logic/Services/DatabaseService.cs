@@ -20,7 +20,7 @@ namespace InterviewTask.Logic.Services
             _crawlingResultRepository = crawlingResultRepository;
         }
 
-        public async Task SaveToDatabaseAsync(Uri baseLink, IEnumerable<Link> listLinksFlags, IEnumerable<LinkWithResponse> listLinksWithResponse)
+        public async Task<TestModel> SaveToDatabaseAsync(Uri baseLink, IEnumerable<Link> listLinksFlags, IEnumerable<LinkWithResponse> listLinksWithResponse)
         {
             var listLinksForDb = listLinksFlags.Join(
                 listLinksWithResponse,
@@ -45,6 +45,16 @@ namespace InterviewTask.Logic.Services
 
             await _testRepository.AddAsync(test);
             await _testRepository.SaveChangesAsync();
+
+
+            var testModel = new TestModel
+            {
+                Id = test.Id,
+                BaseUrl = test.BaseUrl,
+                ParsingDate = test.ParsingDate
+            };
+
+            return testModel;
         }
 
         public async Task<ResultPagination<TestModel>> GetPageTestsAsync(int currentPage, int pageSize)

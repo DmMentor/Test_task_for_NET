@@ -3,11 +3,12 @@ using InterviewTask.Logic.Models.Request;
 using InterviewTask.Logic.Services;
 using InterviewTask.Logic.Validators;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace InterviewTask.WepApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/test")]
     [ApiController]
     public class TestController : ControllerBase
     {
@@ -32,18 +33,24 @@ namespace InterviewTask.WepApi.Controllers
         }
 
         /// <summary>
+        /// Get a list with parsing results links
+        /// </summary>
+        [HttpGet("{id:int}/details")]
+        public IEnumerable<Result> GetDetailsTest([FromRoute] int id)
+        {
+            return _databaseOperation.GetListAllLinks(id);
+        }
+
+        /// <summary>
         /// Start link parsing
         /// </summary>
-        /// <response code="200">Parsing of the reference has been initiated and successfully completed</response>
-        /// <response code="400">Link is invalid</response>
+        /// <response code="200">Sending a model that contains the result of parsing</response>
         [HttpPost]
-        public async Task<ActionResult> CreateTest([FromForm] InputLinkRequest inputLinkRequest)
+        public async Task<TestModel> CreateTest([FromBody] InputLinkRequest inputLinkRequest)
         {
             _linkValidator.CheckLink(inputLinkRequest.Link);
 
-            await _webApp.StartAsync(inputLinkRequest.Link);
-
-            return Ok("Parsing completed successfully");
+            return await _webApp.StartAsync(inputLinkRequest.Link);
         }
     }
 }

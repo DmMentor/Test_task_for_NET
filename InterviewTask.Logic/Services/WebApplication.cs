@@ -1,4 +1,5 @@
 ﻿using InterviewTask.CrawlerLogic.Services;
+using InterviewTask.Logic.Models.Logic;
 using System;
 using System.Threading.Tasks;
 
@@ -17,12 +18,12 @@ namespace InterviewTask.Logic.Services
             _databaseOperation = databaseOperation;
         }
 
-        public async Task StartAsync(Uri link)
+        public async Task<TestModel> StartAsync(Uri link)
         {
             var listAllLinks = await _crawler.StartAsync(link);
             var listAllLinksWithResponse = await _linkRequest.GetListWithLinksResponseTimeAsync(listAllLinks);
 
-            await _databaseOperation.SaveToDatabaseAsync(link, listAllLinks, listAllLinksWithResponse);
+            return await _databaseOperation.SaveToDatabaseAsync(link, listAllLinks, listAllLinksWithResponse);
         }
     }
 }

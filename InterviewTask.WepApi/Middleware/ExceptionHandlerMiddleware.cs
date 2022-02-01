@@ -3,6 +3,7 @@ using InterviewTask.Logic.Models.Response;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using System;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace InterviewTask.WepApi.Middleware
@@ -24,11 +25,11 @@ namespace InterviewTask.WepApi.Middleware
             }
             catch (InputLinkInvalidException linkInvalidException)
             {
-                await SendHttpResponse(400, context, linkInvalidException);
+                await SendHttpResponse((int)HttpStatusCode.BadRequest, context, linkInvalidException);
             }
             catch (Exception ex)
             {
-                await SendHttpResponse(400, context, ex);
+                await SendHttpResponse((int)HttpStatusCode.InternalServerError, context, ex);
             }
         }
 
