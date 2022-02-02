@@ -1,5 +1,6 @@
 ﻿using InterviewTask.CrawlerLogic.Models;
 using InterviewTask.EntityFramework.Entities;
+using InterviewTask.Logic.Exceptions;
 using InterviewTask.Logic.Models.Logic;
 using System;
 using System.Collections.Generic;
@@ -78,9 +79,9 @@ namespace InterviewTask.Logic.Services
             return resultPagination;
         }
 
-        public IEnumerable<Result> GetListAllLinks(int id)
+        public async Task<IEnumerable<Result>> GetListAllLinks(int id)
         {
-            return _crawlingResultRepository.GetAllAsNoTracking()
+            var queryLinksList = _crawlingResultRepository.GetAllAsNoTracking()
                                             .Where(s => s.TestId == id)
                                             .Select(s => new Result
                                             {
@@ -88,8 +89,11 @@ namespace InterviewTask.Logic.Services
                                                 ResponseTime = s.ResponseTime,
                                                 IsLinkFromHtml = s.IsLinkFromHtml,
                                                 IsLinkFromSitemap = s.IsLinkFromSitemap
-                                            })
-                                            .ToList();
+                                            });
+
+            var resultsList = await _crawlingResultRepository.ToListAsync(queryLinksList);
+
+            return resultsList.Any() ? resultsList : throw new NotFoundException();
         }
     }
 }

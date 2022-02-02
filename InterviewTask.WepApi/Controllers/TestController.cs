@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace InterviewTask.WepApi.Controllers
 {
-    [Route("api/test")]
+    [Route("api/[controller]")]
     [ApiController]
     public class TestController : ControllerBase
     {
@@ -36,9 +36,9 @@ namespace InterviewTask.WepApi.Controllers
         /// Get a list with parsing results links
         /// </summary>
         [HttpGet("{id:int}/details")]
-        public IEnumerable<Result> GetDetailsTest([FromRoute] int id)
+        public async Task<IEnumerable<Result>> GetDetailsTest([FromRoute] int id)
         {
-            return _databaseOperation.GetListAllLinks(id);
+            return await _databaseOperation.GetListAllLinks(id);
         }
 
         /// <summary>

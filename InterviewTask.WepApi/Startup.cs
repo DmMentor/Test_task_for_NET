@@ -1,6 +1,7 @@
 using InterviewTask.CrawlerLogic.Extensions;
 using InterviewTask.EntityFramework;
 using InterviewTask.Logic.Extensions;
+using InterviewTask.WepApi.Middleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -11,8 +12,6 @@ using Microsoft.OpenApi.Models;
 using System;
 using System.IO;
 using System.Reflection;
-using Microsoft.AspNetCore.Cors;
-using InterviewTask.WepApi.Middleware;
 
 namespace InterviewTask.WepApi
 {
@@ -29,6 +28,7 @@ namespace InterviewTask.WepApi
         {
             services.AddCors();
             services.AddControllers();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "InterviewTask.WepApi", Version = "v1" });

@@ -25,13 +25,16 @@ namespace InterviewTask.CrawlerLogic.Services
 
             foreach (var link in inputListLinks)
             {
-                var linkResponse = new LinkWithResponse
+                if (link.Url != null)
                 {
-                    Url = link.Url,
-                    ResponseTime = await _linkHandling.GetLinkResponseAsync(link.Url)
-                };
+                    var linkResponse = new LinkWithResponse
+                    {
+                        Url = link.Url,
+                        ResponseTime = await _linkHandling.GetLinkResponseAsync(link.Url)
+                    };
 
-                listLinksWithResponse.Add(linkResponse);
+                    listLinksWithResponse.Add(linkResponse);
+                }
             }
 
             return listLinksWithResponse;

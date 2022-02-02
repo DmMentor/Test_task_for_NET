@@ -27,6 +27,10 @@ namespace InterviewTask.WepApi.Middleware
             {
                 await SendHttpResponse((int)HttpStatusCode.BadRequest, context, linkInvalidException);
             }
+            catch (NotFoundException notFoundException)
+            {
+                await SendHttpResponse((int)HttpStatusCode.NotFound, context, notFoundException);
+            }
             catch (Exception ex)
             {
                 await SendHttpResponse((int)HttpStatusCode.InternalServerError, context, ex);
