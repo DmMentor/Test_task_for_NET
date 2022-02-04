@@ -1,12 +1,20 @@
-﻿using InterviewTask.Logic.Exceptions;
+﻿using InterviewTask.CrawlerLogic.Services;
+using InterviewTask.Logic.Exceptions;
 using System;
-using System.Net;
+using System.Threading.Tasks;
 
 namespace InterviewTask.Logic.Validators
 {
     public class LinkValidator
     {
-        public void CheckLink(Uri link)
+        private readonly HttpService _httpService;
+
+        public LinkValidator(HttpService httpService)
+        {
+            _httpService = httpService;
+        }
+
+        public async Task CheckLinkAsync(Uri link)
         {
             if (link == null)
             {
@@ -18,8 +26,7 @@ namespace InterviewTask.Logic.Validators
                 throw new InputLinkInvalidException();
             }
 
-            var webClient = new WebClient();
-            webClient.DownloadString(link);
+            await _httpService.GetResponseMessageAsync(link);
         }
     }
 }

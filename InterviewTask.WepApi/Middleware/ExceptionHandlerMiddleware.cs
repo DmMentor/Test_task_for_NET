@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using System;
 using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace InterviewTask.WepApi.Middleware
@@ -30,6 +31,10 @@ namespace InterviewTask.WepApi.Middleware
             catch (NotFoundException notFoundException)
             {
                 await SendHttpResponse((int)HttpStatusCode.NotFound, context, notFoundException);
+            }
+            catch (HttpRequestException ex)
+            {
+                await SendHttpResponse((int)HttpStatusCode.BadRequest, context, ex);
             }
             catch (Exception ex)
             {

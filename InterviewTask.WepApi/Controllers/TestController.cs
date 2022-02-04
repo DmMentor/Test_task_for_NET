@@ -48,7 +48,7 @@ namespace InterviewTask.WepApi.Controllers
         [HttpPost]
         public async Task<TestModel> CreateTest([FromBody] InputLinkRequest inputLinkRequest)
         {
-            _linkValidator.CheckLink(inputLinkRequest.Link);
+            await _linkValidator.CheckLinkAsync(inputLinkRequest.Link);
 
             return await _webApp.StartAsync(inputLinkRequest.Link);
         }

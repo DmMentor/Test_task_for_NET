@@ -22,7 +22,7 @@ namespace InterviewTask.WebApp.Controllers
         {
             try
             {
-                _linkValidator.CheckLink(inputLink);
+                await _linkValidator.CheckLinkAsync(inputLink);
             }
             catch (Exception ex)
             {

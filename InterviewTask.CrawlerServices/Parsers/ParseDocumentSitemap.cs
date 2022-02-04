@@ -41,7 +41,9 @@ namespace InterviewTask.CrawlerLogic.Parsers
 
             var listLinksSitemap = new List<Uri>(xmlListLinks.Count);
 
-            var listLinks = xmlListLinks.Cast<XmlNode>().Select(s => _converter.ToUri(s.InnerText, baseLink));
+            var listLinks = xmlListLinks.Cast<XmlNode>()
+                                        .Select(s => _converter.ToUri(s.InnerText, baseLink))
+                                        .Where(s => s != null);
 
             foreach (var item in listLinks)
             {
